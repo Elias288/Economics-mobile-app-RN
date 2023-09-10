@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import Main from './src/Main';
+import { es, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('es', es)
 
 export default function App() {
   return (
@@ -9,4 +11,4 @@ export default function App() {
       <StatusBar style="auto" />
     </SafeAreaView>
   );
-}
+};
