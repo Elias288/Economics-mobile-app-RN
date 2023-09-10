@@ -1,60 +1,83 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import { useState } from "react";
-import { Button, Modal, PaperProvider, Portal, Text } from "react-native-paper";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { FlatList, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Button, Modal, PaperProvider, Portal, Text } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import FloatingActionButton from "../components/FloatingActionButton";
-import { stackScreens } from "../Main";
-import { OperationInterface, OperationTypeInterface } from "../intefraces/OperationInterface";
-import { OperationCard } from "../components/OperationCard";
+import FloatingActionButton from '../components/FloatingActionButton';
+import { stackScreens } from '../Main';
+import {
+  AccountInteface,
+  OperationInterface,
+  OperationTypeInterface,
+} from '../intefraces/OperationInterface';
+import { OperationCard } from '../components/OperationCard';
 
-type propsType = NativeStackScreenProps<stackScreens, "Home">
+type propsType = NativeStackScreenProps<stackScreens, 'Home'>;
 
 const Home = (props: propsType) => {
   const { navigation } = props;
   const [visibleModal, setVisibleModal] = useState(false);
-
-  const [totalAmount, setTotalAmount] = useState<string>("0");
-  const [operationList, setOperationList] = useState<Array<OperationInterface>>([]);
+  const [account, setAccount] = useState<AccountInteface>({
+    name: 'test account',
+    operations: [],
+    totalAmount: '0',
+  });
 
   const openCreateOperation = (operation: OperationTypeInterface) => {
     setVisibleModal(false);
-    navigation.navigate('CreateOperation', { operation, addNewOperation: _addNewOperation });
+
+    navigation.navigate('CreateOperation', {
+      operation,
+      addNewOperation: _addNewOperation,
+    });
   };
 
-  const _addNewOperation = (opeartion: OperationInterface) => {
-    setOperationList(oldArrat => [...oldArrat, opeartion]);
-    if (opeartion.type == OperationTypeInterface.withdraw) {
+  const _addNewOperation = (newOperation: OperationInterface) => {
+    let newTotalAmount: string = account.totalAmount;
+    const operations: Array<OperationInterface> = account.operations;
+    operations.push(newOperation);
+
+    if (newOperation.type == OperationTypeInterface.withdraw) {
       // *********************** withdraw money from the total amount ***********************
-      setTotalAmount((+totalAmount - opeartion.amount).toString());
+      newTotalAmount = (+newTotalAmount - newOperation.amount).toString();
     } else {
       // ************************ insert money from the total amount ************************
-      setTotalAmount((+totalAmount + opeartion.amount).toString());
+      newTotalAmount = (+newTotalAmount + newOperation.amount).toString();
     }
+
+    const newAccount: AccountInteface = {
+      name: account?.name,
+      operations: operations,
+      totalAmount: newTotalAmount,
+    };
+
+    setAccount(newAccount);
   };
 
   return (
     <PaperProvider>
       <View style={styles.container}>
-        <View style={{
-          backgroundColor: '#fff',
-          paddingVertical: 50,
-          alignItems: 'center',
-          marginBottom: 10
-        }}>
-          <Text style={{ fontSize: 30, }}>Total Amount:</Text>
-          <Text style={{ fontSize: 25, }}>${totalAmount}</Text>
+        <View
+          style={{
+            backgroundColor: '#fff',
+            paddingVertical: 50,
+            alignItems: 'center',
+            marginBottom: 10,
+          }}
+        >
+          <Text style={{ fontSize: 30 }}>Total Amount:</Text>
+          <Text style={{ fontSize: 25 }}>${account.totalAmount}</Text>
         </View>
 
         {/* ************************* List of account operations ************************* */}
-        {
-          operationList.length === 0
-            ? <Text style={{ textAlign: 'center' }}>Empty operation list</Text>
-            : <FlatList
-              data={operationList}
-              renderItem={({ item }) => <OperationCard operation={item} />}
-            />
-        }
+        {account.operations.length === 0 ? (
+          <Text style={{ textAlign: 'center' }}>Empty operation list</Text>
+        ) : (
+          <FlatList
+            data={account.operations}
+            renderItem={({ item }) => <OperationCard operation={item} />}
+          />
+        )}
 
         {/* ******* Modal that allows to select which type of operation to create *******  */}
         <Portal>
@@ -84,7 +107,7 @@ const Home = (props: propsType) => {
       </View>
     </PaperProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

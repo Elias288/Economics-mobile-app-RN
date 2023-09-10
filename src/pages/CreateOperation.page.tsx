@@ -1,44 +1,44 @@
-import { Button, PaperProvider, Snackbar, Text, TextInput } from "react-native-paper";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Button, PaperProvider, Snackbar, Text, TextInput } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DatePickerModal } from 'react-native-paper-dates';
-import { useCallback, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { useCallback, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import { OperationInterface } from "../intefraces/OperationInterface";
-import { stackScreens } from "../Main";
+import { OperationInterface } from '../intefraces/OperationInterface';
+import { stackScreens } from '../Main';
 
-type propsType = NativeStackScreenProps<stackScreens, "CreateOperation">
+type propsType = NativeStackScreenProps<stackScreens, 'CreateOperation'>;
 
 const CreateOperation = (props: propsType) => {
   const { navigation, route } = props;
   const { operation, addNewOperation } = route.params;
 
-  const [cause, setCause] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
+  const [cause, setCause] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
   const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
 
   const [showSnakcbar, setShowSnakcbar] = useState<boolean>(false);
-  const [snakcbarMsg, setSnakcbarMsg] = useState<string>("");
+  const [snakcbarMsg, setSnakcbarMsg] = useState<string>('');
 
   const operationType = operation === 0 ? 'a Withdraw' : 'an Insert';
 
   const handlePress = () => {
-    /* 
-    * Crea una nueva operacion despues de comporbar que el monto no sea vacio o 0 
-    */
+    /*
+     * Crea una nueva operacion despues de comporbar que el monto no sea vacio o 0
+     */
 
     // ********************** verifica que la causa no esté vacia **********************
-    if (cause.trim() === "") {
+    if (cause.trim() === '') {
       setShowSnakcbar(true);
-      setSnakcbarMsg("The cause cannot be empty");
+      setSnakcbarMsg('The cause cannot be empty');
       return;
     }
 
     // ********* verifica que el monto no este vacio, sea un numero y no sea 0 *********
-    if (amount.trim() === "" || amount === "0") {
+    if (amount.trim() === '' || amount === '0') {
       setShowSnakcbar(true);
-      setSnakcbarMsg("Amount cannot be empty or 0");
+      setSnakcbarMsg('Amount cannot be empty or 0');
       return;
     }
 
@@ -46,26 +46,31 @@ const CreateOperation = (props: propsType) => {
       amount: +amount,
       cause,
       operationDate: date,
-      type: operation
+      type: operation,
     };
 
     addNewOperation(newOperation);
-    navigation.navigate('Home')
+    navigation.navigate('Home');
   };
 
   const onDismissSingle = useCallback(() => {
     setOpenDatePicker(false);
   }, [setOpenDatePicker]);
 
-  const onConfirmSingle = useCallback((params: any) => {
-    setOpenDatePicker(false);
-    setDate(params.date);
-    console.log(params.date);
-  },[setOpenDatePicker, setDate]);
+  const onConfirmSingle = useCallback(
+    (params: any) => {
+      setOpenDatePicker(false);
+      setDate(params.date);
+      console.log(params.date);
+    },
+    [setOpenDatePicker, setDate]
+  );
 
   return (
     <PaperProvider>
-      <Text variant="headlineMedium" style={styles.title}>Add {operationType}</Text>
+      <Text variant="headlineMedium" style={styles.title}>
+        Add {operationType}
+      </Text>
 
       {/* ************************************* Cause input ************************************* */}
       <TextInput
@@ -82,7 +87,6 @@ const CreateOperation = (props: propsType) => {
         keyboardType="numeric"
         style={styles.inputTet}
         onChangeText={(newAmount) => setAmount(newAmount)}
-
       />
 
       {/* ************************************** DatePicker ************************************** */}
@@ -101,19 +105,12 @@ const CreateOperation = (props: propsType) => {
 
       {/***************************************** Buttons *****************************************/}
       <View style={styles.options}>
-        <Button
-          onPress={() => handlePress()}
-          mode="contained"
-        >
+        <Button onPress={() => handlePress()} mode="contained">
           Save
         </Button>
-        <Button
-          onPress={() => navigation.navigate('Home')}
-          mode="contained"
-        >
+        <Button onPress={() => navigation.navigate('Home')} mode="contained">
           Cancel
         </Button>
-
       </View>
 
       <Snackbar
@@ -135,12 +132,12 @@ const styles = StyleSheet.create({
   options: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   inputTet: {
     marginBottom: 20,
     marginHorizontal: 10,
-  }
+  },
 });
 
 export default CreateOperation;

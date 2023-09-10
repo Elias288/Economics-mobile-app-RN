@@ -1,20 +1,19 @@
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from "./pages/Home.page";
-import { OperationInterface, OperationTypeInterface } from "./intefraces/OperationInterface";
-import AppBar from "./components/AppBar";
-import CreateOperation from "./pages/CreateOperation.page";
+import Home from './pages/Home.page';
+import { OperationInterface, OperationTypeInterface } from './intefraces/OperationInterface';
+import AppBar from './components/AppBar';
+import CreateOperation from './pages/CreateOperation.page';
 
 // ****************************** lista de paginas ******************************
 export type stackScreens = {
   // [ pagina: parametros ]
-  Home: undefined,
+  Home: undefined;
   CreateOperation: {
-    operation: OperationTypeInterface,
-    addNewOperation: (opeartion: OperationInterface) => void
-  },
+    operation: OperationTypeInterface;
+    addNewOperation: (opeartion: OperationInterface) => void;
+  };
 };
 
 // *************************** constructor del stack ***************************
@@ -24,16 +23,22 @@ const Main = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home}
+        <Stack.Screen
+          name="Home"
+          component={Home}
           options={{
             headerTitle: (props) => <AppBar {...props} />,
-            headerStyle: { backgroundColor: '#294baf' }
+            headerStyle: { backgroundColor: '#294baf' },
+            statusBarStyle: 'auto',
           }}
         />
-        <Stack.Screen name="CreateOperation" component={CreateOperation}
+        <Stack.Screen
+          name="CreateOperation"
+          component={CreateOperation}
           options={{
             headerTitle: (props) => <AppBar {...props} />,
-            headerStyle: { backgroundColor: '#294baf' }
+            headerStyle: { backgroundColor: '#294baf' },
+            statusBarStyle: 'auto',
           }}
         />
       </Stack.Navigator>

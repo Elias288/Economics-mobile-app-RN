@@ -1,3 +1,9 @@
+export type AccountInteface = {
+  name: string;
+  operations: Array<OperationInterface>;
+  totalAmount: string;
+};
+
 export type OperationInterface = {
   amount: number;
   operationDate: Date;
@@ -7,5 +13,5 @@ export type OperationInterface = {
 
 export enum OperationTypeInterface {
   withdraw,
-  insert
-};
+  insert,
+}
