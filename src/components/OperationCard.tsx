@@ -1,36 +1,49 @@
 import { View } from 'react-native';
-import { PaperProvider, Text } from 'react-native-paper';
+import { List, PaperProvider, Text } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 
-import { OperationInterface, OperationTypeInterface } from '../intefraces/OperationInterface';
+import { OperationInterface, OperationTypeInterface } from '../intefraces/AccountInterface';
 
-export const OperationCard = ({ operation }: { operation: OperationInterface }) => {
+type propsTypes = {
+  operation: OperationInterface;
+  openOperationOptions: () => void;
+};
+
+export const OperationCard = (props: propsTypes) => {
+  const { operation, openOperationOptions } = props;
+
   return (
     <PaperProvider>
-      <View style={styles.container}>
-        <View style={styles.cardInfo}>
-          <Text style={{ fontSize: 25 }}>{operation.cause}</Text>
-          <Text>{operation.operationDate.toLocaleDateString()}</Text>
-        </View>
-        <Text style={{ fontSize: 20 }}>
-          {operation.type === OperationTypeInterface.withdraw ? '-' : ''}${operation.amount}
-        </Text>
-      </View>
+      <List.Item
+        style={styles.itemStyle}
+        title={
+          <View style={{}}>
+            <Text style={{ fontSize: 25 }}>{operation.cause}</Text>
+            <Text>{new Date(operation.operationDate).toLocaleDateString()}</Text>
+          </View>
+        }
+        onPress={openOperationOptions}
+        right={() => (
+          <View style={{ justifyContent: 'center' }}>
+            <Text style={{ fontSize: 20 }}>
+              {operation.type === OperationTypeInterface.withdraw ? '-' : ''}${operation.amount}
+            </Text>
+          </View>
+        )}
+      />
     </PaperProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  itemStyle: {
     backgroundColor: '#bbbaba',
     marginBottom: 10,
     marginHorizontal: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 10,
   },
-  cardInfo: {},
 });

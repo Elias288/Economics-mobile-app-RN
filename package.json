@@ -12,6 +12,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "eas-cli": "^5.2.0",
+    "eventemitter3": "^5.0.1",
     "expo": "~49.0.8",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~2.4.8",

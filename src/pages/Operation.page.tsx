@@ -1,33 +1,52 @@
-import { Button, PaperProvider, Snackbar, Text, TextInput } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { DatePickerModal } from 'react-native-paper-dates';
-import { useCallback, useState } from 'react';
+import { Button, PaperProvider, Snackbar, Text, TextInput } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { useCallback, useState } from 'react';
+import { DatePickerModal } from 'react-native-paper-dates';
 
-import { OperationInterface } from '../intefraces/AccountInterface';
 import { stackScreens } from '../Main';
+import { OperationInterface } from '../intefraces/AccountInterface';
+import { event } from '../services/EventEmitter';
 
-type propsType = NativeStackScreenProps<stackScreens, 'CreateOperation'>;
+type propsType = NativeStackScreenProps<stackScreens, 'OperationPage'>;
 
-const CreateOperation = (props: propsType) => {
+const OperationPage = (props: propsType) => {
   const { navigation, route } = props;
-  const { operationType, addNewOperation } = route.params;
+  const { operation /* , createNewOperation, updatedOperation, deleteOperation */ } = route.params;
 
-  const [cause, setCause] = useState<string>('');
-  const [amount, setAmount] = useState<string>('');
   const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(new Date());
+
+  const operationTypeTitle =
+    operation.cause === '' ? (operation.type === 0 ? 'a Withdraw' : 'an Insert') : 'Edit Operation';
+
+  const [cause, setCause] = useState<string>(operation.cause != '' ? operation.cause : '');
+  const [amount, setAmount] = useState<string>(
+    operation.amount != 0 ? operation.amount.toString() : ''
+  );
+  const [date, setDate] = useState<Date>(
+    operation.operationDate != '' ? new Date(operation.operationDate) : new Date()
+  );
 
   const [showSnakcbar, setShowSnakcbar] = useState<boolean>(false);
   const [snakcbarMsg, setSnakcbarMsg] = useState<string>('');
 
-  const operationTypeTitle = operationType === 0 ? 'a Withdraw' : 'an Insert';
+  const onDismissSingle = useCallback(() => {
+    setOpenDatePicker(false);
+  }, [setOpenDatePicker]);
+
+  const onConfirmSingle = useCallback(
+    (params: any) => {
+      setOpenDatePicker(false);
+      setDate(params.date);
+      console.log(params.date);
+    },
+    [setOpenDatePicker, setDate]
+  );
 
   const handlePress = () => {
     /*
      * Crea una nueva operacion despues de comporbar que el monto no sea vacio o 0
      */
-
     // ********************** verifica que la causa no esté vacia **********************
     if (cause.trim() === '') {
       setShowSnakcbar(true);
@@ -45,26 +64,13 @@ const CreateOperation = (props: propsType) => {
     const newOperation: OperationInterface = {
       amount: +amount,
       cause,
-      operationDate: date.toLocaleDateString(),
-      type: operationType,
+      operationDate: date.toString(),
+      type: operation.type,
     };
 
-    addNewOperation(newOperation);
-    navigation.navigate('Home');
+    event.emit('OnCreateNewOperation', newOperation);
+    return navigation.goBack();
   };
-
-  const onDismissSingle = useCallback(() => {
-    setOpenDatePicker(false);
-  }, [setOpenDatePicker]);
-
-  const onConfirmSingle = useCallback(
-    (params: any) => {
-      setOpenDatePicker(false);
-      setDate(params.date);
-      console.log(params.date);
-    },
-    [setOpenDatePicker, setDate]
-  );
 
   return (
     <PaperProvider>
@@ -90,8 +96,13 @@ const CreateOperation = (props: propsType) => {
       />
 
       {/* ************************************** DatePicker ************************************** */}
-      <Button onPress={() => setOpenDatePicker(true)} uppercase={false} mode="outlined">
-        Pick single date
+      <Button
+        onPress={() => setOpenDatePicker(true)}
+        uppercase={false}
+        mode="outlined"
+        icon="calendar"
+      >
+        {date.toLocaleDateString()}
       </Button>
 
       <DatePickerModal
@@ -140,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateOperation;
+export default OperationPage;

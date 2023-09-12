@@ -6,7 +6,7 @@ export type AccountInteface = {
 
 export type OperationInterface = {
   amount: number;
-  operationDate: Date;
+  operationDate: string;
   cause: string;
   type: OperationTypeInterface;
 };
