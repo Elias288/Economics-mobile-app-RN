@@ -3,9 +3,9 @@
 Lista de objetivos de la aplicación
 
 - Página inicial donde listar
-  - [ ] Saldo total (ingresos - gastos)
-  - [ ] Lista de gastos separados por categorías (solo visualización)
-  - [ ] Lista de ingresos separados por categorías (solo visualización)
+  - [x] Mostrar Saldo total (ingresos - gastos)
+  - [x] Mostrar Lista de gastos separados por categorías (solo visualización)
+  - [x] Mostrar Lista de ingresos separados por categorías (solo visualización)
 - [ ] Sub-menú de navegación
 - [ ] Almacenamiento local
 - Página de configuración
