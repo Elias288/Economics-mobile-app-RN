@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 import { AmountContainer } from "./AmountContainer";
-import { GastosContainer } from "./GastosContainer";
-import { IngresosContainer } from "./IngresosContainer";
+import { SpendContainer } from "./SpendContainer";
+import { IncomeContainer } from "./IncomeContainer";
 import generalStyles from "../../generalStyles";
 
 function HomeScreen() {
@@ -10,9 +10,9 @@ function HomeScreen() {
       <View style={generalStyles.container}>
         <AmountContainer />
 
-        <GastosContainer />
+        <SpendContainer />
 
-        <IngresosContainer />
+        <IncomeContainer />
       </View>
     </ScrollView>
   );

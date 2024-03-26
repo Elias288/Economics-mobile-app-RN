@@ -17,10 +17,10 @@ const defaultCategories = [
 ];
 
 const tableHead = [
-  { title: "Categoría", size: 2 },
-  { title: "Previsto", size: 1 },
-  { title: "Real", size: 1 },
-  { title: "Diferencia", size: 1 },
+  { title: "Category", size: 2 },
+  { title: "Forecast", size: 1 },
+  { title: "Actual", size: 1 },
+  { title: "Difference", size: 1 },
 ];
 
 /**

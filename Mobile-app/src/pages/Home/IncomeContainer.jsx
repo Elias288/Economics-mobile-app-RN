@@ -2,7 +2,7 @@ import { useState, ReactNode } from "react";
 import { Text } from "react-native";
 import { Card } from "react-native-paper";
 import generalStyles from "../../generalStyles.js";
-import AmountsTable from "../../components/AmountsTable";
+import AmountsTable from "../../components/AmountsTable.jsx";
 import "../../types/TableContentType.js";
 
 /** @type {Array<tableContent>} */
@@ -17,7 +17,7 @@ const categories = [
  * Componente donde visualizar los ingresos registrados
  * @returns {ReactNode}
  */
-export const IngresosContainer = () => {
+export const IncomeContainer = () => {
   const [tableContent, setTableContent] = useState(
     /** @type {Array<tableContent>} */ (categories)
   );
