@@ -1,14 +1,15 @@
+import { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card } from "react-native-paper";
-import { generalStyles } from "../../Main";
+import generalStyles from "../../generalStyles.js";
 import formatAmount from "../../functions/formatAmount";
 
 /**
- *
+ * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.
  * @param {Object} params
  * @param {number} params.amount Monto total
  * @param {number} params.initialBalance Monto inicial
- * @returns
+ * @returns {ReactNode}
  */
 export const AmountContainer = ({ amount = 0, initialBalance = 0 }) => {
   return (

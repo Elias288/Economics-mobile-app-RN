@@ -15,5 +15,4 @@ export default function formatAmount(amount) {
 
     return amount
         .toLocaleString("es-ES", { minimumFractionDigits: 2 })
-        .replace('.', ',')
 }

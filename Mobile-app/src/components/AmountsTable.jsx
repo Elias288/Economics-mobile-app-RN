@@ -2,8 +2,12 @@ import { DataTable } from "react-native-paper";
 import { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import formatAmount from "../functions/formatAmount";
+import "../types/TableContentType.js";
 
-/** @type {Array<tableContent>} */
+/**
+ * Categorías por defecto
+ * @type {Array<tableContent>}
+ */
 const defaultCategories = [
   { cat: "Category1", fore: 0, act: 0, diff: 0 },
   { cat: "Category2", fore: 0, act: 0, diff: 0 },

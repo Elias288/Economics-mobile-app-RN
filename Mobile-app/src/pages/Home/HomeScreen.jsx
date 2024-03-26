@@ -1,12 +1,13 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { AmountContainer } from "./AmountContainer";
 import { GastosContainer } from "./GastosContainer";
 import { IngresosContainer } from "./IngresosContainer";
+import generalStyles from "../../generalStyles";
 
 function HomeScreen() {
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View style={generalStyles.container}>
         <AmountContainer />
 
         <GastosContainer />
@@ -16,14 +17,5 @@ function HomeScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingTop: 20,
-    paddingBottom: 100,
-  },
-});
 
 export default HomeScreen;
