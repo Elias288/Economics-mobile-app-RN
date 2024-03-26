@@ -16,7 +16,7 @@ const screens = [
   },
   {
     component: ConfigurationNav,
-    name: "Configuration",
+    name: "ConfigurationNav",
     icon: "cog",
     type: "nav",
   },

@@ -8,17 +8,28 @@ function ConfigurationScreen({ navigation }) {
       <Card style={generalStyles.card}>
         <Button
           onPress={() => navigation.navigate("Configuration Initial Balance")}
+          icon={"cash"}
         >
           Add initial Balance <Text>$0,00</Text>
         </Button>
       </Card>
 
       <Card style={generalStyles.card}>
-        <Text>Spend categories</Text>
+        <Button
+          onPress={() => navigation.navigate("Configuration income categories")}
+          icon={"arrow-up-bold"}
+        >
+          Income categories
+        </Button>
       </Card>
 
       <Card style={generalStyles.card}>
-        <Text>Income categories</Text>
+        <Button
+          onPress={() => navigation.navigate("Configuration spend categories")}
+          icon={"arrow-down-bold"}
+        >
+          Spend categories
+        </Button>
       </Card>
     </View>
   );
