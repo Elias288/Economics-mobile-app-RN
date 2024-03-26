@@ -1,14 +1,16 @@
 import { Text, View } from "react-native";
-import { Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import generalStyles from "../../generalStyles.js";
 
 function ConfigurationScreen({ navigation }) {
   return (
     <View style={generalStyles.container}>
       <Card style={generalStyles.card}>
-        <Text>
+        <Button
+          onPress={() => navigation.navigate("Configuration Initial Balance")}
+        >
           Add initial Balance <Text>$0,00</Text>
-        </Text>
+        </Button>
       </Card>
 
       <Card style={generalStyles.card}>
