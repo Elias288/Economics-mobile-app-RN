@@ -3,28 +3,28 @@ import { StyleSheet, Text, View } from "react-native";
 import { Card } from "react-native-paper";
 import generalStyles from "../../generalStyles.js";
 import formatAmount from "../../functions/formatAmount";
+import { useAmountContext } from "../../providers/amountProvider.jsx";
 
 /**
  * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.
- * @param {Object} params
- * @param {number} params.amount Monto total
- * @param {number} params.initialBalance Monto inicial
  * @returns {ReactNode}
  */
-export const AmountContainer = ({ amount = 0, initialBalance = 0 }) => {
+export const AmountContainer = () => {
+  const { initialBalance, totalAmount } = useAmountContext();
+
   return (
     <Card style={generalStyles.card}>
       <View style={styles.container}>
         <View style={styles.totalAmountContainer}>
           <Text style={styles.totalAmountTitle}>Total Amount</Text>
 
-          <Text style={styles.totalAmount}>$ {formatAmount(amount)}</Text>
+          <Text style={styles.totalAmount}>$ {formatAmount(totalAmount)}</Text>
         </View>
 
         <Text style={styles.initialBalanceText}>
           Initial Balance:{" "}
           <Text style={styles.initialBalance}>
-            ${formatAmount(initialBalance)}
+            ${initialBalance ? formatAmount(initialBalance) : "0,00"}
           </Text>
         </Text>
       </View>

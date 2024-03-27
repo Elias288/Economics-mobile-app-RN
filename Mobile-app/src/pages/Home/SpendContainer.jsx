@@ -1,39 +1,46 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Text } from "react-native";
 import { Card } from "react-native-paper";
 import generalStyles from "../../generalStyles.js";
 import AmountsTable from "../../components/AmountsTable.jsx";
+import { useAmountContext } from "../../providers/amountProvider.jsx";
 import "../../types/TableContentType.js";
-
-/** @type {Array<tableContent>} */
-const categories = [
-  { cat: "Comida", fore: 0, act: 0, diff: 0 },
-  { cat: "Regalos", fore: 0, act: 0, diff: 0 },
-  { cat: "Salud/Médicos", fore: 0, act: 0, diff: 0 },
-  { cat: "Vivienda", fore: 0, act: 0, diff: 0 },
-  { cat: "Transporte", fore: 0, act: 0, diff: 0 },
-  { cat: "Gastos personales", fore: 0, act: 0, diff: 0 },
-  { cat: "Ahorro", fore: 0, act: 0, diff: 0 },
-  {
-    cat: "Suministro (luz, agua, gas, etc)",
-    fore: 0,
-    act: "0,00",
-    diff: "0,00",
-  },
-  { cat: "Viajes", fore: 0, act: 0, diff: 0 },
-  { cat: "Deudas", fore: 0, act: 0, diff: 0 },
-  { cat: "Otros", fore: 0, act: 0, diff: 0 },
-  { cat: "Efectivo", fore: 0, act: 0, diff: 0 },
-];
 
 /**
  * Componente donde visualizar los gastos registrados
  * @returns {ReactNode}
  */
 export const SpendContainer = () => {
+  const { spendCategories, spendMovements } = useAmountContext();
+
   const [tableContent, setTableContent] = useState(
-    /** @type {Array<tableContent>} */ (categories)
+    /** @type {Array<tableContent>} */ ([])
   );
+
+  useEffect(() => {
+    const res = buildTableData();
+    setTableContent(res);
+  }, []);
+
+  const buildTableData = () => {
+    return spendCategories.map((item) => {
+      const cat = item.cat;
+
+      const total = spendMovements.reduce((total, movimiento) => {
+        if (movimiento.cat === cat) {
+          return total + movimiento.act;
+        }
+        return total;
+      }, 0);
+
+      return {
+        cat: item.cat,
+        fore: item.fore,
+        act: total,
+        diff: 0,
+      };
+    });
+  };
 
   return (
     <Card style={generalStyles.card}>

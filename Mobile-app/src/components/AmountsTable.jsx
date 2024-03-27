@@ -1,7 +1,7 @@
 import { DataTable } from "react-native-paper";
 import { ReactNode } from "react";
 import { StyleSheet } from "react-native";
-import formatAmount from "../functions/formatAmount";
+import minimizeNumber from "../functions/minimizeNumber.js";
 import "../types/TableContentType.js";
 
 /**
@@ -44,13 +44,13 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
         <DataTable.Row key={index}>
           <DataTable.Cell style={styles.categoría}>{item.cat}</DataTable.Cell>
           <DataTable.Cell style={{ flex: 1 }}>
-            ${formatAmount(item.fore)}
+            ${minimizeNumber(item.fore)}
           </DataTable.Cell>
           <DataTable.Cell style={{ flex: 1 }}>
-            ${formatAmount(item.act)}
+            ${minimizeNumber(item.act)}
           </DataTable.Cell>
           <DataTable.Cell style={{ flex: 1 }}>
-            ${formatAmount(item.diff)}
+            ${minimizeNumber(item.diff)}
           </DataTable.Cell>
         </DataTable.Row>
       ))}

@@ -3,7 +3,7 @@
  * @param {number} amount Monto a ser formatead a 00.000,00
  */
 export default function formatAmount(amount) {
-    if (amount === 0) return "0,00";
+    if (amount === 0 || amount === undefined) return "0,00";
 
     // Verificar si el número es entero
     if (amount % 1 === 0) {

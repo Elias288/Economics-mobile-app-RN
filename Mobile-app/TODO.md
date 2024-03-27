@@ -11,7 +11,7 @@ Lista de objetivos de la aplicación
 - Página de configuración
   - [x] Ingreso de saldo inicial
   - [x] Inclusión de campos adicionales
-- [ ] Desarrollo Contexto de montos.
+- [x] Desarrollo Contexto de montos.
 - [ ] Página de ingreso de ingresos y gastos
 - [ ] Almacenamiento local
 - [ ] Página de Visualización de datos (gráficas)

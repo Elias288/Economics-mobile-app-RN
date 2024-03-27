@@ -1,8 +1,12 @@
 import { Text, View } from "react-native";
 import { Button, Card } from "react-native-paper";
 import generalStyles from "../../generalStyles.js";
+import { useAmountContext } from "../../providers/amountProvider.jsx";
+import formatAmount from "../../functions/formatAmount.js";
 
 function ConfigurationScreen({ navigation }) {
+  const { initialBalance } = useAmountContext();
+
   return (
     <View style={generalStyles.container}>
       <Card style={generalStyles.card}>
@@ -10,7 +14,8 @@ function ConfigurationScreen({ navigation }) {
           onPress={() => navigation.navigate("Configuration Initial Balance")}
           icon={"cash"}
         >
-          Add initial Balance <Text>$0,00</Text>
+          Add initial Balance{" "}
+          <Text>${initialBalance ? formatAmount(initialBalance) : "0,00"}</Text>
         </Button>
       </Card>
 

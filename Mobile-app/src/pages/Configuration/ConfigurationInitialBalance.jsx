@@ -3,21 +3,22 @@ import { Text, View, StyleSheet } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 import generalStyles from "../../generalStyles";
 import formatAmount from "../../functions/formatAmount";
+import { useAmountContext } from "../../providers/amountProvider";
 
 function ConfigurationInitialBalance() {
+  const { initialBalance, chargeInitialAmount } = useAmountContext();
+
   const balanceInput = useRef(null);
-  const [initialBalance, setInitialBalance] = useState(
-    /** @type {string} */ ("")
-  );
-  const [formattedInitialBalance, setFormattedInitialBalance] = useState(
-    /** @type {string | undefined} */ (undefined)
+  const [initialBalanceValue, setInitialBalanceValue] = useState(
+    /** @type {string | undefined} */ (
+      initialBalance ? initialBalance.toString() : undefined
+    )
   );
 
   const chargeBalance = () => {
-    if (!initialBalance) return alert("Ingrese un monto valido");
+    if (!initialBalanceValue) return alert("Ingrese un monto valido");
 
-    const formatted = formatAmount(Number.parseFloat(initialBalance));
-    setFormattedInitialBalance(formatted);
+    chargeInitialAmount(Number.parseFloat(initialBalanceValue));
     balanceInput.current.blur();
   };
 
@@ -27,7 +28,7 @@ function ConfigurationInitialBalance() {
         <View style={styles.initialBalanceContainer}>
           <Text style={generalStyles.textTitle}>Initial Balance: </Text>
           <Text style={styles.initialBalance}>
-            ${formattedInitialBalance ? formattedInitialBalance : "0,00"}
+            {initialBalance ? formatAmount(initialBalance) : "0,00"}
           </Text>
         </View>
 
@@ -37,9 +38,9 @@ function ConfigurationInitialBalance() {
             ref={balanceInput}
             autoFocus={true}
             label={"$0.00"}
-            value={initialBalance}
+            value={initialBalanceValue}
             keyboardType="numeric"
-            onChangeText={(text) => setInitialBalance(text)}
+            onChangeText={(text) => setInitialBalanceValue(text)}
           />
           <Button style={styles.formButton} onPress={() => chargeBalance()}>
             Add
