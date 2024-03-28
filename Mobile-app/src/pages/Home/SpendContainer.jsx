@@ -1,7 +1,7 @@
 import { useState, ReactNode, useEffect } from "react";
 import { Text } from "react-native";
 import { Card } from "react-native-paper";
-import generalStyles from "../../generalStyles.js";
+import { generalStyles } from "../../generalStyles.js";
 import AmountsTable from "../../components/AmountsTable.jsx";
 import { useAmountContext } from "../../providers/amountProvider.jsx";
 import "../../types/TableContentType.js";
@@ -18,9 +18,8 @@ export const SpendContainer = () => {
   );
 
   useEffect(() => {
-    const res = buildTableData();
-    setTableContent(res);
-  }, []);
+    setTableContent(buildTableData());
+  }, [spendCategories, spendMovements]);
 
   const buildTableData = () => {
     return spendCategories.map((item) => {
@@ -28,7 +27,7 @@ export const SpendContainer = () => {
 
       const total = spendMovements.reduce((total, movimiento) => {
         if (movimiento.cat === cat) {
-          return total + movimiento.act;
+          return total + movimiento.amount;
         }
         return total;
       }, 0);

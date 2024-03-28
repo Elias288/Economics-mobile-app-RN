@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card, Chip, TextInput } from "react-native-paper";
-import generalStyles from "../../generalStyles";
+import { generalStyles } from "../../generalStyles";
 import FloatButton from "../../components/FloatButton";
 import CustomModal, { customModalStyles } from "../../components/CustomModal";
 

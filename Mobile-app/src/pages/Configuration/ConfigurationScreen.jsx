@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { Button, Card } from "react-native-paper";
-import generalStyles from "../../generalStyles.js";
+import { generalStyles } from "../../generalStyles.js";
 import { useAmountContext } from "../../providers/amountProvider.jsx";
 import formatAmount from "../../functions/formatAmount.js";
 

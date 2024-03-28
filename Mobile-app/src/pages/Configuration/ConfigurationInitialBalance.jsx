@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
-import generalStyles from "../../generalStyles";
+import { generalStyles } from "../../generalStyles";
 import formatAmount from "../../functions/formatAmount";
 import { useAmountContext } from "../../providers/amountProvider";
 

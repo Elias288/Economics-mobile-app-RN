@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Button, Card } from "react-native-paper";
-import generalStyles from "../../generalStyles";
+import { generalStyles } from "../../generalStyles";
 
 function BalanceMovementsScreen({ navigation }) {
   return (

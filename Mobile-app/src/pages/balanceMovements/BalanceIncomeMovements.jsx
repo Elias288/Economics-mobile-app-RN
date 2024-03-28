@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Card, Icon } from "react-native-paper";
-import generalStyles from "../../generalStyles";
+import { colors, generalStyles } from "../../generalStyles";
 import FloatButton from "../../components/FloatButton";
 import { useAmountContext } from "../../providers/amountProvider";
 import { BalanceTable } from "../../components/BalanceTable";
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    borderBottomColor: "#bbbbbb",
+    borderBottomColor: colors.lightGray,
     borderBottomWidth: 2,
     paddingBottom: 20,
     marginBottom: 20,

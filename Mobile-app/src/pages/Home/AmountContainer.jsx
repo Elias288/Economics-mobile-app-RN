@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card } from "react-native-paper";
-import generalStyles from "../../generalStyles.js";
+import { generalStyles } from "../../generalStyles.js";
 import formatAmount from "../../functions/formatAmount";
 import { useAmountContext } from "../../providers/amountProvider.jsx";
 

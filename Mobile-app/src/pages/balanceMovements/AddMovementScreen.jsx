@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import generalStyles from "../../generalStyles";
+import { colors, generalStyles } from "../../generalStyles";
 import { Button, Card, TextInput } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import { useAmountContext } from "../../providers/amountProvider";
@@ -79,7 +79,7 @@ function AddMovementScreen({ route, navigation }) {
           <SelectList
             data={categories}
             search={false}
-            boxStyles={{ backgroundColor: "#fff" }}
+            boxStyles={{ backgroundColor: colors.white }}
             setSelected={(select) => {
               setNewMovement({ ...newMovement, cat: select });
             }}

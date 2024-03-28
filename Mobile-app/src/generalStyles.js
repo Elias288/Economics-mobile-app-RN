@@ -1,8 +1,15 @@
 import { StyleSheet } from "react-native";
 
+const colors = {
+    black: '#1d1d1d',
+    white: '#fff',
+    lightGray: '#bbbbbb',
+    gray: '#7e7e7e'
+}
+
 const generalStyles = StyleSheet.create({
     card: {
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         marginVertical: 5,
         padding: 10,
     },
@@ -15,11 +22,16 @@ const generalStyles = StyleSheet.create({
     textTitle: {
         fontWeight: "bold",
         fontSize: 30,
+        color: colors.black
     },
     textSubtitle: {
         fontWeight: "bold",
         fontSize: 26,
+        color: colors.black
     },
 });
 
-export default generalStyles;
+export {
+    generalStyles,
+    colors,
+};
