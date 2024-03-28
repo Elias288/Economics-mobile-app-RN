@@ -4,6 +4,7 @@ import { Icon } from "react-native-paper";
 
 import HomeScreen from "./pages/Home/HomeScreen";
 import ConfigurationNav from "./pages/Configuration/ConfigurationNav";
+import BalanceMovementsNav from "./pages/balanceMovements/BalanceMovementsNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,12 +16,19 @@ const screens = [
     type: "screen",
   },
   {
+    component: BalanceMovementsNav,
+    name: "Balance Movements",
+    icon: "swap-vertical-bold",
+    type: "nav",
+  },
+  {
     component: ConfigurationNav,
-    name: "ConfigurationNav",
+    name: "Configurations",
     icon: "cog",
     type: "nav",
   },
 ];
+
 function Main() {
   const chargeTabScreens = () => {
     return screens.map((item, index) => {

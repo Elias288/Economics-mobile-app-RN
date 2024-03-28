@@ -42,14 +42,16 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
 
       {tableContent.map((item, index) => (
         <DataTable.Row key={index}>
-          <DataTable.Cell style={styles.categoría}>{item.cat}</DataTable.Cell>
-          <DataTable.Cell style={{ flex: 1 }}>
+          <DataTable.Cell style={{ flex: tableHead[0].size }}>
+            {item.cat}
+          </DataTable.Cell>
+          <DataTable.Cell style={{ flex: tableHead[1].size }}>
             ${minimizeNumber(item.fore)}
           </DataTable.Cell>
-          <DataTable.Cell style={{ flex: 1 }}>
+          <DataTable.Cell style={{ flex: tableHead[2].size }}>
             ${minimizeNumber(item.act)}
           </DataTable.Cell>
-          <DataTable.Cell style={{ flex: 1 }}>
+          <DataTable.Cell style={{ flex: tableHead[3].size }}>
             ${minimizeNumber(item.diff)}
           </DataTable.Cell>
         </DataTable.Row>
@@ -57,11 +59,5 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
     </DataTable>
   );
 };
-
-const styles = StyleSheet.create({
-  categoría: {
-    flex: 2,
-  },
-});
 
 export default AmountsTable;

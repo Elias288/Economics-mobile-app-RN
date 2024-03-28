@@ -27,7 +27,7 @@ export const IncomeContainer = () => {
 
   useEffect(() => {
     setTableContent(buildTableData());
-  }, []);
+  }, [incomeCategories, incomeMovements]);
 
   const buildTableData = () => {
     return incomeCategories.map((item) => {
@@ -35,7 +35,7 @@ export const IncomeContainer = () => {
 
       const total = incomeMovements.reduce((total, movimiento) => {
         if (movimiento.cat === cat) {
-          return total + movimiento.act;
+          return total + movimiento.amount;
         }
         return total;
       }, 0);

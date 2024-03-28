@@ -1,45 +1,15 @@
 import { useState, useEffect } from "react";
+import "../types/movementType";
+import "../types/categoriesType";
 
 /**
- * @typedef {Object} movementObject
- * @property {string} cat Category
- * @property {string} desc Description of movement
- * @property {Number} act Actual movement amount
+ * @typedef {Object} amountDefaultObject
+ * @property {number} totalAmount Monto total (+incomeMovements.amount - spendMovements.amount)
+ * @property {Array<categoriesObject>} spendCategories
+ * @property {Array<categoriesObject>} incomeCategories
+ * @property {Array<movementObject>} incomeMovements
+ * @property {Array<movementObject>} spendMovements
  */
-
-/**
- * @typedef {Object} categoriesObject
- * @property {string} cat Category
- * @property {number} fore Forecast amount of spending or income
- */
-
-const example = {
-  totalAmount: 0,
-  categories: [
-    {
-      cat: "Comida",
-      fore: 2000,
-    },
-    {
-      cat: "sueldo",
-      fore: 39000,
-    },
-  ],
-  incomeMovements: [
-    {
-      cat: "Sueldo",
-      desc: "Tata: leche",
-      act: 39000,
-    },
-  ],
-  spendMovements: [
-    {
-      cat: "Comida",
-      desc: "Tata: leche",
-      act: 100,
-    },
-  ],
-};
 
 const amountDefault = {
   totalAmount: 0,
@@ -66,15 +36,31 @@ const amountDefault = {
     { cat: "Bonificaciones", fore: 0 },
     { cat: "Intereses", fore: 0 },
   ],
-  incomeMovements: [],
-  spendMovements: [],
+  incomeMovements: [
+    {
+      date: new Date().toLocaleDateString(),
+      amount: 1500,
+      desc: "Test",
+      cat: "Sueldo",
+    },
+  ],
+  spendMovements: [
+    {
+      date: new Date().toLocaleDateString(),
+      amount: 100,
+      desc: "Test",
+      cat: "Comida",
+    },
+  ],
 };
 
 function useAmount() {
   const [initialBalance, setInitialBalance] = useState(
     /** @type {number | undefined} */ (undefined)
   );
-  const [amounts, setAmounts] = useState(amountDefault);
+  const [amounts, setAmounts] = useState(
+    /** @type {amountDefaultObject} */ (amountDefault)
+  );
 
   // Cuando se actualiza el initialBalance, el incomeMovements o el spendMovements se calcula el monto total
   useEffect(() => {
@@ -86,10 +72,10 @@ function useAmount() {
    */
   const calculateTotalAmount = () => {
     const totalIncome = amounts.incomeMovements.reduce((total, movimiento) => {
-      return total + movimiento.act;
+      return total + movimiento.amount;
     }, 0);
     const totalSpend = amounts.spendMovements.reduce((total, movimiento) => {
-      return total + movimiento.act;
+      return total + movimiento.amount;
     }, 0);
 
     let iB = initialBalance ? initialBalance : 0;
@@ -114,18 +100,24 @@ function useAmount() {
 
   /**
    * Actualiza los movimientos de ingreso y el monto Total
-   * @param {Array<movementObject>} incomeMovements
+   * @param {movementObject} newIncomeMovement
    */
-  const updateIncomeMovement = (incomeMovements) => {
-    setAmounts({ ...amounts, incomeMovements });
+  const updateIncomeMovement = (newIncomeMovement) => {
+    setAmounts({
+      ...amounts,
+      incomeMovements: [...amounts.incomeMovements, newIncomeMovement],
+    });
   };
 
   /**
    * Actualiza los movimientos de gastos y el monto Total
-   * @param {Array<movementObject>} spendMovements
+   * @param {movementObject} newSpendMovement
    */
-  const updateSpendMovement = (spendMovements) => {
-    setAmounts({ ...amounts, spendMovements });
+  const updateSpendMovement = (newSpendMovement) => {
+    setAmounts({
+      ...amounts,
+      spendMovements: [...amounts.spendMovements, newSpendMovement],
+    });
   };
 
   /**
