@@ -1,5 +1,5 @@
 import { DataTable } from "react-native-paper";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import minimizeNumber from "../functions/minimizeNumber.js";
 import "../types/TableContentType.js";
@@ -30,17 +30,41 @@ const tableHead = [
  * @returns {ReactNode}
  */
 const AmountsTable = ({ tableContent = defaultCategories }) => {
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    setContent(tableContent.sort(sortCategories));
+  }, [tableContent]);
+
+  const sortCategories = (a, b) => {
+    const nameA = a.cat.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.cat.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  };
+
   return (
     <DataTable>
       <DataTable.Header>
         {tableHead.map((item, index) => (
-          <DataTable.Title key={index} style={{ flex: item.size }}>
+          <DataTable.Title
+            key={index}
+            style={{ flex: item.size }}
+            sortDirection={item.title === "Category" ? "descending" : ""}
+          >
             {item.title}
           </DataTable.Title>
         ))}
       </DataTable.Header>
 
-      {tableContent.map((item, index) => (
+      {content.map((item, index) => (
         <DataTable.Row key={index}>
           <DataTable.Cell style={{ flex: tableHead[0].size }}>
             {item.cat}

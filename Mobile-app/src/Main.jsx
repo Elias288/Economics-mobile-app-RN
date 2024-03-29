@@ -4,7 +4,7 @@ import { Icon } from "react-native-paper";
 
 import HomeScreen from "./pages/Home/HomeScreen";
 import ConfigurationNav from "./pages/Configuration/ConfigurationNav";
-import BalanceMovementsNav from "./pages/balanceMovements/BalanceMovementsNav";
+import BalanceMovementsNav from "./pages/BalanceMovements/BalanceMovementsNav";
 
 const Tab = createBottomTabNavigator();
 

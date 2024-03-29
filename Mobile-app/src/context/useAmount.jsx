@@ -3,7 +3,7 @@ import "../types/movementType";
 import "../types/categoriesType";
 import "../types/balanceType";
 
-const amountDefault = {
+const defaultBalance = {
   totalAmount: 0,
   spendCategories: [
     { cat: "Comida", fore: 0 },
@@ -67,29 +67,29 @@ function useAmount() {
   const [initialBalance, setInitialBalance] = useState(
     /** @type {number | undefined} */ (undefined)
   );
-  const [amounts, setAmounts] = useState(
-    /** @type {balanceObject} */ (amountDefault)
+  const [balance, setBalance] = useState(
+    /** @type {balanceObject} */ (defaultBalance)
   );
 
   // Cuando se actualiza el initialBalance, el incomeMovements o el spendMovements se calcula el monto total
   useEffect(() => {
     calculateTotalAmount();
-  }, [initialBalance, amounts.incomeMovements, amounts.spendMovements]);
+  }, [initialBalance, balance.incomeMovements, balance.spendMovements]);
 
   /**
    * Calcula el monto total, sumando los ingresos y restando los gastos
    */
   const calculateTotalAmount = () => {
-    const totalIncome = amounts.incomeMovements.reduce((total, movimiento) => {
+    const totalIncome = balance.incomeMovements.reduce((total, movimiento) => {
       return total + movimiento.amount;
     }, 0);
-    const totalSpend = amounts.spendMovements.reduce((total, movimiento) => {
+    const totalSpend = balance.spendMovements.reduce((total, movimiento) => {
       return total + movimiento.amount;
     }, 0);
 
     let iB = initialBalance ? initialBalance : 0;
-    setAmounts({
-      ...amounts,
+    setBalance({
+      ...balance,
       totalAmount: (iB += totalIncome - totalSpend),
     });
   };
@@ -101,18 +101,18 @@ function useAmount() {
    */
   const addCategory = (newCategory, type) => {
     if (type === "income") {
-      setAmounts({
-        ...amounts,
+      setBalance({
+        ...balance,
         incomeCategories: [
-          ...amounts.incomeCategories,
+          ...balance.incomeCategories,
           { cat: newCategory, fore: 0 },
         ],
       });
     } else {
-      setAmounts({
-        ...amounts,
+      setBalance({
+        ...balance,
         spendCategories: [
-          ...amounts.spendCategories,
+          ...balance.spendCategories,
           { cat: newCategory, fore: 0 },
         ],
       });
@@ -135,68 +135,68 @@ function useAmount() {
      */
 
     if (type === "income") {
-      const existDeleted = amounts.incomeCategories.find(
+      const existDeleted = balance.incomeCategories.find(
           (category) => category.cat === "DELETED"
         ), // existe la categoría DELETED
-        hasMovements = amounts.incomeMovements.find(
+        hasMovements = balance.incomeMovements.find(
           (movement) => movement.cat === categoryToDelete
         ); // la categoría a eliminar tiene movimientos
 
       const newIncomeCategories = !hasMovements
-        ? amounts.incomeCategories.filter(
+        ? balance.incomeCategories.filter(
             (category) => category.cat !== categoryToDelete
           ) // elimina la categoría
         : !existDeleted
-        ? amounts.incomeCategories.map((category) =>
+        ? balance.incomeCategories.map((category) =>
             category.cat === categoryToDelete
               ? { ...category, cat: "DELETED" }
               : category
           ) // convierte las categorías de los movimientos a la categoría DELETED
-        : amounts.incomeCategories.filter(
+        : balance.incomeCategories.filter(
             (category) => category.cat !== categoryToDelete
           ); // elimina la categoría
 
-      const newIncomeMovements = amounts.incomeMovements.map((movement) =>
+      const newIncomeMovements = balance.incomeMovements.map((movement) =>
         movement.cat === categoryToDelete
           ? { ...movement, cat: "DELETED" }
           : movement
       );
 
-      setAmounts({
-        ...amounts,
+      setBalance({
+        ...balance,
         incomeCategories: newIncomeCategories,
         incomeMovements: newIncomeMovements,
       });
     } else {
-      const existDeleted = amounts.spendCategories.find(
+      const existDeleted = balance.spendCategories.find(
           (category) => category.cat === "DELETED"
         ), // existe la categoría DELETED
-        hasMovements = amounts.spendMovements.find(
+        hasMovements = balance.spendMovements.find(
           (movement) => movement.cat === categoryToDelete
         ); // la categoría a eliminar tiene movimientos
 
       const newSpendCategories = !hasMovements
-        ? amounts.spendCategories.filter(
+        ? balance.spendCategories.filter(
             (category) => category.cat !== categoryToDelete
           ) // elimina la categoría
         : !existDeleted
-        ? amounts.spendCategories.map((category) =>
+        ? balance.spendCategories.map((category) =>
             category.cat === categoryToDelete
               ? { ...category, cat: "DELETED" }
               : category
           ) // convierte las categorías de los movimientos a la categoría DELETED
-        : amounts.spendCategories.filter(
+        : balance.spendCategories.filter(
             (category) => category.cat !== categoryToDelete
           ); // elimina la categoría
 
-      const newSpendMovements = amounts.spendMovements.map((movement) =>
+      const newSpendMovements = balance.spendMovements.map((movement) =>
         movement.cat === categoryToDelete
           ? { ...movement, cat: "DELETED" }
           : movement
       );
 
-      setAmounts({
-        ...amounts,
+      setBalance({
+        ...balance,
         spendCategories: newSpendCategories,
         spendMovements: newSpendMovements,
       });
@@ -211,17 +211,17 @@ function useAmount() {
    */
   const addMovement = (newMovement, type) => {
     if (type === "income") {
-      setAmounts({
-        ...amounts,
-        incomeMovements: [...amounts.incomeMovements, newMovement],
+      setBalance({
+        ...balance,
+        incomeMovements: [...balance.incomeMovements, newMovement],
       });
       return;
     }
 
     if (type === "spend") {
-      setAmounts({
-        ...amounts,
-        spendMovements: [...amounts.spendMovements, newMovement],
+      setBalance({
+        ...balance,
+        spendMovements: [...balance.spendMovements, newMovement],
       });
       return;
     }
@@ -236,7 +236,7 @@ function useAmount() {
   };
 
   return {
-    ...amounts,
+    ...balance,
     initialBalance,
     chargeInitialAmount,
     addCategory,
