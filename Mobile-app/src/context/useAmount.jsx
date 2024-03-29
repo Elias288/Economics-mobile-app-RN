@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import "../types/movementType";
 import "../types/categoriesType";
-
-/**
- * @typedef {Object} amountDefaultObject
- * @property {number} totalAmount Monto total (+incomeMovements.amount - spendMovements.amount)
- * @property {Array<categoriesObject>} spendCategories
- * @property {Array<categoriesObject>} incomeCategories
- * @property {Array<movementObject>} incomeMovements
- * @property {Array<movementObject>} spendMovements
- */
+import "../types/balanceType";
 
 const amountDefault = {
   totalAmount: 0,
@@ -37,29 +29,47 @@ const amountDefault = {
     { cat: "Intereses", fore: 0 },
   ],
   incomeMovements: [
-    {
+    /* {
       date: new Date().toLocaleDateString(),
       amount: 1500,
       desc: "Test",
       cat: "Sueldo",
-    },
+    }, */
   ],
   spendMovements: [
-    {
+    /* {
       date: new Date().toLocaleDateString(),
       amount: 100,
       desc: "Test",
       cat: "Comida",
-    },
+    }, */
   ],
 };
 
+/**
+ * @typedef {Object} useAmountProps
+ * @property {number} totalAmount Monto total (+incomeMovements.amount - spendMovements.amount)
+ * @property {Array<categoriesObject>} spendCategories
+ * @property {Array<categoriesObject>} incomeCategories
+ * @property {Array<movementObject>} incomeMovements
+ * @property {Array<movementObject>} spendMovements
+ * @property {number | undefined} initialBalance
+ *
+ * @property {(value: number) => void} chargeInitialAmount
+ * @property {(category: string, type: string) => void} addCategory
+ * @property {(categories: string, type: string) => void} deleteCategory
+ * @property {(newIncomeMovement: movementObject) => void} updateIncomeMovement
+ * @property {(newIncomeMovement: movementObject) => void} updateSpendMovement
+ * @property {(value: number) => void} chargeInitialAmount
+ *
+ * @returns {useAmountProps}
+ */
 function useAmount() {
   const [initialBalance, setInitialBalance] = useState(
     /** @type {number | undefined} */ (undefined)
   );
   const [amounts, setAmounts] = useState(
-    /** @type {amountDefaultObject} */ (amountDefault)
+    /** @type {balanceObject} */ (amountDefault)
   );
 
   // Cuando se actualiza el initialBalance, el incomeMovements o el spendMovements se calcula el monto total
@@ -86,15 +96,111 @@ function useAmount() {
   };
 
   /**
-   * Actualiza las categorías de ingresos o gastos
-   * @param {categoriesObject} categories
+   * Agrega categorías de ingresos o gastos
+   * @param {string} newCategory Texto de la categoría
    * @param {string} type Tipo = income o spend
    */
-  const updateCategories = (categories, type) => {
+  const addCategory = (newCategory, type) => {
     if (type === "income") {
-      setAmounts({ ...amounts, incomeCategories: categories });
+      setAmounts({
+        ...amounts,
+        incomeCategories: [
+          ...amounts.incomeCategories,
+          { cat: newCategory, fore: 0 },
+        ],
+      });
     } else {
-      setAmounts({ ...amounts, spendCategories: categories });
+      setAmounts({
+        ...amounts,
+        spendCategories: [
+          ...amounts.spendCategories,
+          { cat: newCategory, fore: 0 },
+        ],
+      });
+    }
+  };
+
+  /**
+   * Elimina categorías
+   * @param {string} categoryToDelete Nombre de categoría a eliminar
+   * @param {string} type Tipo = income o spend
+   */
+  const deleteCategory = (categoryToDelete, type) => {
+    /**
+     * Si la categoría no tiene movimientos, la elimina.
+     * Si tiene movimientos, debe:
+     * - si no existe la categoría DELETED crearla modificando la categoría a eliminar
+     * - si existe la categoría DELETED, elimina la categoría
+     * si no tiene movimientos elimina la categoría
+     * Si hay movimientos con la categoría eliminada cambiarla a DELETED
+     */
+
+    if (type === "income") {
+      const existDeleted = amounts.incomeCategories.find(
+          (category) => category.cat === "DELETED"
+        ), // existe la categoría DELETED
+        hasMovements = amounts.incomeMovements.find(
+          (movement) => movement.cat === categoryToDelete
+        ); // la categoría a eliminar tiene movimientos
+
+      const newIncomeCategories = !hasMovements
+        ? amounts.incomeCategories.filter(
+            (category) => category.cat !== categoryToDelete
+          ) // elimina la categoría
+        : !existDeleted
+        ? amounts.incomeCategories.map((category) =>
+            category.cat === categoryToDelete
+              ? { ...category, cat: "DELETED" }
+              : category
+          ) // convierte las categorías de los movimientos a la categoría DELETED
+        : amounts.incomeCategories.filter(
+            (category) => category.cat !== categoryToDelete
+          ); // elimina la categoría
+
+      const newIncomeMovements = amounts.incomeMovements.map((movement) =>
+        movement.cat === categoryToDelete
+          ? { ...movement, cat: "DELETED" }
+          : movement
+      );
+
+      setAmounts({
+        ...amounts,
+        incomeCategories: newIncomeCategories,
+        incomeMovements: newIncomeMovements,
+      });
+    } else {
+      const existDeleted = amounts.spendCategories.find(
+          (category) => category.cat === "DELETED"
+        ), // existe la categoría DELETED
+        hasMovements = amounts.spendMovements.find(
+          (movement) => movement.cat === categoryToDelete
+        ); // la categoría a eliminar tiene movimientos
+
+      const newSpendCategories = !hasMovements
+        ? amounts.spendCategories.filter(
+            (category) => category.cat !== categoryToDelete
+          ) // elimina la categoría
+        : !existDeleted
+        ? amounts.spendCategories.map((category) =>
+            category.cat === categoryToDelete
+              ? { ...category, cat: "DELETED" }
+              : category
+          ) // convierte las categorías de los movimientos a la categoría DELETED
+        : amounts.spendCategories.filter(
+            (category) => category.cat !== categoryToDelete
+          ); // elimina la categoría
+
+      const newSpendMovements = amounts.spendMovements.map((movement) =>
+        movement.cat === categoryToDelete
+          ? { ...movement, cat: "DELETED" }
+          : movement
+      );
+
+      setAmounts({
+        ...amounts,
+        spendCategories: newSpendCategories,
+        spendMovements: newSpendMovements,
+      });
     }
   };
 
@@ -132,7 +238,8 @@ function useAmount() {
     ...amounts,
     initialBalance,
     chargeInitialAmount,
-    updateCategories,
+    addCategory,
+    deleteCategory,
     updateIncomeMovement,
     updateSpendMovement,
   };

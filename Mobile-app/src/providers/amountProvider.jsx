@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import useAmount from "../context/useAmount";
 
+/** @type {import('react').Context<import('../context/useAmount').useAmountProps} */
 const Context = createContext(undefined);
 
 const AmountProvider = ({ children }) => {

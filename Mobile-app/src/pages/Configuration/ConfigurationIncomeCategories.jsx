@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
 import { Card, Chip, TextInput } from "react-native-paper";
 import { generalStyles } from "../../generalStyles";
 import FloatButton from "../../components/FloatButton";
 import CustomModal, { customModalStyles } from "../../components/CustomModal";
-
-const categoriesDefault = ["Ahorro", "Sueldo", "Bonificaciones", "Intereses"];
+import { useAmountContext } from "../../providers/amountProvider";
+import "../../types/categoriesType";
 
 function ConfigurationIncomeCategories() {
+  const { incomeCategories, addCategory, deleteCategory } = useAmountContext();
+
   const [categories, setCategories] = useState(
-    /** @type {Array<String>} */ (categoriesDefault)
+    /** @type {Array<String>} */ ([])
   );
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
+  const [newCategory, setNewCategory] = useState(/** @type {string} */ (""));
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState("");
+
+  useEffect(() => {
+    setCategories(incomeCategories.map((income) => income.cat));
+  }, [incomeCategories]);
 
   /**
    * Muestra el modal para agregar una categoría
@@ -33,8 +39,8 @@ function ConfigurationIncomeCategories() {
     if (formattedNewCategory === "" || formattedNewCategory.length < 4)
       return alert("Invalid Category");
 
-    // alert(newCategory);
-    setCategories([...categories, formattedNewCategory]);
+    addCategory(formattedNewCategory, "income");
+
     setNewCategory("");
     setShowAddCategoryModal(false);
   };
@@ -52,7 +58,8 @@ function ConfigurationIncomeCategories() {
    * Elimina la categoría seleccionada en categoryToDelete
    */
   const onRemoveCategory = () => {
-    setCategories(categories.filter((cat) => cat !== categoryToDelete));
+    deleteCategory(categoryToDelete, "income");
+
     setCategoryToDelete("");
     setShowDeleteModal(false);
   };
@@ -87,6 +94,7 @@ function ConfigurationIncomeCategories() {
       >
         <Text style={customModalStyles.modalTitle}>Add Category</Text>
         <TextInput
+          autoFocus={true}
           label={"Category"}
           onChangeText={(text) => setNewCategory(text)}
           value={newCategory}
