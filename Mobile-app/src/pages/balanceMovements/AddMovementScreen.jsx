@@ -9,12 +9,7 @@ import "../../types/movementType";
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
-  const {
-    incomeCategories,
-    spendCategories,
-    updateIncomeMovement,
-    updateSpendMovement,
-  } = useAmountContext();
+  const { incomeCategories, spendCategories, addMovement } = useAmountContext();
 
   const descriptionInput = useRef(null);
   const [categories, setCategories] = useState([]);
@@ -38,11 +33,7 @@ function AddMovementScreen({ route, navigation }) {
   }, []);
 
   const addNewMovement = () => {
-    if (movementType === "spend") {
-      updateSpendMovement(newMovement);
-    } else {
-      updateIncomeMovement(newMovement);
-    }
+    addMovement(newMovement, movementType);
 
     navigation.goBack();
   };
@@ -103,7 +94,6 @@ function AddMovementScreen({ route, navigation }) {
           </Button>
         </View>
       </Card>
-      <Text>{JSON.stringify(newMovement, null, 4)}</Text>
     </View>
   );
 }

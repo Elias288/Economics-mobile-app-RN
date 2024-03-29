@@ -58,8 +58,7 @@ const amountDefault = {
  * @property {(value: number) => void} chargeInitialAmount
  * @property {(category: string, type: string) => void} addCategory
  * @property {(categories: string, type: string) => void} deleteCategory
- * @property {(newIncomeMovement: movementObject) => void} updateIncomeMovement
- * @property {(newIncomeMovement: movementObject) => void} updateSpendMovement
+ * @property {(newMovement: movementObject, type: string) => void} addMovement
  * @property {(value: number) => void} chargeInitialAmount
  *
  * @returns {useAmountProps}
@@ -205,25 +204,27 @@ function useAmount() {
   };
 
   /**
-   * Actualiza los movimientos de ingreso y el monto Total
-   * @param {movementObject} newIncomeMovement
+   * Agrega un movimiento de ingreso o gasto
+   * @param {movementObject} newMovement Objeto de movimiento
+   * @param {string} type Tipo: income o spend
+   * @returns void
    */
-  const updateIncomeMovement = (newIncomeMovement) => {
-    setAmounts({
-      ...amounts,
-      incomeMovements: [...amounts.incomeMovements, newIncomeMovement],
-    });
-  };
+  const addMovement = (newMovement, type) => {
+    if (type === "income") {
+      setAmounts({
+        ...amounts,
+        incomeMovements: [...amounts.incomeMovements, newMovement],
+      });
+      return;
+    }
 
-  /**
-   * Actualiza los movimientos de gastos y el monto Total
-   * @param {movementObject} newSpendMovement
-   */
-  const updateSpendMovement = (newSpendMovement) => {
-    setAmounts({
-      ...amounts,
-      spendMovements: [...amounts.spendMovements, newSpendMovement],
-    });
+    if (type === "spend") {
+      setAmounts({
+        ...amounts,
+        spendMovements: [...amounts.spendMovements, newMovement],
+      });
+      return;
+    }
   };
 
   /**
@@ -240,8 +241,7 @@ function useAmount() {
     chargeInitialAmount,
     addCategory,
     deleteCategory,
-    updateIncomeMovement,
-    updateSpendMovement,
+    addMovement,
   };
 }
 
