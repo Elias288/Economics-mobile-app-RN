@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BalanceMovementsScreen from "./BalanceMovementsScreen";
-import BalanceIncomeMovements from "./BalanceIncomeMovements";
-import BalanceSpendMovements from "./BalanceSpendMovements";
 import AddMovementScreen from "./AddMovementScreen";
+import BalanceMovementsPage from "./BalanceMovementsPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,14 +12,15 @@ function BalanceMovementsNav() {
         name="Balance Movement"
         component={BalanceMovementsScreen}
       />
+
       <Stack.Screen
-        name="Balance Income Movements"
-        component={BalanceIncomeMovements}
+        name="View Balance Movements"
+        component={BalanceMovementsPage}
+        options={({ route }) => ({
+          title: `Balance ${route.params.movementType} movements`,
+        })}
       />
-      <Stack.Screen
-        name="Balance Spend Movements"
-        component={BalanceSpendMovements}
-      />
+
       <Stack.Screen
         name="Add Movement"
         component={AddMovementScreen}
