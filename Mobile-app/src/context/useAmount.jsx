@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../types/movementType";
 import "../types/categoriesType";
 import "../types/balanceType";
+import { MOVEMENTTYPE } from "../types/movementType";
 
 const defaultBalance = {
   totalAmount: 0,
@@ -100,7 +101,7 @@ function useAmount() {
    * @param {string} type Tipo = income o spend
    */
   const addCategory = (newCategory, type) => {
-    if (type === "income") {
+    if (type === MOVEMENTTYPE.INCOME) {
       setBalance({
         ...balance,
         incomeCategories: [
@@ -108,7 +109,9 @@ function useAmount() {
           { cat: newCategory, fore: 0 },
         ],
       });
-    } else {
+    }
+
+    if (type === MOVEMENTTYPE.SPEND) {
       setBalance({
         ...balance,
         spendCategories: [
@@ -134,7 +137,7 @@ function useAmount() {
      * Si hay movimientos con la categoría eliminada cambiarla a DELETED
      */
 
-    if (type === "income") {
+    if (type === MOVEMENTTYPE.INCOME) {
       const existDeleted = balance.incomeCategories.find(
           (category) => category.cat === "DELETED"
         ), // existe la categoría DELETED
@@ -167,7 +170,9 @@ function useAmount() {
         incomeCategories: newIncomeCategories,
         incomeMovements: newIncomeMovements,
       });
-    } else {
+    }
+
+    if (type === MOVEMENTTYPE.SPEND) {
       const existDeleted = balance.spendCategories.find(
           (category) => category.cat === "DELETED"
         ), // existe la categoría DELETED
@@ -210,7 +215,7 @@ function useAmount() {
    * @returns void
    */
   const addMovement = (newMovement, type) => {
-    if (type === "income") {
+    if (type === MOVEMENTTYPE.INCOME) {
       setBalance({
         ...balance,
         incomeMovements: [...balance.incomeMovements, newMovement],
@@ -218,7 +223,7 @@ function useAmount() {
       return;
     }
 
-    if (type === "spend") {
+    if (type === MOVEMENTTYPE.SPEND) {
       setBalance({
         ...balance,
         spendMovements: [...balance.spendMovements, newMovement],

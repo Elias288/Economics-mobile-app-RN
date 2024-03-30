@@ -6,6 +6,7 @@ import FloatButton from "../../components/FloatButton";
 import CustomModal, { customModalStyles } from "../../components/CustomModal";
 import { useAmountContext } from "../../providers/amountProvider";
 import "../../types/categoriesType";
+import { MOVEMENTTYPE } from "../../types/movementType";
 
 function ConfigurationIncomeCategories() {
   const { incomeCategories, addCategory, deleteCategory } = useAmountContext();
@@ -39,7 +40,7 @@ function ConfigurationIncomeCategories() {
     if (formattedNewCategory === "" || formattedNewCategory.length < 4)
       return alert("Invalid Category");
 
-    addCategory(formattedNewCategory, "income");
+    addCategory(formattedNewCategory, MOVEMENTTYPE.INCOME);
 
     setNewCategory("");
     setShowAddCategoryModal(false);
@@ -58,7 +59,7 @@ function ConfigurationIncomeCategories() {
    * Elimina la categoría seleccionada en categoryToDelete
    */
   const onRemoveCategory = () => {
-    deleteCategory(categoryToDelete, "income");
+    deleteCategory(categoryToDelete, MOVEMENTTYPE.INCOME);
 
     setCategoryToDelete("");
     setShowDeleteModal(false);

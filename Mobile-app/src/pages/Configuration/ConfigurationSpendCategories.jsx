@@ -5,6 +5,7 @@ import { generalStyles } from "../../generalStyles";
 import FloatButton from "../../components/FloatButton";
 import CustomModal, { customModalStyles } from "../../components/CustomModal";
 import { useAmountContext } from "../../providers/amountProvider";
+import { MOVEMENTTYPE } from "../../types/movementType";
 
 function ConfigurationSpendCategories() {
   const { spendCategories, addCategory, deleteCategory } = useAmountContext();
@@ -38,7 +39,7 @@ function ConfigurationSpendCategories() {
     if (formattedNewCategory === "" || formattedNewCategory.length < 4)
       return alert("Invalid Category");
 
-    addCategory(formattedNewCategory, "spend");
+    addCategory(formattedNewCategory, MOVEMENTTYPE.SPEND);
 
     setNewCategory("");
     setShowAddCategoryModal(false);
@@ -57,7 +58,7 @@ function ConfigurationSpendCategories() {
    * Elimina la categoría seleccionada en categoryToDelete
    */
   const onRemoveCategory = () => {
-    deleteCategory(categoryToDelete, "spend");
+    deleteCategory(categoryToDelete, MOVEMENTTYPE.SPEND);
 
     setCategoryToDelete("");
     setShowDeleteModal(false);

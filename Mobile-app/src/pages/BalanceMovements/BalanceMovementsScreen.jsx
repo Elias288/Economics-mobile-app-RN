@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { generalStyles } from "../../generalStyles";
+import { MOVEMENTTYPE } from "../../types/movementType";
 
 function BalanceMovementsScreen({ navigation }) {
   const goToPage = (movementType) => {
@@ -15,7 +16,7 @@ function BalanceMovementsScreen({ navigation }) {
         <Button
           icon={"arrow-up-bold"}
           onPress={() => {
-            goToPage("income");
+            goToPage(MOVEMENTTYPE.INCOME);
           }}
         >
           Income movement new
@@ -26,7 +27,7 @@ function BalanceMovementsScreen({ navigation }) {
         <Button
           icon={"arrow-down-bold"}
           onPress={() => {
-            goToPage("spend");
+            goToPage(MOVEMENTTYPE.SPEND);
           }}
         >
           Spend movement new

@@ -5,6 +5,7 @@ import { colors, generalStyles } from "../../generalStyles";
 import { BalanceTable } from "../../components/BalanceTable";
 import { useState, useEffect } from "react";
 import { useAmountContext } from "../../providers/amountProvider";
+import { MOVEMENTTYPE } from "../../types/movementType";
 
 const BalanceMovementsPage = ({ route, navigation }) => {
   const { spendMovements, incomeMovements } = useAmountContext();
@@ -12,7 +13,7 @@ const BalanceMovementsPage = ({ route, navigation }) => {
   const [movements, setMovements] = useState([]);
 
   useEffect(() => {
-    if (movementType === "income") {
+    if (movementType === MOVEMENTTYPE.INCOME) {
       setMovements(incomeMovements);
     } else {
       setMovements(spendMovements);
@@ -24,7 +25,7 @@ const BalanceMovementsPage = ({ route, navigation }) => {
       <View style={generalStyles.container}>
         <Card style={generalStyles.card}>
           <View style={styles.titleContainer}>
-            {movementType === "income" ? (
+            {movementType === MOVEMENTTYPE.INCOME ? (
               <Icon source={"arrow-up-bold"} color={colors.black} size={30} />
             ) : (
               <Icon source={"arrow-down-bold"} color={colors.black} size={30} />

@@ -6,6 +6,7 @@ import { useAmountContext } from "../../providers/amountProvider";
 import { useEffect, useState, useRef } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import "../../types/movementType";
+import { MOVEMENTTYPE } from "../../types/movementType";
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
@@ -25,7 +26,7 @@ function AddMovementScreen({ route, navigation }) {
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
   useEffect(() => {
-    if (movementType === "spend") {
+    if (movementType === MOVEMENTTYPE.SPEND) {
       setCategories(spendCategories.map((category) => category.cat));
     } else {
       setCategories(incomeCategories.map((category) => category.cat));
