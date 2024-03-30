@@ -83,14 +83,14 @@ function ConfigurationSpendCategories() {
       </ScrollView>
 
       {/* Add Button */}
-      <FloatButton action={viewAddModal} />
+      <FloatButton onPress={viewAddModal} />
 
       {/* Add Category Modal */}
       <CustomModal
         isVisible={showAddCategoryModal}
-        onAceptar={onAddCategory}
+        onAccept={onAddCategory}
         hideModal={() => setShowAddCategoryModal(false)}
-        onCancelar={() => setShowAddCategoryModal(false)}
+        onCancel={() => setShowAddCategoryModal(false)}
       >
         <Text style={customModalStyles.modalTitle}>Add Category</Text>
         <TextInput
@@ -104,8 +104,8 @@ function ConfigurationSpendCategories() {
       {/* Delete Category Modal */}
       <CustomModal
         isVisible={showDeleteModal}
-        onAceptar={onRemoveCategory}
-        onCancelar={() => setShowDeleteModal(false)}
+        onAccept={onRemoveCategory}
+        onCancel={() => setShowDeleteModal(false)}
         hideModal={() => setShowDeleteModal(false)}
       >
         <Text style={customModalStyles.modalMessage}>

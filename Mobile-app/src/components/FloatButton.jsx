@@ -5,16 +5,16 @@ import { StyleSheet } from "react-native";
 /**
  * Botón flotante
  * @param {Object} params
- * @param {() => void} params.action Acción al ser pulsado
+ * @param {() => void} params.onPress Acción al ser pulsado
  * @param {String} [params.icon] Icono, cruz por defecto
  * @returns {ReactNode}
  */
-const FloatButton = ({ action, icon = "plus" }) => {
+const FloatButton = ({ onPress, icon = "plus" }) => {
   return (
     <IconButton
       style={styles.floatButton}
       icon={icon}
-      onPress={action}
+      onPress={onPress}
       mode="contained"
       size={40}
     />

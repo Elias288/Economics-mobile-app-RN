@@ -10,27 +10,21 @@ import { Modal, Portal, Button } from "react-native-paper";
  * @param {() => void} props.hideModal Función que cierra el modal
  * Optionals
  * @param {StyleProp<ViewStyle>} [props.containerStyle]
- * @param {() => void} [props.onAceptar] Si es definida muestra el botón de aceptar
- * @param {() => void} [props.onCancelar] Si es definida muestra el botón de cancelar
+ * @param {() => void} [props.onAccept] Si es definida muestra el botón de aceptar
+ * @param {() => void} [props.onCancel] Si es definida muestra el botón de cancelar
  * @returns {ReactNode}
  */
 const CustomModal = (props) => {
-  const {
-    children,
-    containerStyle,
-    isVisible,
-    hideModal,
-    onAceptar,
-    onCancelar,
-  } = props;
+  const { children, containerStyle, isVisible, hideModal, onAccept, onCancel } =
+    props;
 
   const acceptHandle = () => {
-    if (onAceptar) onAceptar();
+    if (onAccept) onAccept();
   };
 
   const cancelHandle = () => {
-    if (onCancelar) {
-      onCancelar();
+    if (onCancel) {
+      onCancel();
     }
 
     hideModal();
@@ -42,11 +36,11 @@ const CustomModal = (props) => {
         <View style={[containerStyle, customModalStyles.container]}>
           {children}
 
-          {onAceptar !== undefined && (
+          {onAccept !== undefined && (
             <View style={customModalStyles.actions}>
               <Button onPress={acceptHandle}>Accept</Button>
 
-              {onCancelar !== undefined && (
+              {onCancel !== undefined && (
                 <Button onPress={cancelHandle}>Cancel</Button>
               )}
             </View>

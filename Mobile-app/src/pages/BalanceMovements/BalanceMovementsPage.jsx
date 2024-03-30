@@ -41,7 +41,7 @@ const BalanceMovementsPage = ({ route, navigation }) => {
       </View>
 
       <FloatButton
-        action={() => navigation.navigate("Add Movement", { movementType })}
+        onPress={() => navigation.navigate("Add Movement", { movementType })}
       />
     </>
   );
