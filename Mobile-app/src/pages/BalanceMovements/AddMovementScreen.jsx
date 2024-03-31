@@ -34,6 +34,10 @@ function AddMovementScreen({ route, navigation }) {
   }, []);
 
   const addNewMovement = () => {
+    if (newMovement.amount <= 0) return alert("Invalid Amount");
+    if (newMovement.desc.trim() === "") return alert("Invalid Description");
+    if (newMovement.cat.trim() === "") return alert("Invalid Category");
+
     addMovement(newMovement, movementType);
 
     navigation.goBack();
