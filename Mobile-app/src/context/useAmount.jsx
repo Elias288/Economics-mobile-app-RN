@@ -60,6 +60,7 @@ const defaultBalance = {
  * @property {(category: string, type: string) => void} addCategory
  * @property {(categories: string, type: string) => void} deleteCategory
  * @property {(newMovement: movementObject, type: string) => void} addMovement
+ * @property {(movementToDelete: movementObject, type: string) => void} deleteMovement
  * @property {(value: number) => void} chargeInitialAmount
  *
  * @returns {useAmountProps}
@@ -233,6 +234,27 @@ function useAmount() {
   };
 
   /**
+   * Elimina movimiento
+   * @param {import("../types/movementType").movementObject} movementToDelete movimiento a ser eliminado
+   * @param {string} type Tipo: income o spend
+   */
+  const deleteMovement = (movementToDelete, type) => {
+    if (type === MOVEMENTTYPE.INCOME) {
+      const newMovements = balance.incomeMovements.filter(
+        (movement) => movement !== movementToDelete
+      );
+      setBalance({ ...balance, incomeMovements: newMovements });
+    }
+
+    if (type === MOVEMENTTYPE.SPEND) {
+      const newMovements = balance.spendMovements.filter(
+        (movement) => movement !== movementToDelete
+      );
+      setBalance({ ...balance, spendMovements: newMovements });
+    }
+  };
+
+  /**
    * Carga el monto inicial
    * @param {number} value Monto inicial
    */
@@ -247,6 +269,7 @@ function useAmount() {
     addCategory,
     deleteCategory,
     addMovement,
+    deleteMovement,
   };
 }
 

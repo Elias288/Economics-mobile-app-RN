@@ -4,7 +4,8 @@ const colors = {
     black: '#1d1d1d',
     white: '#fff',
     lightGray: '#bbbbbb',
-    gray: '#7e7e7e'
+    gray: '#7e7e7e',
+    red: '#ac1212'
 }
 
 const generalStyles = StyleSheet.create({

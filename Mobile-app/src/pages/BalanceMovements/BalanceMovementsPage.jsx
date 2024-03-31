@@ -36,7 +36,7 @@ const BalanceMovementsPage = ({ route, navigation }) => {
             </Text>
           </View>
 
-          <BalanceTable movements={movements} />
+          <BalanceTable movements={movements} movementType={movementType} />
         </Card>
       </View>
 
