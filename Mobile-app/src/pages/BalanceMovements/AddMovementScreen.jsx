@@ -6,7 +6,7 @@ import { useAmountContext } from "../../providers/amountProvider";
 import { useEffect, useState, useRef } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import "../../types/movementType";
-import { MOVEMENTTYPE } from "../../types/movementType";
+import { MOVEMENTTYPE } from "../../context/useAmount";
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;

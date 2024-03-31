@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "../types/movementType";
 import "../types/categoriesType";
 import "../types/balanceType";
-import { MOVEMENTTYPE } from "../types/movementType";
 
 const defaultBalance = {
   totalAmount: 0,
@@ -45,6 +44,11 @@ const defaultBalance = {
       cat: "Comida",
     }, */
   ],
+};
+
+export const MOVEMENTTYPE = {
+  INCOME: "income",
+  SPEND: "spend",
 };
 
 /**
@@ -235,7 +239,7 @@ function useAmount() {
 
   /**
    * Elimina movimiento
-   * @param {import("../types/movementType").movementObject} movementToDelete movimiento a ser eliminado
+   * @param {movementObject} movementToDelete movimiento a ser eliminado
    * @param {string} type Tipo: income o spend
    */
   const deleteMovement = (movementToDelete, type) => {

@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { generalStyles } from "../../generalStyles";
-import { MOVEMENTTYPE } from "../../types/movementType";
+import { MOVEMENTTYPE } from "../../context/useAmount";
 
 function BalanceMovementsScreen({ navigation }) {
   const goToPage = (movementType) => {

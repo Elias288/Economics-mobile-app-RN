@@ -6,6 +6,7 @@ import { StyleSheet, Text } from "react-native";
 import { colors } from "../generalStyles";
 import formatAmount from "../functions/formatAmount";
 import { useAmountContext } from "../providers/amountProvider";
+import "../types/movementType";
 
 /**
  *
@@ -19,7 +20,7 @@ export const BalanceTable = ({ movements, movementType }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedMovement, setSelectedMovement] = useState(
-    /** @type {import("../types/movementType").movementObject | undefined} */ ({})
+    /** @type {movementObject | undefined} */ ({})
   );
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
