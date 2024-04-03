@@ -5,7 +5,7 @@ import { generalStyles } from "../../generalStyles";
 import FloatButton from "../../components/FloatButton";
 import CustomModal, { customModalStyles } from "../../components/CustomModal";
 import { useAmountContext } from "../../providers/amountProvider";
-import { MOVEMENTTYPE } from "../../services/balanceService";
+import { MOVEMENTTYPE } from "../../hooks/useMovements";
 
 function ConfigurationSpendCategories() {
   const { spendCategories, addCategory, deleteCategory } = useAmountContext();

@@ -1,17 +1,20 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, Context } from "react";
 import balanceService from "../services/balanceService";
+import "../services/balanceService";
 
-/** @type {import('react').Context<import('../services/balanceService').useAmountProps} */
-const Context = createContext(undefined);
+/** @type {Context<balanceServiceProps>} */
+const CustomContext = createContext(undefined);
 
 const AmountProvider = ({ children }) => {
   return (
-    <Context.Provider value={balanceService()}>{children}</Context.Provider>
+    <CustomContext.Provider value={balanceService()}>
+      {children}
+    </CustomContext.Provider>
   );
 };
 
 export function useAmountContext() {
-  const context = useContext(Context);
+  const context = useContext(CustomContext);
   if (!context)
     throw Error("useAmountContext debe estar dentro del AmountProvider");
 

@@ -21,12 +21,14 @@ export const AmountContainer = () => {
           <Text style={styles.totalAmount}>$ {formatAmount(totalAmount)}</Text>
         </View>
 
-        <Text style={styles.initialBalanceText}>
-          Initial Balance:{" "}
-          <Text style={styles.initialBalance}>
-            ${initialBalance ? formatAmount(initialBalance) : "0,00"}
+        {initialBalance !== 0 && (
+          <Text style={styles.initialBalanceText}>
+            Initial Balance:{" "}
+            <Text style={styles.initialBalance}>
+              ${formatAmount(initialBalance)}
+            </Text>
           </Text>
-        </Text>
+        )}
       </View>
     </Card>
   );
