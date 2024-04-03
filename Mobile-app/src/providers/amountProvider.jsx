@@ -1,11 +1,13 @@
 import { createContext, useContext } from "react";
-import useAmount from "../context/useAmount";
+import balanceService from "../services/balanceService";
 
-/** @type {import('react').Context<import('../context/useAmount').useAmountProps} */
+/** @type {import('react').Context<import('../services/balanceService').useAmountProps} */
 const Context = createContext(undefined);
 
 const AmountProvider = ({ children }) => {
-  return <Context.Provider value={useAmount()}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={balanceService()}>{children}</Context.Provider>
+  );
 };
 
 export function useAmountContext() {

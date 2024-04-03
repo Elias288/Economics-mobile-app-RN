@@ -1,4 +1,3 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-paper";
 
@@ -31,44 +30,23 @@ const screens = [
 
 function Main() {
   const chargeTabScreens = () => {
-    return screens.map((item, index) => {
-      if (item.type === "nav") {
-        return (
-          <Tab.Screen
-            key={index}
-            name={item.name}
-            component={item.component}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color, size }) => (
-                <Icon source={item.icon} color={color} size={size} />
-              ),
-            }}
-          />
-        );
-      }
-
-      return (
-        <Tab.Screen
-          key={index}
-          name={item.name}
-          component={item.component}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon source={item.icon} color={color} size={size} />
-            ),
-          }}
-        />
-      );
-    });
+    return screens.map((item, index) => (
+      <Tab.Screen
+        key={index}
+        name={item.name}
+        component={item.component}
+        options={{
+          headerShown: item.type === "screen",
+          tabBarIcon: ({ color, size }) => (
+            <Icon source={item.icon} color={color} size={size} />
+          ),
+        }} // si es un nav, mostrara el header de sus hijos
+      />
+    ));
   };
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="Home">
-        {chargeTabScreens()}
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator initialRouteName="Home">{chargeTabScreens()}</Tab.Navigator>
   );
 }
 

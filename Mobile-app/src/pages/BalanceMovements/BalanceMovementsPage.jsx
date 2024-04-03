@@ -5,7 +5,7 @@ import { colors, generalStyles } from "../../generalStyles";
 import { BalanceTable } from "../../components/BalanceTable";
 import { useState, useEffect } from "react";
 import { useAmountContext } from "../../providers/amountProvider";
-import { MOVEMENTTYPE } from "../../context/useAmount";
+import { MOVEMENTTYPE } from "../../services/balanceService";
 
 const BalanceMovementsPage = ({ route, navigation }) => {
   const { spendMovements, incomeMovements } = useAmountContext();

@@ -13,5 +13,6 @@ Lista de objetivos de la aplicación
   - [x] Inclusión de campos adicionales
 - [x] Desarrollo Contexto de montos.
 - [x] Página de ingreso de ingresos y gastos
+- [ ] Filtros en listado de movimientos
 - [ ] Almacenamiento local
 - [ ] Página de Visualización de datos (gráficas)

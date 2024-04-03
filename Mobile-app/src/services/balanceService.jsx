@@ -69,7 +69,7 @@ export const MOVEMENTTYPE = {
  *
  * @returns {useAmountProps}
  */
-function useAmount() {
+function balanceService() {
   const [initialBalance, setInitialBalance] = useState(
     /** @type {number | undefined} */ (undefined)
   );
@@ -277,4 +277,4 @@ function useAmount() {
   };
 }
 
-export default useAmount;
+export default balanceService;

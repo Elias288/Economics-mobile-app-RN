@@ -3,15 +3,18 @@ import { SafeAreaView } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import Main from './src/Main';
 import AmountProvider from './src/providers/amountProvider';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <PaperProvider>
-        <AmountProvider>
-          <Main />
-          <StatusBar style="auto" />
-        </AmountProvider>
+        <NavigationContainer>
+          <AmountProvider>
+            <Main />
+            <StatusBar style="auto" />
+          </AmountProvider>
+        </NavigationContainer>
       </PaperProvider>
     </SafeAreaView>
   );
