@@ -1,17 +1,15 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BalanceMovementsScreen from "./BalanceMovementsScreen";
-import AddMovementScreen from "./AddMovementScreen";
-import BalanceMovementsPage from "./BalanceMovementsPage";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import AddMovementScreen from './AddMovementScreen';
+import BalanceMovementsPage from './BalanceMovementsPage';
+import BalanceMovementsScreen from './BalanceMovementsScreen';
 
 const Stack = createNativeStackNavigator();
 
 function BalanceMovementsNav() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Balance Movement"
-        component={BalanceMovementsScreen}
-      />
+      <Stack.Screen name="Balance Movement" component={BalanceMovementsScreen} />
 
       <Stack.Screen
         name="View Balance Movements"

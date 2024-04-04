@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
-import { IconButton } from "react-native-paper";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { IconButton } from 'react-native-paper';
 
 /**
  * Botón flotante
@@ -9,7 +8,7 @@ import { StyleSheet } from "react-native";
  * @param {String} [params.icon] Icono, cruz por defecto
  * @returns {ReactNode}
  */
-const FloatButton = ({ onPress, icon = "plus" }) => {
+const FloatButton = ({ onPress, icon = 'plus' }) => {
   return (
     <IconButton
       style={styles.floatButton}
@@ -23,7 +22,7 @@ const FloatButton = ({ onPress, icon = "plus" }) => {
 
 const styles = StyleSheet.create({
   floatButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 10,
     right: 10,
   },

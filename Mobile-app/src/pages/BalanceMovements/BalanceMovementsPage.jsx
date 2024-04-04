@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
-import FloatButton from "../../components/FloatButton";
-import { Card, Icon } from "react-native-paper";
-import { colors, generalStyles } from "../../generalStyles";
-import { BalanceTable } from "../../components/BalanceTable";
-import { useState, useEffect } from "react";
-import { useAmountContext } from "../../providers/amountProvider";
-import { MOVEMENTTYPE } from "../../hooks/useMovements";
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Card, Icon } from 'react-native-paper';
+
+import { BalanceTable } from '../../components/BalanceTable';
+import FloatButton from '../../components/FloatButton';
+import { colors, generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { useAmountContext } from '../../providers/amountProvider';
 
 const BalanceMovementsPage = ({ route, navigation }) => {
   const { spendMovements, incomeMovements } = useAmountContext();
@@ -18,7 +19,7 @@ const BalanceMovementsPage = ({ route, navigation }) => {
     } else {
       setMovements(spendMovements);
     }
-  }, [spendMovements, incomeMovements]);
+  }, [spendMovements, incomeMovements, movementType]);
 
   return (
     <>
@@ -26,9 +27,9 @@ const BalanceMovementsPage = ({ route, navigation }) => {
         <Card style={generalStyles.card}>
           <View style={styles.titleContainer}>
             {movementType === MOVEMENTTYPE.INCOME ? (
-              <Icon source={"arrow-up-bold"} color={colors.black} size={30} />
+              <Icon source="arrow-up-bold" color={colors.black} size={30} />
             ) : (
-              <Icon source={"arrow-down-bold"} color={colors.black} size={30} />
+              <Icon source="arrow-down-bold" color={colors.black} size={30} />
             )}
 
             <Text style={{ ...generalStyles.textTitle, flex: 1 }}>
@@ -40,17 +41,15 @@ const BalanceMovementsPage = ({ route, navigation }) => {
         </Card>
       </View>
 
-      <FloatButton
-        onPress={() => navigation.navigate("Add Movement", { movementType })}
-      />
+      <FloatButton onPress={() => navigation.navigate('Add Movement', { movementType })} />
     </>
   );
 };
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
     borderBottomColor: colors.lightGray,
     borderBottomWidth: 2,

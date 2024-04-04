@@ -1,20 +1,15 @@
-import { useState } from "react";
+import { useState } from 'react';
+import '../types/movementType';
+import '../types/categoriesType';
 
 export const MOVEMENTTYPE = {
-  INCOME: "income",
-  SPEND: "spend",
+  INCOME: 'income',
+  SPEND: 'spend',
 };
 
 function useMovements() {
-  const [incomeMovements, setIncomeMovements] = useState([
-    /* {
-      date: new Date(),
-      amount: 1500,
-      desc: "Test",
-      cat: "Sueldo",
-    }, */
-  ]);
-  const [spendMovements, setSpendMovements] = useState([]);
+  const [incomeMovements, setIncomeMovements] = useState(/** @type {Array<movementObject>} */ ([]));
+  const [spendMovements, setSpendMovements] = useState(/** @type {Array<movementObject>} */ ([]));
 
   /**
    * Agrega un movimiento de ingreso o gasto
@@ -23,7 +18,7 @@ function useMovements() {
    * @returns void
    */
   const addMovement = (newMovement, type) => {
-    console.log("addMovement");
+    console.log('addMovement');
     if (type === MOVEMENTTYPE.INCOME) {
       setIncomeMovements([...incomeMovements, newMovement]);
     }
@@ -40,43 +35,45 @@ function useMovements() {
    */
   const deleteMovement = (movementToDelete, type) => {
     if (type === MOVEMENTTYPE.INCOME) {
-      const newMovements = incomeMovements.filter(
-        (movement) => movement !== movementToDelete
-      );
+      const newMovements = incomeMovements.filter((movement) => movement !== movementToDelete);
       setIncomeMovements(newMovements);
     }
 
     if (type === MOVEMENTTYPE.SPEND) {
-      const newMovements = spendMovements.filter(
-        (movement) => movement !== movementToDelete
-      );
+      const newMovements = spendMovements.filter((movement) => movement !== movementToDelete);
       setSpendMovements(newMovements);
     }
   };
 
+  /**
+   * Get movement bt category
+   * @param {string} type
+   * @param {movementObject} categoryToFind
+   * @returns {void}
+   */
   const getMovementByCategory = (type, categoryToFind) => {
     if (type === MOVEMENTTYPE.INCOME) {
-      return incomeMovements.filter(
-        (category) => category.cat === categoryToFind
-      );
+      return incomeMovements.filter((category) => category.cat === categoryToFind);
     }
 
     if (type === MOVEMENTTYPE.SPEND) {
-      return spendMovements.filter(
-        (category) => category.cat === categoryToFind
-      );
+      return spendMovements.filter((category) => category.cat === categoryToFind);
     }
 
     return [];
   };
 
+  /**
+   * Change category
+   * @param {categoryObject} oldCategory
+   * @param {string} type
+   * @param {categoryObject} newCategory
+   */
   const changeCategory = (oldCategory, type, newCategory) => {
     if (type === MOVEMENTTYPE.INCOME) {
       setIncomeMovements(
         incomeMovements.map((movement) =>
-          movement.cat === oldCategory
-            ? { ...movement, cat: newCategory }
-            : movement
+          movement.cat === oldCategory ? { ...movement, cat: newCategory } : movement
         )
       );
     }
@@ -84,9 +81,7 @@ function useMovements() {
     if (type === MOVEMENTTYPE.SPEND) {
       setSpendMovements(
         spendMovements.map((movement) =>
-          movement.cat === oldCategory
-            ? { ...movement, cat: newCategory }
-            : movement
+          movement.cat === oldCategory ? { ...movement, cat: newCategory } : movement
         )
       );
     }

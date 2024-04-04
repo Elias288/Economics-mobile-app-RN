@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Card } from "react-native-paper";
-import { generalStyles } from "../../generalStyles.js";
-import formatAmount from "../../functions/formatAmount";
-import { useAmountContext } from "../../providers/amountProvider.jsx";
+import { StyleSheet, Text, View } from 'react-native';
+import { Card } from 'react-native-paper';
+
+import formatAmount from '../../functions/formatAmount';
+import { generalStyles } from '../../generalStyles.js';
+import { useAmountContext } from '../../providers/amountProvider.jsx';
 
 /**
  * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.
@@ -23,10 +23,8 @@ export const AmountContainer = () => {
 
         {initialBalance !== 0 && (
           <Text style={styles.initialBalanceText}>
-            Initial Balance:{" "}
-            <Text style={styles.initialBalance}>
-              ${formatAmount(initialBalance)}
-            </Text>
+            Initial Balance:{' '}
+            <Text style={styles.initialBalance}>${formatAmount(initialBalance)}</Text>
           </Text>
         )}
       </View>
@@ -40,8 +38,8 @@ const styles = StyleSheet.create({
   },
   totalAmountContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   totalAmountTitle: {
     fontSize: 18,
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
   initialBalanceText: {
-    textAlign: "right",
+    textAlign: 'right',
   },
-  initialBalance: { fontWeight: "bold", fontSize: 15 },
+  initialBalance: { fontWeight: 'bold', fontSize: 15 },
 });

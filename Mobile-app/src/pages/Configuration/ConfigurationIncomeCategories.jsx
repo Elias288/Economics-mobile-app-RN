@@ -1,24 +1,23 @@
-import { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { Card, Chip, TextInput } from "react-native-paper";
-import { generalStyles } from "../../generalStyles";
-import FloatButton from "../../components/FloatButton";
-import CustomModal, { customModalStyles } from "../../components/CustomModal";
-import { useAmountContext } from "../../providers/amountProvider";
-import "../../types/categoriesType";
-import { MOVEMENTTYPE } from "../../hooks/useMovements";
+import { useState, useEffect } from 'react';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { Card, Chip, TextInput } from 'react-native-paper';
+
+import CustomModal, { customModalStyles } from '../../components/CustomModal';
+import FloatButton from '../../components/FloatButton';
+import { generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { useAmountContext } from '../../providers/amountProvider';
+import '../../types/categoriesType';
 
 function ConfigurationIncomeCategories() {
   const { incomeCategories, addCategory, deleteCategory } = useAmountContext();
 
-  const [categories, setCategories] = useState(
-    /** @type {Array<String>} */ ([])
-  );
+  const [categories, setCategories] = useState(/** @type {Array<String>} */ ([]));
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [newCategory, setNewCategory] = useState(/** @type {string} */ (""));
+  const [newCategory, setNewCategory] = useState(/** @type {string} */ (''));
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState("");
+  const [categoryToDelete, setCategoryToDelete] = useState('');
 
   useEffect(() => {
     setCategories(incomeCategories.map((income) => income.cat));
@@ -37,12 +36,12 @@ function ConfigurationIncomeCategories() {
    */
   const onAddCategory = () => {
     const formattedNewCategory = newCategory.trim();
-    if (formattedNewCategory === "" || formattedNewCategory.length < 4)
-      return alert("Invalid Category");
+    if (formattedNewCategory === '' || formattedNewCategory.length < 4)
+      return alert('Invalid Category');
 
     addCategory(formattedNewCategory, MOVEMENTTYPE.INCOME);
 
-    setNewCategory("");
+    setNewCategory('');
     setShowAddCategoryModal(false);
   };
 
@@ -61,7 +60,7 @@ function ConfigurationIncomeCategories() {
   const onRemoveCategory = () => {
     deleteCategory(categoryToDelete, MOVEMENTTYPE.INCOME);
 
-    setCategoryToDelete("");
+    setCategoryToDelete('');
     setShowDeleteModal(false);
   };
 
@@ -95,8 +94,8 @@ function ConfigurationIncomeCategories() {
       >
         <Text style={customModalStyles.modalTitle}>Add Category</Text>
         <TextInput
-          autoFocus={true}
-          label={"Category"}
+          autoFocus
+          label="Category"
           onChangeText={(text) => setNewCategory(text)}
           value={newCategory}
         />
@@ -115,8 +114,8 @@ function ConfigurationIncomeCategories() {
         <Text
           style={{
             ...customModalStyles.modalMessage,
-            fontWeight: "bold",
-            textAlign: "center",
+            fontWeight: 'bold',
+            textAlign: 'center',
           }}
         >
           {categoryToDelete}
@@ -128,8 +127,8 @@ function ConfigurationIncomeCategories() {
 
 const styles = StyleSheet.create({
   chipContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
     marginVertical: 20,
   },

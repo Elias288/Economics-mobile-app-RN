@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { Modal, Portal, Button } from "react-native-paper";
+import { StyleSheet, View } from 'react-native';
+import { Modal, Portal, Button } from 'react-native-paper';
 
 /**
  * Modal custom
@@ -15,8 +14,7 @@ import { Modal, Portal, Button } from "react-native-paper";
  * @returns {ReactNode}
  */
 const CustomModal = (props) => {
-  const { children, containerStyle, isVisible, hideModal, onAccept, onCancel } =
-    props;
+  const { children, containerStyle, isVisible, hideModal, onAccept, onCancel } = props;
 
   const acceptHandle = () => {
     if (onAccept) onAccept();
@@ -40,9 +38,7 @@ const CustomModal = (props) => {
             <View style={customModalStyles.actions}>
               <Button onPress={acceptHandle}>Accept</Button>
 
-              {onCancel !== undefined && (
-                <Button onPress={cancelHandle}>Cancel</Button>
-              )}
+              {onCancel !== undefined && <Button onPress={cancelHandle}>Cancel</Button>}
             </View>
           )}
         </View>
@@ -53,21 +49,21 @@ const CustomModal = (props) => {
 
 export const customModalStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 20,
     marginHorizontal: 20,
     padding: 20,
   },
   actions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    borderTopColor: "#e0e0e0",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    borderTopColor: '#e0e0e0',
     borderTopWidth: 1,
     paddingTop: 10,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   modalMessage: {

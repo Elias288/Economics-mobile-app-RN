@@ -1,30 +1,30 @@
-import { DataTable } from "react-native-paper";
-import { ReactNode, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
-import minimizeNumber from "../functions/minimizeNumber.js";
-import "../types/TableContentType.js";
+import { useEffect, useState } from 'react';
+import { DataTable } from 'react-native-paper';
+
+import minimizeNumber from '../functions/minimizeNumber.js';
+import '../types/TableContentType.js';
 
 /**
  * Categorías por defecto
  * @type {Array<tableContent>}
  */
 const defaultCategories = [
-  { cat: "Category1", fore: 0, act: 0, diff: 0 },
-  { cat: "Category2", fore: 0, act: 0, diff: 0 },
-  { cat: "Category3", fore: 0, act: 0, diff: 0 },
-  { cat: "Category4", fore: 0, act: 0, diff: 0 },
-  { cat: "Category5", fore: 0, act: 0, diff: 0 },
+  { cat: 'Category1', fore: 0, act: 0, diff: 0 },
+  { cat: 'Category2', fore: 0, act: 0, diff: 0 },
+  { cat: 'Category3', fore: 0, act: 0, diff: 0 },
+  { cat: 'Category4', fore: 0, act: 0, diff: 0 },
+  { cat: 'Category5', fore: 0, act: 0, diff: 0 },
 ];
 
 const tableHead = [
-  { title: "Category", size: 2 },
-  { title: "Forecast", size: 1 },
-  { title: "Actual", size: 1 },
-  { title: "Difference", size: 1 },
+  { title: 'Category', size: 2 },
+  { title: 'Forecast', size: 1 },
+  { title: 'Actual', size: 1 },
+  { title: 'Difference', size: 1 },
 ];
 
 /**
- *
+ * Amount Table
  * @param {Object} params
  * @param {Array<tableContent>} [params.tableContent] Carga por defecto category[1-5]
  * @returns {ReactNode}
@@ -57,7 +57,7 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
           <DataTable.Title
             key={index}
             style={{ flex: item.size }}
-            sortDirection={item.title === "Category" ? "descending" : ""}
+            sortDirection={item.title === 'Category' ? 'descending' : ''}
           >
             {item.title}
           </DataTable.Title>
@@ -66,9 +66,7 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
 
       {content.map((item, index) => (
         <DataTable.Row key={index}>
-          <DataTable.Cell style={{ flex: tableHead[0].size }}>
-            {item.cat}
-          </DataTable.Cell>
+          <DataTable.Cell style={{ flex: tableHead[0].size }}>{item.cat}</DataTable.Cell>
           <DataTable.Cell style={{ flex: tableHead[1].size }}>
             ${minimizeNumber(item.fore)}
           </DataTable.Cell>

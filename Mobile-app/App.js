@@ -1,9 +1,10 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
+
 import Main from './src/Main';
 import AmountProvider from './src/providers/amountProvider';
-import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
@@ -19,4 +20,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-

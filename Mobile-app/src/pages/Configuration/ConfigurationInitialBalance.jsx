@@ -1,22 +1,21 @@
-import { useState, useRef } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Button, Card, TextInput } from "react-native-paper";
-import { generalStyles } from "../../generalStyles";
-import formatAmount from "../../functions/formatAmount";
-import { useAmountContext } from "../../providers/amountProvider";
+import { useState, useRef } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Button, Card, TextInput } from 'react-native-paper';
+
+import formatAmount from '../../functions/formatAmount';
+import { generalStyles } from '../../generalStyles';
+import { useAmountContext } from '../../providers/amountProvider';
 
 function ConfigurationInitialBalance() {
   const { initialBalance, chargeInitialAmount } = useAmountContext();
 
   const balanceInput = useRef(null);
   const [initialBalanceValue, setInitialBalanceValue] = useState(
-    /** @type {string | undefined} */ (
-      initialBalance ? initialBalance.toString() : undefined
-    )
+    /** @type {string | undefined} */ (initialBalance ? initialBalance.toString() : undefined)
   );
 
   const chargeBalance = () => {
-    if (!initialBalanceValue) return alert("Ingrese un monto valido");
+    if (!initialBalanceValue) return alert('Ingrese un monto valido');
 
     chargeInitialAmount(Number.parseFloat(initialBalanceValue));
     balanceInput.current.blur();
@@ -28,7 +27,7 @@ function ConfigurationInitialBalance() {
         <View style={styles.initialBalanceContainer}>
           <Text style={generalStyles.textTitle}>Initial Balance: </Text>
           <Text style={styles.initialBalance}>
-            {initialBalance ? formatAmount(initialBalance) : "0,00"}
+            {initialBalance ? formatAmount(initialBalance) : '0,00'}
           </Text>
         </View>
 
@@ -36,8 +35,8 @@ function ConfigurationInitialBalance() {
           <TextInput
             style={styles.formInputText}
             ref={balanceInput}
-            autoFocus={true}
-            label={"$0.00"}
+            autoFocus
+            label="$0.00"
             value={initialBalanceValue}
             keyboardType="numeric"
             onChangeText={(text) => setInitialBalanceValue(text)}
@@ -53,26 +52,26 @@ function ConfigurationInitialBalance() {
 
 const styles = StyleSheet.create({
   initialBalanceContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 30,
     marginBottom: 10,
-    borderBottomColor: "#bbbbbb",
+    borderBottomColor: '#bbbbbb',
     borderBottomWidth: 1,
   },
   initialBalance: {
     fontSize: 40,
   },
   form: {
-    flexDirection: "row",
-    alignItems: "stretch",
+    flexDirection: 'row',
+    alignItems: 'stretch',
     gap: 10,
   },
   formInputText: {
     flex: 1,
   },
   formButton: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
 });
 

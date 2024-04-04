@@ -1,15 +1,16 @@
-import { Button, DataTable } from "react-native-paper";
-import minimizeNumber from "../functions/minimizeNumber";
-import CustomModal, { customModalStyles } from "../components/CustomModal";
-import { useState } from "react";
-import { StyleSheet, Text } from "react-native";
-import { colors } from "../generalStyles";
-import formatAmount from "../functions/formatAmount";
-import { useAmountContext } from "../providers/amountProvider";
-import "../types/movementType";
+import { useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { Button, DataTable } from 'react-native-paper';
+
+import CustomModal, { customModalStyles } from '../components/CustomModal';
+import formatAmount from '../functions/formatAmount';
+import minimizeNumber from '../functions/minimizeNumber';
+import { colors } from '../generalStyles';
+import { useAmountContext } from '../providers/amountProvider';
+import '../types/movementType';
 
 /**
- *
+ * Balance Table
  * @param {Object} params
  * @param {Array<movementObject>} params.movements
  * @param {string} params.movementType
@@ -26,14 +27,14 @@ export const BalanceTable = ({ movements, movementType }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const tableHead = [
-    { title: "Date", size: 1 },
-    { title: "Amount", size: 1 },
-    { title: "Description", size: 2 },
-    { title: "Category", size: 1 },
+    { title: 'Date', size: 1 },
+    { title: 'Amount', size: 1 },
+    { title: 'Description', size: 2 },
+    { title: 'Category', size: 1 },
   ];
 
   /**
-   *
+   * Show movement
    * @param {movementObject} movement
    */
   const showMovement = (movement) => {
@@ -68,14 +69,10 @@ export const BalanceTable = ({ movements, movementType }) => {
               {item.date.toLocaleString()}
             </DataTable.Cell>
             <DataTable.Cell style={{ flex: tableHead[1].size }}>
-              {item.amount ? `$${minimizeNumber(item.amount)}` : ""}
+              {item.amount ? `$${minimizeNumber(item.amount)}` : ''}
             </DataTable.Cell>
-            <DataTable.Cell style={{ flex: tableHead[2].size }}>
-              {item.desc}
-            </DataTable.Cell>
-            <DataTable.Cell style={{ flex: tableHead[3].size }}>
-              {item.cat}
-            </DataTable.Cell>
+            <DataTable.Cell style={{ flex: tableHead[2].size }}>{item.desc}</DataTable.Cell>
+            <DataTable.Cell style={{ flex: tableHead[3].size }}>{item.cat}</DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>
@@ -86,9 +83,7 @@ export const BalanceTable = ({ movements, movementType }) => {
             <DataTable.Cell>
               <Text style={styles.boldText}>Amount</Text>
             </DataTable.Cell>
-            <DataTable.Cell>
-              ${formatAmount(selectedMovement.amount)}
-            </DataTable.Cell>
+            <DataTable.Cell>${formatAmount(selectedMovement.amount)}</DataTable.Cell>
           </DataTable.Row>
 
           <DataTable.Row>
@@ -110,8 +105,7 @@ export const BalanceTable = ({ movements, movementType }) => {
               <Text style={styles.boldText}>Date</Text>
             </DataTable.Cell>
             <DataTable.Cell>
-              {selectedMovement.date &&
-                selectedMovement.date.toLocaleDateString()}
+              {selectedMovement.date && selectedMovement.date.toLocaleDateString()}
             </DataTable.Cell>
           </DataTable.Row>
         </DataTable>
@@ -141,7 +135,7 @@ export const BalanceTable = ({ movements, movementType }) => {
 
 const styles = StyleSheet.create({
   boldText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 20,
   },
 });

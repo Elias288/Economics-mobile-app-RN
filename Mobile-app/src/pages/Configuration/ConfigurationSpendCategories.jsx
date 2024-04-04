@@ -1,23 +1,22 @@
-import { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Card, Chip, TextInput } from "react-native-paper";
-import { generalStyles } from "../../generalStyles";
-import FloatButton from "../../components/FloatButton";
-import CustomModal, { customModalStyles } from "../../components/CustomModal";
-import { useAmountContext } from "../../providers/amountProvider";
-import { MOVEMENTTYPE } from "../../hooks/useMovements";
+import { useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Card, Chip, TextInput } from 'react-native-paper';
+
+import CustomModal, { customModalStyles } from '../../components/CustomModal';
+import FloatButton from '../../components/FloatButton';
+import { generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { useAmountContext } from '../../providers/amountProvider';
 
 function ConfigurationSpendCategories() {
   const { spendCategories, addCategory, deleteCategory } = useAmountContext();
 
-  const [categories, setCategories] = useState(
-    /** @type {Array<String>} */ ([])
-  );
+  const [categories, setCategories] = useState(/** @type {Array<String>} */ ([]));
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
+  const [newCategory, setNewCategory] = useState('');
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState("");
+  const [categoryToDelete, setCategoryToDelete] = useState('');
 
   useEffect(() => {
     setCategories(spendCategories.map((spend) => spend.cat));
@@ -36,12 +35,12 @@ function ConfigurationSpendCategories() {
    */
   const onAddCategory = () => {
     const formattedNewCategory = newCategory.trim();
-    if (formattedNewCategory === "" || formattedNewCategory.length < 4)
-      return alert("Invalid Category");
+    if (formattedNewCategory === '' || formattedNewCategory.length < 4)
+      return alert('Invalid Category');
 
     addCategory(formattedNewCategory, MOVEMENTTYPE.SPEND);
 
-    setNewCategory("");
+    setNewCategory('');
     setShowAddCategoryModal(false);
   };
 
@@ -60,7 +59,7 @@ function ConfigurationSpendCategories() {
   const onRemoveCategory = () => {
     deleteCategory(categoryToDelete, MOVEMENTTYPE.SPEND);
 
-    setCategoryToDelete("");
+    setCategoryToDelete('');
     setShowDeleteModal(false);
   };
 
@@ -94,8 +93,8 @@ function ConfigurationSpendCategories() {
       >
         <Text style={customModalStyles.modalTitle}>Add Category</Text>
         <TextInput
-          autoFocus={true}
-          label={"Category"}
+          autoFocus
+          label="Category"
           onChangeText={(text) => setNewCategory(text)}
           value={newCategory}
         />
@@ -114,8 +113,8 @@ function ConfigurationSpendCategories() {
         <Text
           style={{
             ...customModalStyles.modalMessage,
-            fontWeight: "bold",
-            textAlign: "center",
+            fontWeight: 'bold',
+            textAlign: 'center',
           }}
         >
           {categoryToDelete}
@@ -127,8 +126,8 @@ function ConfigurationSpendCategories() {
 
 const styles = StyleSheet.create({
   chipContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
     marginVertical: 20,
   },

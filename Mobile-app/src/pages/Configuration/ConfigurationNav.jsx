@@ -1,8 +1,9 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ConfigurationScreen from "./ConfigurationScreen";
-import ConfigurationInitialBalance from "./ConfigurationInitialBalance";
-import ConfigurationIncomeCategories from "./ConfigurationIncomeCategories";
-import ConfigurationSpendCategories from "./ConfigurationSpendCategories";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import ConfigurationIncomeCategories from './ConfigurationIncomeCategories';
+import ConfigurationInitialBalance from './ConfigurationInitialBalance';
+import ConfigurationScreen from './ConfigurationScreen';
+import ConfigurationSpendCategories from './ConfigurationSpendCategories';
 
 const Stack = createNativeStackNavigator();
 
@@ -10,10 +11,7 @@ function ConfigurationNav() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Configuration" component={ConfigurationScreen} />
-      <Stack.Screen
-        name="Configuration Initial Balance"
-        component={ConfigurationInitialBalance}
-      />
+      <Stack.Screen name="Configuration Initial Balance" component={ConfigurationInitialBalance} />
       <Stack.Screen
         name="Configuration income categories"
         component={ConfigurationIncomeCategories}

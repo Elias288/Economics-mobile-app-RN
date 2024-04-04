@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
-import { colors, generalStyles } from "../../generalStyles";
-import { Button, Card, TextInput } from "react-native-paper";
-import { SelectList } from "react-native-dropdown-select-list";
-import { useAmountContext } from "../../providers/amountProvider";
-import { useEffect, useState, useRef } from "react";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import "../../types/movementType";
-import { MOVEMENTTYPE } from "../../hooks/useMovements";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useEffect, useState, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { Button, Card, TextInput } from 'react-native-paper';
+
+import { colors, generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { useAmountContext } from '../../providers/amountProvider';
+import '../../types/movementType';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
@@ -17,8 +18,8 @@ function AddMovementScreen({ route, navigation }) {
   const [newMovement, setNewMovement] = useState(
     /** @type {movementObject} */ ({
       date: new Date(),
-      cat: "",
-      desc: "",
+      cat: '',
+      desc: '',
       amount: 0,
     })
   );
@@ -31,12 +32,12 @@ function AddMovementScreen({ route, navigation }) {
     } else {
       setCategories(incomeCategories.map((category) => category.cat));
     }
-  }, []);
+  }, [incomeCategories, movementType, spendCategories]);
 
   const addNewMovement = () => {
-    if (newMovement.amount <= 0) return alert("Invalid Amount");
-    if (newMovement.desc.trim() === "") return alert("Invalid Description");
-    if (newMovement.cat.trim() === "") return alert("Invalid Category");
+    if (newMovement.amount <= 0) return alert('Invalid Amount');
+    if (newMovement.desc.trim() === '') return alert('Invalid Description');
+    if (newMovement.cat.trim() === '') return alert('Invalid Category');
 
     addMovement(newMovement, movementType);
 
@@ -53,11 +54,11 @@ function AddMovementScreen({ route, navigation }) {
       <Card style={generalStyles.card}>
         <View style={styles.form}>
           <TextInput
-            label={"Amount: $0.00"}
-            autoFocus={true}
+            label="Amount: $0.00"
+            autoFocus
             keyboardType="numeric"
             onChangeText={(text) =>
-              setNewMovement({ ...newMovement, amount: Number.parseInt(text) })
+              setNewMovement({ ...newMovement, amount: Number.parseInt(text, 10) })
             }
             onSubmitEditing={() => {
               descriptionInput.current.focus(); // focus al siguiente TextInput
@@ -65,11 +66,9 @@ function AddMovementScreen({ route, navigation }) {
           />
 
           <TextInput
-            label={"Description"}
+            label="Description"
             ref={descriptionInput}
-            onChangeText={(text) =>
-              setNewMovement({ ...newMovement, desc: text })
-            }
+            onChangeText={(text) => setNewMovement({ ...newMovement, desc: text })}
           />
 
           <SelectList
@@ -89,7 +88,7 @@ function AddMovementScreen({ route, navigation }) {
               testID="dateTimePicker"
               value={newMovement.date}
               mode="date"
-              is24Hour={true}
+              is24Hour
               onChange={setNewDate}
             />
           )}

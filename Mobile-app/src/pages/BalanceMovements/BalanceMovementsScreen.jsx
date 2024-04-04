@@ -1,11 +1,12 @@
-import { View } from "react-native";
-import { Button, Card } from "react-native-paper";
-import { generalStyles } from "../../generalStyles";
-import { MOVEMENTTYPE } from "../../hooks/useMovements";
+import { View } from 'react-native';
+import { Button, Card } from 'react-native-paper';
+
+import { generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
 
 function BalanceMovementsScreen({ navigation }) {
   const goToPage = (movementType) => {
-    navigation.navigate("View Balance Movements", {
+    navigation.navigate('View Balance Movements', {
       movementType,
     });
   };
@@ -14,7 +15,7 @@ function BalanceMovementsScreen({ navigation }) {
     <View style={generalStyles.container}>
       <Card style={generalStyles.card}>
         <Button
-          icon={"arrow-up-bold"}
+          icon="arrow-up-bold"
           onPress={() => {
             goToPage(MOVEMENTTYPE.INCOME);
           }}
@@ -25,7 +26,7 @@ function BalanceMovementsScreen({ navigation }) {
 
       <Card style={generalStyles.card}>
         <Button
-          icon={"arrow-down-bold"}
+          icon="arrow-down-bold"
           onPress={() => {
             goToPage(MOVEMENTTYPE.SPEND);
           }}
