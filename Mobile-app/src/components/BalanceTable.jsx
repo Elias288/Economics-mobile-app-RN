@@ -47,7 +47,7 @@ export const BalanceTable = ({ movements, movementType }) => {
   };
 
   const onDelete = () => {
-    deleteMovement(selectedMovement, movementType);
+    deleteMovement(selectedMovement.Id);
     setShowConfirmDialog(false);
     setShowModal(false);
   };

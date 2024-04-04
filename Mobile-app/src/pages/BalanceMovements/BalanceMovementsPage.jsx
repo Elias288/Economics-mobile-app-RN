@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Card, Icon } from 'react-native-paper';
 
@@ -9,17 +8,8 @@ import { MOVEMENTTYPE } from '../../hooks/useMovements';
 import { useAmountContext } from '../../providers/amountProvider';
 
 const BalanceMovementsPage = ({ route, navigation }) => {
-  const { spendMovements, incomeMovements } = useAmountContext();
+  const { movements } = useAmountContext();
   const { movementType } = route.params;
-  const [movements, setMovements] = useState([]);
-
-  useEffect(() => {
-    if (movementType === MOVEMENTTYPE.INCOME) {
-      setMovements(incomeMovements);
-    } else {
-      setMovements(spendMovements);
-    }
-  }, [spendMovements, incomeMovements, movementType]);
 
   return (
     <>
@@ -37,7 +27,10 @@ const BalanceMovementsPage = ({ route, navigation }) => {
             </Text>
           </View>
 
-          <BalanceTable movements={movements} movementType={movementType} />
+          <BalanceTable
+            movements={movements.filter((movement) => movement.type === movementType)}
+            movementType={movementType}
+          />
         </Card>
       </View>
 

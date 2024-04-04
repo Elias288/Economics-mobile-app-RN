@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import { useState } from 'react';
 import '../types/movementType';
 import '../types/categoriesType';
@@ -8,90 +9,43 @@ export const MOVEMENTTYPE = {
 };
 
 function useMovements() {
-  const [incomeMovements, setIncomeMovements] = useState(/** @type {Array<movementObject>} */ ([]));
-  const [spendMovements, setSpendMovements] = useState(/** @type {Array<movementObject>} */ ([]));
+  const [movements, setMovements] = useState(/** @type {movementObject[]} */ ([]));
 
   /**
    * Agrega un movimiento de ingreso o gasto
-   * @param {movementObject} newMovement Objeto de movimiento
-   * @param {string} type Tipo: income o spend
+   * @param {Partial<movementObject>} newMovement Objeto de movimiento
    * @returns void
    */
-  const addMovement = (newMovement, type) => {
-    if (type === MOVEMENTTYPE.INCOME) {
-      setIncomeMovements([...incomeMovements, newMovement]);
-    }
-
-    if (type === MOVEMENTTYPE.SPEND) {
-      setSpendMovements([...spendMovements, newMovement]);
-    }
+  const addMovement = (newMovement) => {
+    const movementToAdd = { ...newMovement, Id: Crypto.randomUUID() };
+    setMovements([...movements, movementToAdd]);
   };
 
   /**
    * Elimina movimiento
-   * @param {movementObject} movementToDelete movimiento a ser eliminado
-   * @param {string} type Tipo: income o spend
+   * @param {string} movementId
    */
-  const deleteMovement = (movementToDelete, type) => {
-    if (type === MOVEMENTTYPE.INCOME) {
-      const newMovements = incomeMovements.filter((movement) => movement !== movementToDelete);
-      setIncomeMovements(newMovements);
-    }
-
-    if (type === MOVEMENTTYPE.SPEND) {
-      const newMovements = spendMovements.filter((movement) => movement !== movementToDelete);
-      setSpendMovements(newMovements);
-    }
-  };
-
-  /**
-   * Get movement bt category
-   * @param {string} type
-   * @param {movementObject} categoryToFind
-   * @returns {void}
-   */
-  const getMovementByCategory = (type, categoryToFind) => {
-    if (type === MOVEMENTTYPE.INCOME) {
-      return incomeMovements.filter((category) => category.cat === categoryToFind);
-    }
-
-    if (type === MOVEMENTTYPE.SPEND) {
-      return spendMovements.filter((category) => category.cat === categoryToFind);
-    }
-
-    return [];
+  const deleteMovement = (movementId) => {
+    setMovements(movements.filter((movement) => movement.Id !== movementId));
   };
 
   /**
    * Change category
-   * @param {categoryObject} oldCategory
-   * @param {string} type
-   * @param {categoryObject} newCategory
+   * @param {string} oldCategory
+   * @param {string} newCategory
    */
-  const changeCategory = (oldCategory, type, newCategory) => {
-    if (type === MOVEMENTTYPE.INCOME) {
-      setIncomeMovements(
-        incomeMovements.map((movement) =>
-          movement.cat === oldCategory ? { ...movement, cat: newCategory } : movement
-        )
-      );
-    }
-
-    if (type === MOVEMENTTYPE.SPEND) {
-      setSpendMovements(
-        spendMovements.map((movement) =>
-          movement.cat === oldCategory ? { ...movement, cat: newCategory } : movement
-        )
-      );
-    }
+  const changeCategory = (oldCategory, newCategory) => {
+    setMovements(
+      movements.map((movement) =>
+        movement.cat === oldCategory ? { ...movement, cat: newCategory } : movement
+      )
+    );
   };
 
   return {
-    incomeMovements,
-    spendMovements,
+    movements,
     addMovement,
     deleteMovement,
-    getMovementByCategory,
     changeCategory,
   };
 }

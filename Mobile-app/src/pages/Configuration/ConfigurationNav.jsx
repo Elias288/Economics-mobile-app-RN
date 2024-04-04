@@ -1,24 +1,30 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ConfigurationIncomeCategories from './ConfigurationIncomeCategories';
+import ConfigurationCategoriesPage from './ConfigurationCategoriesPage';
 import ConfigurationInitialBalance from './ConfigurationInitialBalance';
 import ConfigurationScreen from './ConfigurationScreen';
-import ConfigurationSpendCategories from './ConfigurationSpendCategories';
 
 const Stack = createNativeStackNavigator();
 
 function ConfigurationNav() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Configuration" component={ConfigurationScreen} />
-      <Stack.Screen name="Configuration Initial Balance" component={ConfigurationInitialBalance} />
+    <Stack.Navigator initialRouteName="configuration">
       <Stack.Screen
-        name="Configuration income categories"
-        component={ConfigurationIncomeCategories}
+        name="configuration"
+        component={ConfigurationScreen}
+        options={{ title: 'Configuration' }}
       />
+
       <Stack.Screen
-        name="Configuration spend categories"
-        component={ConfigurationSpendCategories}
+        name="configurationInitialBalance"
+        component={ConfigurationInitialBalance}
+        options={{ title: 'Configuration Initial Balance' }}
+      />
+
+      <Stack.Screen
+        name="configurationCategoriesPage"
+        component={ConfigurationCategoriesPage}
+        options={({ route }) => ({ title: `Add ${route.params.categoryType} Category` })}
       />
     </Stack.Navigator>
   );

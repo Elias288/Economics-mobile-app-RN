@@ -5,34 +5,29 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { Button, Card, TextInput } from 'react-native-paper';
 
 import { colors, generalStyles } from '../../generalStyles';
-import { MOVEMENTTYPE } from '../../hooks/useMovements';
 import { useAmountContext } from '../../providers/amountProvider';
 import '../../types/movementType';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
-  const { incomeCategories, spendCategories, addMovement } = useAmountContext();
+  const { categories, addMovement } = useAmountContext();
 
   const descriptionInput = useRef(null);
-  const [categories, setCategories] = useState([]);
-  const [newMovement, setNewMovement] = useState(
-    /** @type {movementObject} */ ({
-      date: new Date(),
-      cat: '',
-      desc: '',
-      amount: 0,
-    })
-  );
-
+  const [newMovement, setNewMovement] = useState({
+    date: new Date(),
+    cat: '',
+    desc: '',
+    amount: 0,
+    type: movementType,
+  });
+  const [categoryByType, setCategoryByType] = useState([]);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
   useEffect(() => {
-    if (movementType === MOVEMENTTYPE.SPEND) {
-      setCategories(spendCategories.map((category) => category.cat));
-    } else {
-      setCategories(incomeCategories.map((category) => category.cat));
-    }
-  }, [incomeCategories, movementType, spendCategories]);
+    setCategoryByType(
+      categories.filter((cat) => cat.type === movementType).map((category) => category.cat)
+    );
+  }, [categories, movementType]);
 
   const addNewMovement = () => {
     if (newMovement.amount <= 0) return alert('Invalid Amount');
@@ -72,7 +67,7 @@ function AddMovementScreen({ route, navigation }) {
           />
 
           <SelectList
-            data={categories}
+            data={categoryByType}
             search={false}
             boxStyles={{ backgroundColor: colors.white }}
             setSelected={(select) => {

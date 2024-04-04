@@ -7,15 +7,13 @@ import useTotalAmount from '../hooks/useTotalAmount';
 /**
  * @typedef {Object} amountProviderProps
  * @property {number} totalAmount Monto total (+incomeMovements.amount - spendMovements.amount)
- * @property {Array<categoryObject>} spendCategories
- * @property {Array<categoryObject>} incomeCategories
- * @property {Array<movementObject>} incomeMovements
- * @property {Array<movementObject>} spendMovements
+ * @property {Array<movementObject>} movements
+ * @property {categoryObject[]} categories
  * @property {number} initialBalance
  * @property {(category: string, type: string) => void} addCategory
- * @property {(categories: string, type: string) => void} deleteCategory
- * @property {(newMovement: movementObject, type: string) => void} addMovement
- * @property {(movementToDelete: movementObject, type: string) => void} deleteMovement
+ * @property {(categoryToDelete: categoryObject) => void} deleteCategory
+ * @property {(newMovement: Partial<movementObject>) => void} addMovement
+ * @property {(movementId: string) => void} deleteMovement
  * @property {(value: number) => void} chargeInitialAmount
  */
 
@@ -26,21 +24,19 @@ const AmountProvider = ({ children }) => {
   const [initialBalance, setInitialBalance] = useState(0);
 
   const [totalAmount, calculateTotalAmount] = useTotalAmount(initialBalance);
-  const { spendCategories, incomeCategories, addCategory, deleteCategory } = useCategories();
-  const { incomeMovements, spendMovements, changeCategory, addMovement, deleteMovement } =
-    useMovements();
+  const { categories, addCategory, deleteCategory } = useCategories();
+  const { movements, changeCategory, addMovement, deleteMovement } = useMovements();
 
   // Cuando se actualiza el initialBalance, el incomeMovements o el spendMovements se calcula el monto total
   useEffect(() => {
-    calculateTotalAmount(incomeMovements, spendMovements);
-  }, [initialBalance, incomeMovements, spendMovements, calculateTotalAmount]);
+    calculateTotalAmount(movements);
+  }, [initialBalance, movements, calculateTotalAmount]);
 
   /**
    * Elimina categorías
-   * @param {string} categoryToDelete Nombre de categoría a eliminar
-   * @param {string} type Tipo = income o spend
+   * @param {categoryObject} categoryToDelete Nombre de categoría a eliminar
    */
-  const onDeleteCategory = (categoryToDelete, type) => {
+  const onDeleteCategory = (categoryToDelete) => {
     // Si la categoría no tiene movimientos, la elimina.
     // Si tiene movimientos, debe:
     // - si no existe la categoría DELETED crearla modificando la categoría a eliminar
@@ -48,19 +44,17 @@ const AmountProvider = ({ children }) => {
     // si no tiene movimientos elimina la categoría
     // Si hay movimientos con la categoría eliminada cambiarla a DELETED
 
-    deleteCategory(categoryToDelete, type);
-    changeCategory(categoryToDelete, type, 'DELETED');
+    deleteCategory(categoryToDelete.Id);
+    changeCategory(categoryToDelete.cat, 'DELETED');
   };
 
   return (
     <CustomContext.Provider
       value={{
         totalAmount,
-        spendCategories,
-        incomeCategories,
-        incomeMovements,
-        spendMovements,
+        categories,
         initialBalance,
+        movements,
         chargeInitialAmount: setInitialBalance,
         addCategory,
         deleteCategory: onDeleteCategory,

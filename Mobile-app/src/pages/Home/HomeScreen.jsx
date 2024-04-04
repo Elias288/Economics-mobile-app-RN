@@ -1,9 +1,9 @@
 import { ScrollView, View } from 'react-native';
 
 import { AmountContainer } from './AmountContainer';
-import { IncomeContainer } from './IncomeContainer';
-import { SpendContainer } from './SpendContainer';
+import MovementContainer from './MovementsContainer';
 import { generalStyles } from '../../generalStyles';
+import { MOVEMENTTYPE } from '../../hooks/useMovements';
 
 function HomeScreen() {
   return (
@@ -11,9 +11,8 @@ function HomeScreen() {
       <View style={generalStyles.container}>
         <AmountContainer />
 
-        <SpendContainer />
-
-        <IncomeContainer />
+        <MovementContainer categoryType={MOVEMENTTYPE.INCOME} />
+        <MovementContainer categoryType={MOVEMENTTYPE.SPEND} />
       </View>
     </ScrollView>
   );
