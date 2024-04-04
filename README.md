@@ -1,44 +1,5 @@
-# Economics Mobile App - React Native
+# Economics-mobile-app-RN
 
-## 1. Proceso de instalación
+Application for cell phones that allows you to keep track of incoming and outgoing money, saving this information locally. It starts with an amount and from it you can register incomings and outgoings of amounts together with the date on which it was made, being able to filter by date.
 
-```sh
-npx create-expo-app -t expo-template-blank-typescript economics-mobile-app-react_native
-cd .\economics-mobile-app-react_native
-```
-
-```sh
-npx expo install expo-device expo-dev-client
-```
-
-### 1.1. Configurando EAS client
-
-Crear archivo eas.json
-
-```json
-{
-    "build": {
-        "development": {
-            "developmentClient": true,
-            "distribution": "internal"
-        },
-        "preview": {
-            "distribution": "internal"
-        },
-        "production": {}
-    }
-}
-```
-
-Instalar eas-cli
-
-```sh
-npx npm install eas-cli
-```
-
-### 1.2. Prebuild
-
-```sh
-npm install --save-dev sharp-cli
-npx expo prebuild
-```
+[Todo list](Mobile-app/TODO.md)
