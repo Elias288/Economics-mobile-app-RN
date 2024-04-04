@@ -18,7 +18,6 @@ function useMovements() {
    * @returns void
    */
   const addMovement = (newMovement, type) => {
-    console.log('addMovement');
     if (type === MOVEMENTTYPE.INCOME) {
       setIncomeMovements([...incomeMovements, newMovement]);
     }

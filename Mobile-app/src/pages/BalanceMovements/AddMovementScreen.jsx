@@ -58,7 +58,7 @@ function AddMovementScreen({ route, navigation }) {
             autoFocus
             keyboardType="numeric"
             onChangeText={(text) =>
-              setNewMovement({ ...newMovement, amount: Number.parseInt(text, 10) })
+              setNewMovement({ ...newMovement, amount: Number.parseFloat(text) })
             }
             onSubmitEditing={() => {
               descriptionInput.current.focus(); // focus al siguiente TextInput
