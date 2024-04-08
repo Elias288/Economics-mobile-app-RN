@@ -3,12 +3,13 @@ import { Text } from 'react-native';
 import { Card } from 'react-native-paper';
 
 import AmountsTable from '../../components/AmountsTable';
-import capitalizeFirstLetter from '../../functions/capitalizeFirstLetter';
 import { generalStyles } from '../../generalStyles';
 import { useAmountContext } from '../../providers/amountProvider';
+import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function MovementContainer({ categoryType }) {
   const { categories, movements } = useAmountContext();
+  const { capitalizeFirstLetter } = useFunctionProvider();
   const [tableContent, setTableContent] = useState(/** @type {Array<tableContent>} */ ([]));
 
   useEffect(() => {

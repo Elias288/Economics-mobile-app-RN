@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Card, Chip, TextInput } from 'react-native-paper';
+import { Card, Chip, TextInput, Portal } from 'react-native-paper';
 
 import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
@@ -84,42 +84,44 @@ function ConfigurationSpendCategories() {
       {/* Add Button */}
       <FloatButton onPress={viewAddModal} />
 
-      {/* Add Category Modal */}
-      <CustomModal
-        isVisible={showAddCategoryModal}
-        onAccept={onAddCategory}
-        hideModal={() => setShowAddCategoryModal(false)}
-        onCancel={() => setShowAddCategoryModal(false)}
-      >
-        <Text style={customModalStyles.modalTitle}>Add Category</Text>
-        <TextInput
-          autoFocus
-          label="Category"
-          onChangeText={(text) => setNewCategory(text)}
-          value={newCategory}
-        />
-      </CustomModal>
-
-      {/* Delete Category Modal */}
-      <CustomModal
-        isVisible={showDeleteModal}
-        onAccept={onRemoveCategory}
-        onCancel={() => setShowDeleteModal(false)}
-        hideModal={() => setShowDeleteModal(false)}
-      >
-        <Text style={customModalStyles.modalMessage}>
-          Are you sure you want to remove this category?
-        </Text>
-        <Text
-          style={{
-            ...customModalStyles.modalMessage,
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}
+      <Portal>
+        {/* Add Category Modal */}
+        <CustomModal
+          isVisible={showAddCategoryModal}
+          onAccept={onAddCategory}
+          hideModal={() => setShowAddCategoryModal(false)}
+          onCancel={() => setShowAddCategoryModal(false)}
         >
-          {categoryToDelete}
-        </Text>
-      </CustomModal>
+          <Text style={customModalStyles.modalTitle}>Add Category</Text>
+          <TextInput
+            autoFocus
+            label="Category"
+            onChangeText={(text) => setNewCategory(text)}
+            value={newCategory}
+          />
+        </CustomModal>
+
+        {/* Delete Category Modal */}
+        <CustomModal
+          isVisible={showDeleteModal}
+          onAccept={onRemoveCategory}
+          onCancel={() => setShowDeleteModal(false)}
+          hideModal={() => setShowDeleteModal(false)}
+        >
+          <Text style={customModalStyles.modalMessage}>
+            Are you sure you want to remove this category?
+          </Text>
+          <Text
+            style={{
+              ...customModalStyles.modalMessage,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            {categoryToDelete}
+          </Text>
+        </CustomModal>
+      </Portal>
     </>
   );
 }

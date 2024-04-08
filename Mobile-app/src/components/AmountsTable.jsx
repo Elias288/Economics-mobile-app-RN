@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { DataTable } from 'react-native-paper';
 
-import minimizeNumber from '../functions/minimizeNumber.js';
 import '../types/TableContentType.js';
+import { useFunctionProvider } from '../providers/functionsProvider.jsx';
 
 /**
  * Categorías por defecto
@@ -30,6 +30,7 @@ const tableHead = [
  * @returns {ReactNode}
  */
 const AmountsTable = ({ tableContent = defaultCategories }) => {
+  const { minimizeNumber } = useFunctionProvider();
   const [content, setContent] = useState([]);
 
   useEffect(() => {

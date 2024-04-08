@@ -1,13 +1,14 @@
 import { Text, View } from 'react-native';
 import { Button, Card } from 'react-native-paper';
 
-import formatAmount from '../../functions/formatAmount.js';
 import { generalStyles } from '../../generalStyles.js';
 import { MOVEMENTTYPE } from '../../hooks/useMovements.jsx';
 import { useAmountContext } from '../../providers/amountProvider.jsx';
+import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
 
 function ConfigurationScreen({ navigation }) {
   const { initialBalance } = useAmountContext();
+  const { formatAmount } = useFunctionProvider();
 
   const goToPage = (categoryType) => {
     navigation.navigate('configurationCategoriesPage', {

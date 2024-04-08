@@ -1,10 +1,10 @@
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Button, Card, TextInput } from 'react-native-paper';
 
-import { colors, generalStyles } from '../../generalStyles';
+import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/amountProvider';
 import '../../types/movementType';
 
@@ -21,7 +21,6 @@ function AddMovementScreen({ route, navigation }) {
     type: movementType,
   });
   const [categoryByType, setCategoryByType] = useState([]);
-  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
   useEffect(() => {
     setCategoryByType(
@@ -41,7 +40,16 @@ function AddMovementScreen({ route, navigation }) {
 
   const setNewDate = (evt, selectedDate) => {
     setNewMovement({ ...newMovement, date: selectedDate });
-    setShowDateTimePicker(false);
+  };
+
+  const showDateTimePicker = () => {
+    DateTimePickerAndroid.open({
+      testID: 'dateTimePicker',
+      value: newMovement.date,
+      mode: 'date',
+      is24Hour: true,
+      onChange: setNewDate,
+    });
   };
 
   return (
@@ -69,24 +77,15 @@ function AddMovementScreen({ route, navigation }) {
           <SelectList
             data={categoryByType}
             search={false}
-            boxStyles={{ backgroundColor: colors.white }}
+            boxStyles={{ backgroundColor: getColors().white }}
             setSelected={(select) => {
               setNewMovement({ ...newMovement, cat: select });
             }}
           />
 
-          <Button mode="contained" onPress={() => setShowDateTimePicker(true)}>
+          <Button mode="contained" onPress={showDateTimePicker}>
             {newMovement.date.toLocaleDateString()}
           </Button>
-          {showDateTimePicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={newMovement.date}
-              mode="date"
-              is24Hour
-              onChange={setNewDate}
-            />
-          )}
 
           <Button onPress={addNewMovement} mode="contained">
             Add

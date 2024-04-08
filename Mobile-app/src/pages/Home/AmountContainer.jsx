@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
 
-import formatAmount from '../../functions/formatAmount';
 import { generalStyles } from '../../generalStyles.js';
 import { useAmountContext } from '../../providers/amountProvider.jsx';
+import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
 
 /**
  * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.
@@ -11,6 +11,7 @@ import { useAmountContext } from '../../providers/amountProvider.jsx';
  */
 export const AmountContainer = () => {
   const { initialBalance, totalAmount } = useAmountContext();
+  const { formatAmount } = useFunctionProvider();
 
   return (
     <Card style={generalStyles.card}>
