@@ -5,12 +5,12 @@ import { Card, Chip, TextInput, Portal } from 'react-native-paper';
 import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useCategoriesContext } from '../../providers/CategoriesContext';
 import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
-  const { categories, addCategory, deleteCategory } = useAmountContext();
+  const { categories, addCategory, deleteCategory } = useCategoriesContext();
   const { capitalizeFirstLetter } = useFunctionProvider();
 
   // Add categories states

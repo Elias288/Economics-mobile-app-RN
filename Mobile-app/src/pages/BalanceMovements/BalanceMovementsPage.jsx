@@ -7,12 +7,12 @@ import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
 import { generalStyles, getColors } from '../../generalStyles';
 import { MOVEMENTTYPE } from '../../hooks/useMovements';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useMovementsContext } from '../../providers/MovementsContext';
 
 const colors = getColors();
 
 const BalanceMovementsPage = ({ route, navigation }) => {
-  const { movements } = useAmountContext();
+  const { movements } = useMovementsContext();
   const { movementType } = route.params;
   const [movementsToList, setMovementsToList] = useState(/** @type {movementObject[]} */ ([]));
 

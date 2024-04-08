@@ -6,10 +6,10 @@ import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
 import { generalStyles } from '../../generalStyles';
 import { MOVEMENTTYPE } from '../../hooks/useMovements';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useMovementsContext } from '../../providers/MovementsContext';
 
 function BalanceMovementsScreen({ navigation }) {
-  const { movements } = useAmountContext();
+  const { movements } = useMovementsContext();
   const [showAddButtons, setShowAddButtons] = useState(false);
 
   const goToPage = (movementType) => {

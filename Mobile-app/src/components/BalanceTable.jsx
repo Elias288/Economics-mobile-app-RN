@@ -5,8 +5,8 @@ import { DataTable, Icon, Portal } from 'react-native-paper';
 import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
 import { MOVEMENTTYPE } from '../hooks/useMovements';
-import { useAmountContext } from '../providers/amountProvider';
 import '../types/movementType';
+import { useMovementsContext } from '../providers/MovementsContext';
 import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
@@ -16,7 +16,7 @@ import { useFunctionProvider } from '../providers/functionsProvider';
  * @returns {ReactNode}
  */
 export const BalanceTable = ({ movements }) => {
-  const { deleteMovement } = useAmountContext();
+  const { deleteMovement } = useMovementsContext();
   const { formatAmount } = useFunctionProvider();
 
   const [showModal, setShowModal] = useState(false);
