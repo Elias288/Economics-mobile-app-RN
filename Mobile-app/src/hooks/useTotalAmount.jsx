@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import '../types/movementType';
-import { MOVEMENTTYPE } from './useMovements';
+import { MOVEMENTTYPE } from '../providers/MovementsProvider';
 
 function useTotalAmount(initialBalance = 0) {
   const [totalAmount, setTotalAmount] = useState(initialBalance);

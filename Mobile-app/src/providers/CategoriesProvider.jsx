@@ -21,7 +21,7 @@ export function useCategoriesContext() {
 
 const CategoriesProvider = ({ children }) => {
   const { categories, addCategory, deleteCategory } = useCategories();
-  const { changeCategory } = useMovementsContext();
+  const { movementsDispatch } = useMovementsContext();
 
   const onDeleteCategory = (categoryToDelete) => {
     // Si la categoría no tiene movimientos, la elimina.
@@ -31,7 +31,11 @@ const CategoriesProvider = ({ children }) => {
     // si no tiene movimientos elimina la categoría
     // Si hay movimientos con la categoría eliminada cambiarla a DELETED
     deleteCategory(categoryToDelete.Id);
-    changeCategory(categoryToDelete.cat, 'DELETED');
+    movementsDispatch({
+      type: 'update_category',
+      oldCategory: categoryToDelete.cat,
+      newCategory: 'DELETED',
+    });
   };
 
   return (

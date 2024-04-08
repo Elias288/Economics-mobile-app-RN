@@ -2,7 +2,7 @@ import * as Crypto from 'expo-crypto';
 import { useState } from 'react';
 import '../types/categoriesType';
 
-import { MOVEMENTTYPE } from './useMovements';
+import { MOVEMENTTYPE } from '../providers/MovementsProvider';
 
 function useCategories() {
   const [categories, setCategories] = useState(

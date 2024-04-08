@@ -5,8 +5,7 @@ import { BalanceTable } from '../../components/BalanceTable';
 import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
 import { generalStyles } from '../../generalStyles';
-import { MOVEMENTTYPE } from '../../hooks/useMovements';
-import { useMovementsContext } from '../../providers/MovementsProvider';
+import { useMovementsContext, MOVEMENTTYPE } from '../../providers/MovementsProvider';
 
 function BalanceMovementsScreen({ navigation }) {
   const { movements } = useMovementsContext();

@@ -5,7 +5,7 @@ import { Button, Card, SegmentedButtons } from 'react-native-paper';
 
 import { generalStyles, getColors } from '../generalStyles';
 import useFilters from '../hooks/useFilters';
-import { MOVEMENTTYPE } from '../hooks/useMovements';
+import { MOVEMENTTYPE } from '../providers/MovementsProvider';
 
 /**
  * Movements Filters

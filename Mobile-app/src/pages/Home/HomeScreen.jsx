@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { AmountContainer } from './AmountContainer';
 import MovementContainer from './MovementsContainer';
 import { generalStyles } from '../../generalStyles';
-import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { MOVEMENTTYPE } from '../../providers/MovementsProvider';
 
 function HomeScreen() {
   return (

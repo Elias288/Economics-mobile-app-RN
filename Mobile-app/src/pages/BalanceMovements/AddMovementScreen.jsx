@@ -12,7 +12,7 @@ import { useMovementsContext } from '../../providers/MovementsProvider';
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
   const { categories } = useCategoriesContext();
-  const { addMovement } = useMovementsContext();
+  const { movementsDispatch } = useMovementsContext();
 
   const descriptionInput = useRef(null);
   const [newMovement, setNewMovement] = useState({
@@ -35,7 +35,7 @@ function AddMovementScreen({ route, navigation }) {
     if (newMovement.desc.trim() === '') return alert('Invalid Description');
     if (newMovement.cat.trim() === '') return alert('Invalid Category');
 
-    addMovement(newMovement, movementType);
+    movementsDispatch({ type: 'add_movement', newMovement });
 
     navigation.goBack();
   };

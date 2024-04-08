@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { MOVEMENTTYPE } from './useMovements';
+import { MOVEMENTTYPE } from '../providers/MovementsProvider';
 import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
