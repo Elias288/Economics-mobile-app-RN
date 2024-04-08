@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 
-import CategoriesProvider from './CategoriesContext';
-import MovementsProvider from './MovementsContext';
+import CategoriesProvider from './CategoriesProvider';
+import MovementsProvider from './MovementsProvider';
 import useTotalAmount from '../hooks/useTotalAmount';
 
 /**

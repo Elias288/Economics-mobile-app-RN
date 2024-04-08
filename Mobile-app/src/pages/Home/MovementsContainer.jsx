@@ -4,8 +4,8 @@ import { Card } from 'react-native-paper';
 
 import AmountsTable from '../../components/AmountsTable';
 import { generalStyles } from '../../generalStyles';
-import { useCategoriesContext } from '../../providers/CategoriesContext';
-import { useMovementsContext } from '../../providers/MovementsContext';
+import { useCategoriesContext } from '../../providers/CategoriesProvider';
+import { useMovementsContext } from '../../providers/MovementsProvider';
 import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function MovementContainer({ categoryType }) {

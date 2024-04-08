@@ -6,7 +6,7 @@ import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
 import { MOVEMENTTYPE } from '../hooks/useMovements';
 import '../types/movementType';
-import { useMovementsContext } from '../providers/MovementsContext';
+import { useMovementsContext } from '../providers/MovementsProvider';
 import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**

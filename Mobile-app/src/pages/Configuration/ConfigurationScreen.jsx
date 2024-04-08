@@ -3,7 +3,7 @@ import { Button, Card } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles.js';
 import { MOVEMENTTYPE } from '../../hooks/useMovements.jsx';
-import { useAmountContext } from '../../providers/amountProvider.jsx';
+import { useAmountContext } from '../../providers/AmountProvider.jsx';
 import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
 
 function ConfigurationScreen({ navigation }) {

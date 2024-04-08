@@ -6,7 +6,7 @@ import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
 import { generalStyles } from '../../generalStyles';
 import { MOVEMENTTYPE } from '../../hooks/useMovements';
-import { useMovementsContext } from '../../providers/MovementsContext';
+import { useMovementsContext } from '../../providers/MovementsProvider';
 
 function BalanceMovementsScreen({ navigation }) {
   const { movements } = useMovementsContext();

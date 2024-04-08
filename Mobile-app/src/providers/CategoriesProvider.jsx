@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { useMovementsContext } from './MovementsContext';
+import { useMovementsContext } from './MovementsProvider';
 import useCategories from '../hooks/useCategories';
 
 /**

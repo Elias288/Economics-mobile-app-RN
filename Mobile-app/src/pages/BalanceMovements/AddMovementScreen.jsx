@@ -6,8 +6,8 @@ import { Button, Card, TextInput } from 'react-native-paper';
 
 import { generalStyles, getColors } from '../../generalStyles';
 import '../../types/movementType';
-import { useCategoriesContext } from '../../providers/CategoriesContext';
-import { useMovementsContext } from '../../providers/MovementsContext';
+import { useCategoriesContext } from '../../providers/CategoriesProvider';
+import { useMovementsContext } from '../../providers/MovementsProvider';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
