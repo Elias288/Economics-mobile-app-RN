@@ -1,40 +1,59 @@
-import { View } from 'react-native';
-import { Button, Card } from 'react-native-paper';
+import { useState } from 'react';
+import { ScrollView, View } from 'react-native';
 
+import { BalanceTable } from '../../components/BalanceTable';
+import FloatButton from '../../components/FloatButton';
+import MovementsFilters from '../../components/MovementsFilters';
 import { generalStyles } from '../../generalStyles';
 import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { useAmountContext } from '../../providers/amountProvider';
 
 function BalanceMovementsScreen({ navigation }) {
+  const { movements } = useAmountContext();
+  const [showAddButtons, setShowAddButtons] = useState(false);
+
   const goToPage = (movementType) => {
-    navigation.navigate('View Balance Movements', {
+    navigation.navigate('addMovement', {
       movementType,
     });
+    setShowAddButtons(false);
   };
 
   return (
-    <View style={generalStyles.container}>
-      <Card style={generalStyles.card}>
-        <Button
-          icon="arrow-up-bold"
-          onPress={() => {
-            goToPage(MOVEMENTTYPE.INCOME);
-          }}
-        >
-          Income movement new
-        </Button>
-      </Card>
+    <>
+      <ScrollView>
+        <View style={generalStyles.container}>
+          <MovementsFilters originalMovements={movements}>
+            <BalanceTable />
+          </MovementsFilters>
+        </View>
+      </ScrollView>
 
-      <Card style={generalStyles.card}>
-        <Button
-          icon="arrow-down-bold"
-          onPress={() => {
-            goToPage(MOVEMENTTYPE.SPEND);
-          }}
-        >
-          Spend movement new
-        </Button>
-      </Card>
-    </View>
+      {/* Add movements */}
+      {showAddButtons && (
+        <>
+          <FloatButton
+            bottom={120}
+            right={15}
+            size={30}
+            icon="arrow-up-bold"
+            onPress={() => goToPage(MOVEMENTTYPE.INCOME)}
+          />
+          <FloatButton
+            bottom={70}
+            right={15}
+            size={30}
+            icon="arrow-down-bold"
+            onPress={() => goToPage(MOVEMENTTYPE.SPEND)}
+          />
+        </>
+      )}
+      <FloatButton
+        onPress={() => {
+          setShowAddButtons(!showAddButtons);
+        }}
+      />
+    </>
   );
 }
 

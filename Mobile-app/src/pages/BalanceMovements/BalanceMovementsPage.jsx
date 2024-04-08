@@ -1,40 +1,52 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Card, Icon } from 'react-native-paper';
 
 import { BalanceTable } from '../../components/BalanceTable';
 import FloatButton from '../../components/FloatButton';
-import { colors, generalStyles } from '../../generalStyles';
+import MovementsFilters from '../../components/MovementsFilters';
+import { generalStyles, getColors } from '../../generalStyles';
 import { MOVEMENTTYPE } from '../../hooks/useMovements';
 import { useAmountContext } from '../../providers/amountProvider';
+
+const colors = getColors();
 
 const BalanceMovementsPage = ({ route, navigation }) => {
   const { movements } = useAmountContext();
   const { movementType } = route.params;
+  const [movementsToList, setMovementsToList] = useState(/** @type {movementObject[]} */ ([]));
+
+  // Charge movements to list
+  useEffect(() => {
+    setMovementsToList(movements.filter((movement) => movement.type === movementType));
+  }, [movements, movementType]);
 
   return (
     <>
       <View style={generalStyles.container}>
         <Card style={generalStyles.card}>
+          {/* Title */}
           <View style={styles.titleContainer}>
-            {movementType === MOVEMENTTYPE.INCOME ? (
-              <Icon source="arrow-up-bold" color={colors.black} size={30} />
-            ) : (
-              <Icon source="arrow-down-bold" color={colors.black} size={30} />
-            )}
+            <Icon
+              source={movementType === MOVEMENTTYPE.INCOME ? 'arrow-up-bold' : 'arrow-down-bold'}
+              color={colors.black}
+              size={30}
+            />
 
             <Text style={{ ...generalStyles.textTitle, flex: 1 }}>
               Balance {movementType} movements
             </Text>
           </View>
 
-          <BalanceTable
-            movements={movements.filter((movement) => movement.type === movementType)}
-            movementType={movementType}
-          />
+          {/* Filter */}
+          <MovementsFilters />
+
+          {/* Movements */}
+          <BalanceTable movements={movementsToList} movementType={movementType} />
         </Card>
       </View>
 
-      <FloatButton onPress={() => navigation.navigate('Add Movement', { movementType })} />
+      <FloatButton onPress={() => navigation.navigate('addMovement', { movementType })} />
     </>
   );
 };

@@ -4,13 +4,14 @@ import { Card, Chip, TextInput, Portal } from 'react-native-paper';
 
 import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
-import capitalizeFirstLetter from '../../functions/capitalizeFirstLetter';
-import { colors, generalStyles } from '../../generalStyles';
+import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/amountProvider';
+import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
   const { categories, addCategory, deleteCategory } = useAmountContext();
+  const { capitalizeFirstLetter } = useFunctionProvider();
 
   // Add categories states
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    borderBottomColor: colors.lightGray,
+    borderBottomColor: getColors().lightGray,
     borderBottomWidth: 2,
     paddingBottom: 20,
     marginBottom: 20,

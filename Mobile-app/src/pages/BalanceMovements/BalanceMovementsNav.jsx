@@ -6,27 +6,33 @@ import BalanceMovementsScreen from './BalanceMovementsScreen';
 
 const Stack = createNativeStackNavigator();
 
-function BalanceMovementsNav() {
+function BalanceMovementsNav({ navigation }) {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Balance Movement" component={BalanceMovementsScreen} />
+    <>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="balanceMovement"
+          component={BalanceMovementsScreen}
+          options={{ title: 'Balance Movements' }}
+        />
 
-      <Stack.Screen
-        name="View Balance Movements"
-        component={BalanceMovementsPage}
-        options={({ route }) => ({
-          title: `Balance ${route.params.movementType} movements`,
-        })}
-      />
+        <Stack.Screen
+          name="viewBalanceMovements"
+          component={BalanceMovementsPage}
+          options={({ route }) => ({
+            title: `Balance ${route.params.movementType} movements`,
+          })}
+        />
 
-      <Stack.Screen
-        name="Add Movement"
-        component={AddMovementScreen}
-        options={({ route }) => ({
-          title: `Add ${route.params.movementType} movement`,
-        })}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          name="addMovement"
+          component={AddMovementScreen}
+          options={({ route }) => ({
+            title: `Add ${route.params.movementType} movement`,
+          })}
+        />
+      </Stack.Navigator>
+    </>
   );
 }
 
