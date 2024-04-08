@@ -1,13 +1,11 @@
-import { createContext, useContext } from 'react';
+import { randomUUID } from 'expo-crypto';
+import { createContext, useContext, useReducer } from 'react';
 
-import { useMovementsContext } from './MovementsProvider';
-import useCategories from '../hooks/useCategories';
+import { MOVEMENTTYPE, useMovementsContext } from './MovementsProvider';
 
 /**
  * @typedef {Object} categoriesProviderProps
  * @property {categoryObject[]} categories
- * @property {(category: string, type: string) => void} addCategory
- * @property {(categoryToDelete: categoryObject) => void} deleteCategory
  */
 
 /** @type {import('react').Context<categoriesProviderProps>} */
@@ -20,8 +18,62 @@ export function useCategoriesContext() {
 }
 
 const CategoriesProvider = ({ children }) => {
-  const { categories, addCategory, deleteCategory } = useCategories();
   const { movementsDispatch } = useMovementsContext();
+
+  const defaultCategories = [
+    { cat: 'Comida', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Regalos', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Salud/Médicos', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Vivienda', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Transporte', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Gastos personales', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Ahorro', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    {
+      cat: 'Suministro (luz, agua, gas, etc)',
+      fore: 0,
+      Id: randomUUID(),
+      type: MOVEMENTTYPE.SPEND,
+    },
+    { cat: 'Viajes', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Deudas', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Otros', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+    { cat: 'Efectivo', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.SPEND },
+
+    { cat: 'Ahorro', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.INCOME },
+    { cat: 'Sueldo', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.INCOME },
+    { cat: 'Bonificaciones', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.INCOME },
+    { cat: 'Intereses', fore: 0, Id: randomUUID(), type: MOVEMENTTYPE.INCOME },
+  ];
+
+  const [categories, categoryDispatch] = useReducer((state = [], action) => {
+    switch (action.type) {
+      case 'add_category': {
+        return [
+          ...state,
+          { Id: randomUUID(), cat: action.cat, type: action.categoryType, fore: 0 },
+        ];
+      }
+      case 'remove_category': {
+        const categoryToDelete = state.find((category) => category.Id === action.categoryId);
+        const hasDeleted = state.some(
+          (category) => category.cat === 'DELETED' && category.type === categoryToDelete.type
+        ); // existe la categoría DELETED
+
+        if (!hasDeleted) {
+          // si no existe la categoría DELETED lo mapea
+          return state.map((category) =>
+            category.Id === action.categoryId ? { ...category, cat: 'DELETED' } : category
+          );
+        }
+
+        // si DELETED existe, elimina la categoría
+        return state.filter((category) => category.Id !== action.categoryId);
+      }
+      default: {
+        return state;
+      }
+    }
+  }, defaultCategories);
 
   const onDeleteCategory = (categoryToDelete) => {
     // Si la categoría no tiene movimientos, la elimina.
@@ -30,7 +82,7 @@ const CategoriesProvider = ({ children }) => {
     // - si existe la categoría DELETED, elimina la categoría
     // si no tiene movimientos elimina la categoría
     // Si hay movimientos con la categoría eliminada cambiarla a DELETED
-    deleteCategory(categoryToDelete.Id);
+    categoryDispatch({ type: 'remove_category', categoryId: categoryToDelete.Id });
     movementsDispatch({
       type: 'update_category',
       oldCategory: categoryToDelete.cat,
@@ -40,7 +92,7 @@ const CategoriesProvider = ({ children }) => {
 
   return (
     <CategoriesContext.Provider
-      value={{ categories, addCategory, deleteCategory: onDeleteCategory }}
+      value={{ categories, deleteCategory: onDeleteCategory, categoryDispatch }}
     >
       {children}
     </CategoriesContext.Provider>

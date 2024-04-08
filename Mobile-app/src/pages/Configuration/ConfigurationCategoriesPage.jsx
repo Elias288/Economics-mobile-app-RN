@@ -10,7 +10,7 @@ import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
-  const { categories, addCategory, deleteCategory } = useCategoriesContext();
+  const { categories, deleteCategory, categoryDispatch } = useCategoriesContext();
   const { capitalizeFirstLetter } = useFunctionProvider();
 
   // Add categories states
@@ -39,7 +39,11 @@ function ConfigurationCategoriesPage({ route }) {
     if (formattedNewCategory === '' || formattedNewCategory.length < 4)
       return alert('Invalid Category');
 
-    addCategory(formattedNewCategory, categoryType);
+    categoryDispatch({
+      type: 'add_category',
+      cat: formattedNewCategory,
+      categoryType,
+    });
 
     setNewCategory('');
     setShowAddCategoryModal(false);
