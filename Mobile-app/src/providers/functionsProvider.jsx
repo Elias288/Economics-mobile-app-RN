@@ -1,4 +1,7 @@
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
 import { createContext, useContext } from 'react';
+import { Platform } from 'react-native';
 
 /**
  * @typedef {Object} functionsProviderProps
@@ -73,9 +76,62 @@ const FunctionsProvider = ({ children }) => {
     return newDate;
   };
 
+  const createSCV = async (data) => {
+    const datos = [
+      ['Nombre', 'Edad', 'Correo'],
+      ['Juan', '25', 'juan@example.com'],
+      ['María', '30', 'maria@example.com'],
+      ['Pedro', '28', 'pedro@example.com'],
+    ];
+
+    return datos
+      .map((row) => row.join(',')) // Convertir cada fila a una cadena CSV
+      .join('\n');
+  };
+
+  const saveCSV = async (formattedData, fileName, place = 'local') => {
+    if (place === 'local') {
+      if (Platform.OS === 'android') {
+        const permissions =
+          await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+
+        if (permissions.granted) {
+          await FileSystem.StorageAccessFramework.createFileAsync(
+            permissions.directoryUri,
+            fileName,
+            'text/csv'
+          )
+            .then(async (uri) => {
+              await FileSystem.writeAsStringAsync(uri, formattedData, {
+                encoding: FileSystem.EncodingType.UTF8,
+              });
+
+              console.log('Archivo CSV creado y guardado:', permissions.directoryUri);
+            })
+            .catch((e) => console.log(e));
+        }
+      }
+    } else {
+      const fileUri = FileSystem.documentDirectory + fileName;
+      FileSystem.writeAsStringAsync(fileUri, formattedData, {
+        encoding: FileSystem.EncodingType.UTF8,
+      }).then(() => {
+        shareAsync(fileUri);
+      });
+      console.log('Archivo CSV creado y guardado:', fileUri);
+    }
+  };
+
   return (
     <FunctionsContext.Provider
-      value={{ formatAmount, minimizeNumber, capitalizeFirstLetter, removeTimeFromDate }}
+      value={{
+        formatAmount,
+        minimizeNumber,
+        capitalizeFirstLetter,
+        removeTimeFromDate,
+        createSCV,
+        saveCSV,
+      }}
     >
       {children}
     </FunctionsContext.Provider>

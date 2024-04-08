@@ -1,49 +1,50 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from 'react-native-paper';
 
-import BalanceMovementsNav from './pages/BalanceMovements/BalanceMovementsNav';
-import ConfigurationNav from './pages/Configuration/ConfigurationNav';
-import HomeScreen from './pages/Home/HomeScreen';
+import HomeNav from './pages/Home/HomeNav';
+import InitialPage from './pages/InitialPage';
+import SaveFilePage from './pages/SaveFilePage';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const screens = [
   {
-    component: HomeScreen,
-    name: 'Home',
-    icon: 'home',
+    component: HomeNav,
+    name: 'homeNav',
+    title: 'Home',
+    type: 'Nav',
+  },
+  {
+    component: InitialPage,
+    name: 'initialPage',
+    title: 'Economic application',
     type: 'screen',
   },
   {
-    component: BalanceMovementsNav,
-    name: 'Balance Movements',
-    icon: 'swap-vertical-bold',
-    type: 'nav',
-  },
-  {
-    component: ConfigurationNav,
-    name: 'Configurations',
-    icon: 'cog',
-    type: 'nav',
+    component: SaveFilePage,
+    name: 'saveFile',
+    title: 'Save File',
+    type: 'screen',
   },
 ];
 
 function Main() {
   const chargeTabScreens = () => {
     return screens.map((item, index) => (
-      <Tab.Screen
+      <Stack.Screen
         key={index}
         name={item.name}
         component={item.component}
         options={{
-          headerShown: item.type === 'screen',
+          title: `${item.title}`,
+          headerShown: item.type === 'screen', // si es un nav, mostrara el header de sus hijos
           tabBarIcon: ({ color, size }) => <Icon source={item.icon} color={color} size={size} />,
-        }} // si es un nav, mostrara el header de sus hijos
+        }}
       />
     ));
   };
 
-  return <Tab.Navigator initialRouteName="Home">{chargeTabScreens()}</Tab.Navigator>;
+  return <Stack.Navigator initialRouteName="initialPage">{chargeTabScreens()}</Stack.Navigator>;
 }
 
 export default Main;
