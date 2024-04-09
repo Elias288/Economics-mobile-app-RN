@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 import { BalanceTable } from '../../components/BalanceTable';
 import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
-import { generalStyles } from '../../generalStyles';
+import { generalStyles, getColors } from '../../generalStyles';
 import { useMovementsContext, MOVEMENTTYPE } from '../../providers/MovementsProvider';
 
 function BalanceMovementsScreen({ navigation }) {
   const { movements } = useMovementsContext();
   const [showAddButtons, setShowAddButtons] = useState(false);
+  const color = getColors();
 
   const goToPage = (movementType) => {
     navigation.navigate('addMovement', {
@@ -22,9 +23,22 @@ function BalanceMovementsScreen({ navigation }) {
     <>
       <ScrollView>
         <View style={generalStyles.container}>
-          <MovementsFilters originalMovements={movements}>
-            <BalanceTable />
-          </MovementsFilters>
+          {movements.length === 0 ? (
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 30,
+                fontWeight: 'bold',
+                color: color.lightGray,
+              }}
+            >
+              Without movements
+            </Text>
+          ) : (
+            <MovementsFilters originalMovements={movements}>
+              <BalanceTable />
+            </MovementsFilters>
+          )}
         </View>
       </ScrollView>
 
