@@ -5,12 +5,14 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { Button, Card, TextInput } from 'react-native-paper';
 
 import { generalStyles, getColors } from '../../generalStyles';
-import { useAmountContext } from '../../providers/amountProvider';
 import '../../types/movementType';
+import { useCategoriesContext } from '../../providers/CategoriesProvider';
+import { useMovementsContext } from '../../providers/MovementsProvider';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
-  const { categories, addMovement } = useAmountContext();
+  const { categories } = useCategoriesContext();
+  const { movementsDispatch } = useMovementsContext();
 
   const descriptionInput = useRef(null);
   const [newMovement, setNewMovement] = useState({
@@ -33,7 +35,7 @@ function AddMovementScreen({ route, navigation }) {
     if (newMovement.desc.trim() === '') return alert('Invalid Description');
     if (newMovement.cat.trim() === '') return alert('Invalid Category');
 
-    addMovement(newMovement, movementType);
+    movementsDispatch({ type: 'add_movement', newMovement });
 
     navigation.goBack();
   };

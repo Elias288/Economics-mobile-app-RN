@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles.js';
-import { useAmountContext } from '../../providers/amountProvider.jsx';
+import { useAmountContext } from '../../providers/AmountProvider.jsx';
 import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
 
 /**

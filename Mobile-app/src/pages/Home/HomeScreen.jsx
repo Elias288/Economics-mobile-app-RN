@@ -4,7 +4,7 @@ import { AmountContainer } from './AmountContainer';
 import MovementContainer from './MovementsContainer';
 import FloatButton from '../../components/FloatButton';
 import { generalStyles } from '../../generalStyles';
-import { MOVEMENTTYPE } from '../../hooks/useMovements';
+import { MOVEMENTTYPE } from '../../providers/MovementsProvider';
 
 function HomeScreen({ navigation }) {
   return (

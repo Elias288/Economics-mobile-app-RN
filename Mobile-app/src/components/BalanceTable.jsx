@@ -4,9 +4,8 @@ import { DataTable, Icon, Portal } from 'react-native-paper';
 
 import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
-import { MOVEMENTTYPE } from '../hooks/useMovements';
-import { useAmountContext } from '../providers/amountProvider';
 import '../types/movementType';
+import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvider';
 import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
@@ -16,7 +15,7 @@ import { useFunctionProvider } from '../providers/functionsProvider';
  * @returns {ReactNode}
  */
 export const BalanceTable = ({ movements }) => {
-  const { deleteMovement } = useAmountContext();
+  const { movementsDispatch } = useMovementsContext();
   const { formatAmount } = useFunctionProvider();
 
   const [showModal, setShowModal] = useState(false);
@@ -40,7 +39,7 @@ export const BalanceTable = ({ movements }) => {
   };
 
   const onDelete = () => {
-    deleteMovement(selectedMovement.Id);
+    movementsDispatch({ type: 'remove_movement', movementIdToDelete: selectedMovement.Id });
     setShowConfirmDialog(false);
     setShowModal(false);
   };

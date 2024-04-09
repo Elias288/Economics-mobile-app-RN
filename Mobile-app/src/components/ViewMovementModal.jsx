@@ -3,7 +3,7 @@ import { Button, DataTable } from 'react-native-paper';
 
 import CustomModal from '../components/CustomModal';
 import { getColors } from '../generalStyles';
-import { MOVEMENTTYPE } from '../hooks/useMovements';
+import { MOVEMENTTYPE } from '../providers/MovementsProvider';
 import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { Button, Card, TextInput } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useAmountContext } from '../../providers/AmountProvider';
 import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function ConfigurationInitialBalance() {

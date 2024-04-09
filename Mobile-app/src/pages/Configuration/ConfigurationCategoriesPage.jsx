@@ -5,12 +5,12 @@ import { Card, Chip, TextInput, Portal } from 'react-native-paper';
 import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useCategoriesContext } from '../../providers/CategoriesProvider';
 import { useFunctionProvider } from '../../providers/functionsProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
-  const { categories, addCategory, deleteCategory } = useAmountContext();
+  const { categories, deleteCategory, categoryDispatch } = useCategoriesContext();
   const { capitalizeFirstLetter } = useFunctionProvider();
 
   // Add categories states
@@ -39,7 +39,11 @@ function ConfigurationCategoriesPage({ route }) {
     if (formattedNewCategory === '' || formattedNewCategory.length < 4)
       return alert('Invalid Category');
 
-    addCategory(formattedNewCategory, categoryType);
+    categoryDispatch({
+      type: 'add_category',
+      cat: formattedNewCategory,
+      categoryType,
+    });
 
     setNewCategory('');
     setShowAddCategoryModal(false);

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
 import Main from './src/Main';
-import AmountProvider from './src/providers/amountProvider';
+import AmountProvider from './src/providers/AmountProvider';
 import FunctionsProvider from './src/providers/functionsProvider';
 
 export default function App() {
