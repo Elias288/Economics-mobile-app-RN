@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataTable } from 'react-native-paper';
 
 import '../types/TableContentType.js';
-import { useFunctionProvider } from '../providers/functionsProvider.jsx';
+import { useFunctionProvider } from '../providers/FunctionsProvider.jsx';
 
 /**
  * Categorías por defecto

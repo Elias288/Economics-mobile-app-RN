@@ -3,7 +3,7 @@ import { Icon } from 'react-native-paper';
 
 import HomeNav from './pages/Home/HomeNav';
 import InitialPage from './pages/InitialPage';
-import SaveFilePage from './pages/SaveFilePage';
+import SaveFilePage from './pages/SaveFile/SaveFilePage';
 
 const Stack = createNativeStackNavigator();
 

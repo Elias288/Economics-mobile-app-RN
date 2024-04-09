@@ -4,7 +4,7 @@ import { Button, Card, TextInput } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
-import { useFunctionProvider } from '../../providers/functionsProvider';
+import { useFunctionProvider } from '../../providers/FunctionsProvider';
 
 function ConfigurationInitialBalance() {
   const { initialBalance, chargeInitialAmount } = useAmountContext();

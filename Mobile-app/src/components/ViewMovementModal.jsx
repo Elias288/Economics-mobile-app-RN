@@ -3,8 +3,8 @@ import { Button, DataTable } from 'react-native-paper';
 
 import CustomModal from '../components/CustomModal';
 import { getColors } from '../generalStyles';
+import { useFunctionProvider } from '../providers/FunctionsProvider';
 import { MOVEMENTTYPE } from '../providers/MovementsProvider';
-import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
  * View Movement Modal

@@ -3,7 +3,7 @@ import { Card } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles.js';
 import { useAmountContext } from '../../providers/AmountProvider.jsx';
-import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
+import { useFunctionProvider } from '../../providers/FunctionsProvider.jsx';
 
 /**
  * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.

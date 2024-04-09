@@ -5,8 +5,8 @@ import { DataTable, Icon, Portal } from 'react-native-paper';
 import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
 import '../types/movementType';
+import { useFunctionProvider } from '../providers/FunctionsProvider';
 import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvider';
-import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
  * Balance Table

@@ -3,8 +3,8 @@ import { Button, Card } from 'react-native-paper';
 
 import { generalStyles } from '../../generalStyles.js';
 import { useAmountContext } from '../../providers/AmountProvider.jsx';
+import { useFunctionProvider } from '../../providers/FunctionsProvider.jsx';
 import { MOVEMENTTYPE } from '../../providers/MovementsProvider.jsx';
-import { useFunctionProvider } from '../../providers/functionsProvider.jsx';
 
 function ConfigurationScreen({ navigation }) {
   const { initialBalance } = useAmountContext();

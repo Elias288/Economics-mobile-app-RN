@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
+import { useFunctionProvider } from '../providers/FunctionsProvider';
 import { MOVEMENTTYPE } from '../providers/MovementsProvider';
-import { useFunctionProvider } from '../providers/functionsProvider';
 
 /**
  * @typedef {Object} periodProps

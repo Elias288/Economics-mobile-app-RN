@@ -5,7 +5,7 @@ import { PaperProvider } from 'react-native-paper';
 
 import Main from './src/Main';
 import AmountProvider from './src/providers/AmountProvider';
-import FunctionsProvider from './src/providers/functionsProvider';
+import FunctionsProvider from './src/providers/FunctionsProvider';
 
 export default function App() {
   return (

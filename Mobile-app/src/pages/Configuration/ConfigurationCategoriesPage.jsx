@@ -6,7 +6,7 @@ import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
 import { useCategoriesContext } from '../../providers/CategoriesProvider';
-import { useFunctionProvider } from '../../providers/functionsProvider';
+import { useFunctionProvider } from '../../providers/FunctionsProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;

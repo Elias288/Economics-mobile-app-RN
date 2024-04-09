@@ -9,6 +9,8 @@ import { Platform } from 'react-native';
  * @property {(number: number) => string} minimizeNumber
  * @property {(word: string) => string} capitalizeFirstLetter
  * @property {(date: Date) => Date} removeTimeFromDate
+ * @property {(data: movementObject[]) => string} createSCV
+ * @property {(formattedData: string, fileName: string, place?: string) => void} saveCSV
  */
 
 /** @type {import('react').Context<functionsProviderProps>} */
@@ -76,17 +78,23 @@ const FunctionsProvider = ({ children }) => {
     return newDate;
   };
 
-  const createSCV = async (data) => {
-    const datos = [
-      ['Nombre', 'Edad', 'Correo'],
-      ['Juan', '25', 'juan@example.com'],
-      ['María', '30', 'maria@example.com'],
-      ['Pedro', '28', 'pedro@example.com'],
-    ];
+  /**
+   * Create CSV file
+   * @param {movementObject[]} data
+   * @returns {string}
+   */
+  const createSCV = (data) => {
+    const header = Object.keys(data[0]);
+    const headerString = header.join(',');
+    // handle null or undefined values here
+    const replacer = (key, value) => value ?? '';
 
-    return datos
-      .map((row) => row.join(',')) // Convertir cada fila a una cadena CSV
-      .join('\n');
+    const rowItems = data.map((row) =>
+      header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(',')
+    );
+    // join header and body, and break into separate lines
+    const csv = [headerString, ...rowItems].join('\r\n');
+    return csv;
   };
 
   const saveCSV = async (formattedData, fileName, place = 'local') => {
@@ -105,8 +113,6 @@ const FunctionsProvider = ({ children }) => {
               await FileSystem.writeAsStringAsync(uri, formattedData, {
                 encoding: FileSystem.EncodingType.UTF8,
               });
-
-              console.log('Archivo CSV creado y guardado:', permissions.directoryUri);
             })
             .catch((e) => console.log(e));
         }
@@ -118,7 +124,6 @@ const FunctionsProvider = ({ children }) => {
       }).then(() => {
         shareAsync(fileUri);
       });
-      console.log('Archivo CSV creado y guardado:', fileUri);
     }
   };
 
