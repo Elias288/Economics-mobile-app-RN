@@ -9,7 +9,7 @@ import { Platform } from 'react-native';
  * @property {(number: number) => string} minimizeNumber
  * @property {(word: string) => string} capitalizeFirstLetter
  * @property {(date: Date) => Date} removeTimeFromDate
- * @property {(data: movementObject[]) => string} createSCV
+ * @property {(data: movementObject[], totalAmount?: number, initialBalance: number) => string} createSCV
  * @property {(formattedData: string, fileName: string, place?: string) => void} saveCSV
  */
 
@@ -83,7 +83,9 @@ const FunctionsProvider = ({ children }) => {
    * @param {movementObject[]} data
    * @returns {string}
    */
-  const createSCV = (data) => {
+  const createSCV = (data, totalAmount, initialBalance = 0) => {
+    const amounts = `totalAmount,initialBalance\r\n${totalAmount},${initialBalance}\r\n`;
+
     const header = Object.keys(data[0]);
     const headerString = header.join(',');
     // handle null or undefined values here
@@ -93,7 +95,7 @@ const FunctionsProvider = ({ children }) => {
       header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(',')
     );
     // join header and body, and break into separate lines
-    const csv = [headerString, ...rowItems].join('\r\n');
+    const csv = amounts + [headerString, ...rowItems].join('\r\n');
     return csv;
   };
 

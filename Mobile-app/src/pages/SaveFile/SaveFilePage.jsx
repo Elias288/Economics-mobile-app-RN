@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, Icon, TextInput, IconButton } from 'react-native-paper';
 
 import MovementsTable from './MovementsTable';
-import { generalStyles } from '../../generalStyles';
+import { generalStyles, getColors } from '../../generalStyles';
+import { useAmountContext } from '../../providers/AmountProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
 import { useMovementsContext } from '../../providers/MovementsProvider';
 
+const color = getColors();
+
 function SaveFilePage() {
+  const { totalAmount, initialBalance } = useAmountContext();
   const { movements } = useMovementsContext();
-  const { saveCSV, createSCV } = useFunctionProvider();
+  const { saveCSV, createSCV, formatAmount } = useFunctionProvider();
 
   const [newFileName, setNewFileName] = useState('');
   const [fileName, setFileName] = useState('');
@@ -19,6 +23,7 @@ function SaveFilePage() {
     const date = new Date();
     const formatDate = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
     const name = `Financial_file_${formatDate}`;
+
     setFileName(name);
     setNewFileName(name);
   }, []);
@@ -28,7 +33,7 @@ function SaveFilePage() {
    * @param {string} type
    */
   const onSave = (type) => {
-    const csvData = createSCV(movements);
+    const csvData = createSCV(movements, totalAmount, initialBalance);
 
     saveCSV(csvData, fileName + '.csv', type);
   };
@@ -41,7 +46,7 @@ function SaveFilePage() {
   return (
     <View style={{ ...generalStyles.container, paddingBottom: 30 }}>
       {/* File Name */}
-      <View style={{ marginBottom: 20, gap: 10 }}>
+      <View style={styles.fileNameContainer}>
         {!isEdit ? (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontSize: 18, flex: 1 }}>
@@ -70,13 +75,27 @@ function SaveFilePage() {
         )}
       </View>
 
-      {/* Data table */}
       <View style={{ flex: 1 }}>
+        <View style={styles.amountContainer}>
+          <View style={styles.amountChip}>
+            <Text style={styles.amountChipTitle}>Total amount</Text>
+            <Text style={styles.amountChipText}>${formatAmount(totalAmount)}</Text>
+          </View>
+
+          {initialBalance !== 0 && (
+            <View style={styles.amountChip}>
+              <Text style={styles.amountChipTitle}>Initial balance</Text>
+              <Text style={styles.amountChipText}>${formatAmount(initialBalance)}</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Data table */}
         <MovementsTable data={movements} />
       </View>
 
       {/* Actions */}
-      <View style={{ flexDirection: 'row', gap: 10, marginTop: 20 }}>
+      <View style={styles.actionContainer}>
         <Button onPress={() => onSave('local')} mode="contained" style={{ flex: 1 }}>
           <Icon source="folder-download" color="#fff" size={20} /> <Text>Save</Text>
         </Button>
@@ -88,5 +107,40 @@ function SaveFilePage() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  fileNameContainer: {
+    marginBottom: 20,
+    gap: 10,
+  },
+  amountContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+  },
+  amountChip: {
+    flexDirection: 'column',
+    backgroundColor: color.purple,
+    alignItems: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  amountChipTitle: {
+    color: color.white,
+    fontWeight: '400',
+    fontSize: 15,
+  },
+  amountChipText: {
+    color: color.white,
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 20,
+  },
+});
 
 export default SaveFilePage;
