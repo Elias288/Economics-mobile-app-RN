@@ -1,4 +1,3 @@
-import { randomUUID } from 'expo-crypto';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
 /**
@@ -25,7 +24,7 @@ const MovementsProvider = ({ children, initialBalance, calculateTotalAmount }) =
   const [movements, dispatch] = useReducer((state = [], action) => {
     switch (action.type) {
       case 'add_movement': {
-        return [...state, { Id: randomUUID(), ...action.newMovement }];
+        return [...state, { ...action.newMovement }];
       }
       case 'remove_movement': {
         return state.filter((movement) => movement.Id !== action.movementIdToDelete);
@@ -34,6 +33,9 @@ const MovementsProvider = ({ children, initialBalance, calculateTotalAmount }) =
         return state.map((movement) =>
           movement.cat === action.oldCategory ? { ...movement, cat: action.newCategory } : movement
         );
+      }
+      case 'clean_movements': {
+        return [];
       }
       default: {
         return state;

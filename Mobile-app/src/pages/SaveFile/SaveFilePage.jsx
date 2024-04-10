@@ -11,7 +11,7 @@ import { useMovementsContext } from '../../providers/MovementsProvider';
 
 const color = getColors();
 
-function SaveFilePage() {
+function SaveFilePage({ navigation }) {
   const { totalAmount, initialBalance } = useAmountContext();
   const { movements } = useMovementsContext();
   const { formatAmount } = useFunctionProvider();
@@ -38,6 +38,8 @@ function SaveFilePage() {
     const csvData = createSCV(movements, totalAmount, initialBalance);
 
     saveCSV(csvData, fileName + '.csv', type);
+
+    navigation.navigate('home');
   };
 
   const changeFileName = () => {
@@ -67,7 +69,7 @@ function SaveFilePage() {
 
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <Button mode="contained" style={{ flex: 1 }} onPress={changeFileName}>
-                Edit
+                Save
               </Button>
               <Button mode="contained" style={{ flex: 1 }} onPress={() => setIsEdit(false)}>
                 Cancel

@@ -1,48 +1,40 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-paper';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './HomeScreen';
-import BalanceMovementsNav from '../BalanceMovements/BalanceMovementsNav';
-import ConfigurationNav from '../Configuration/ConfigurationNav';
+import SaveFilePage from '../SaveFile/SaveFilePage';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const screens = [
   {
     component: HomeScreen,
-    name: 'Home',
-    icon: 'home',
+    name: 'home',
+    title: 'Home',
     type: 'screen',
   },
   {
-    component: BalanceMovementsNav,
-    name: 'Balance Movements',
-    icon: 'swap-vertical-bold',
-    type: 'nav',
-  },
-  {
-    component: ConfigurationNav,
-    name: 'Configurations',
-    icon: 'cog',
-    type: 'nav',
+    component: SaveFilePage,
+    name: 'saveFile',
+    title: 'Save File',
+    type: 'screen',
   },
 ];
 
 function HomeNav() {
   const chargeTabScreens = () => {
     return screens.map((item, index) => (
-      <Tab.Screen
+      <Stack.Screen
         key={index}
         name={item.name}
         component={item.component}
         options={{
-          headerShown: item.type === 'screen',
-          tabBarIcon: ({ color, size }) => <Icon source={item.icon} color={color} size={size} />,
-        }} // si es un nav, mostrara el header de sus hijos
+          title: `${item.title}`,
+          headerShown: item.type === 'screen', // si es un nav, mostrara el header de sus hijos
+        }}
       />
     ));
   };
-  return <Tab.Navigator initialRouteName="Home">{chargeTabScreens()}</Tab.Navigator>;
+  return <Stack.Navigator initialRouteName="Home">{chargeTabScreens()}</Stack.Navigator>;
 }
 
 export default HomeNav;

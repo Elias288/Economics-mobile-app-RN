@@ -1,7 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 
 import { useAmountContext } from './AmountProvider';
@@ -27,6 +27,9 @@ export const useFilesManagementProvider = () => {
 function FilesManagementProvider({ children }) {
   const { chargeInitialAmount } = useAmountContext();
   const { movementsDispatch } = useMovementsContext();
+
+  const [isOpenedFile, setIsOpenedFile] = useState(false);
+
   /**
    * Create CSV file
    * @param {movementObject[]} data
@@ -71,6 +74,8 @@ function FilesManagementProvider({ children }) {
               await FileSystem.writeAsStringAsync(uri, formattedData, {
                 encoding: FileSystem.EncodingType.UTF8,
               });
+
+              setIsOpenedFile(true);
             })
             .catch((e) => console.log(e));
         }
@@ -158,10 +163,20 @@ function FilesManagementProvider({ children }) {
     data.movements.forEach((movement) => {
       movementsDispatch({ type: 'add_movement', newMovement: movement });
     });
+
+    setIsOpenedFile(true);
+  };
+
+  const cleanData = () => {
+    chargeInitialAmount(0);
+    movementsDispatch({ type: 'clean_movements' });
+    setIsOpenedFile(false);
   };
 
   return (
-    <FilesManagementContext.Provider value={{ createSCV, saveCSV, openCSV }}>
+    <FilesManagementContext.Provider
+      value={{ isOpenedFile, createSCV, saveCSV, openCSV, cleanData }}
+    >
       {children}
     </FilesManagementContext.Provider>
   );
