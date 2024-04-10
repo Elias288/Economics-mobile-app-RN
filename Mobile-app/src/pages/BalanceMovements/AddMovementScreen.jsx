@@ -1,4 +1,5 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { randomUUID } from 'expo-crypto';
 import { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -16,6 +17,7 @@ function AddMovementScreen({ route, navigation }) {
 
   const descriptionInput = useRef(null);
   const [newMovement, setNewMovement] = useState({
+    Id: '',
     date: new Date(),
     cat: '',
     desc: '',
@@ -35,6 +37,7 @@ function AddMovementScreen({ route, navigation }) {
     if (newMovement.desc.trim() === '') return alert('Invalid Description');
     if (newMovement.cat.trim() === '') return alert('Invalid Category');
 
+    newMovement.Id = randomUUID();
     movementsDispatch({ type: 'add_movement', newMovement });
 
     navigation.goBack();

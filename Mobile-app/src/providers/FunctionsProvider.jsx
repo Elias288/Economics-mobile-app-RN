@@ -1,7 +1,4 @@
-import * as FileSystem from 'expo-file-system';
-import { shareAsync } from 'expo-sharing';
 import { createContext, useContext } from 'react';
-import { Platform } from 'react-native';
 
 /**
  * @typedef {Object} functionsProviderProps
@@ -9,8 +6,6 @@ import { Platform } from 'react-native';
  * @property {(number: number) => string} minimizeNumber
  * @property {(word: string) => string} capitalizeFirstLetter
  * @property {(date: Date) => Date} removeTimeFromDate
- * @property {(data: movementObject[], totalAmount?: number, initialBalance: number) => string} createSCV
- * @property {(formattedData: string, fileName: string, place?: string) => void} saveCSV
  */
 
 /** @type {import('react').Context<functionsProviderProps>} */
@@ -78,57 +73,6 @@ const FunctionsProvider = ({ children }) => {
     return newDate;
   };
 
-  /**
-   * Create CSV file
-   * @param {movementObject[]} data
-   * @returns {string}
-   */
-  const createSCV = (data, totalAmount, initialBalance = 0) => {
-    const amounts = `totalAmount,initialBalance\r\n${totalAmount},${initialBalance}\r\n`;
-
-    const header = Object.keys(data[0]);
-    const headerString = header.join(',');
-    // handle null or undefined values here
-    const replacer = (key, value) => value ?? '';
-
-    const rowItems = data.map((row) =>
-      header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(',')
-    );
-    // join header and body, and break into separate lines
-    const csv = amounts + [headerString, ...rowItems].join('\r\n');
-    return csv;
-  };
-
-  const saveCSV = async (formattedData, fileName, place = 'local') => {
-    if (place === 'local') {
-      if (Platform.OS === 'android') {
-        const permissions =
-          await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-        if (permissions.granted) {
-          await FileSystem.StorageAccessFramework.createFileAsync(
-            permissions.directoryUri,
-            fileName,
-            'text/csv'
-          )
-            .then(async (uri) => {
-              await FileSystem.writeAsStringAsync(uri, formattedData, {
-                encoding: FileSystem.EncodingType.UTF8,
-              });
-            })
-            .catch((e) => console.log(e));
-        }
-      }
-    } else {
-      const fileUri = FileSystem.documentDirectory + fileName;
-      FileSystem.writeAsStringAsync(fileUri, formattedData, {
-        encoding: FileSystem.EncodingType.UTF8,
-      }).then(() => {
-        shareAsync(fileUri);
-      });
-    }
-  };
-
   return (
     <FunctionsContext.Provider
       value={{
@@ -136,8 +80,6 @@ const FunctionsProvider = ({ children }) => {
         minimizeNumber,
         capitalizeFirstLetter,
         removeTimeFromDate,
-        createSCV,
-        saveCSV,
       }}
     >
       {children}

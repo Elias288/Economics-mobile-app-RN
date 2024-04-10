@@ -5,6 +5,7 @@ import { PaperProvider } from 'react-native-paper';
 
 import Main from './src/Main';
 import AmountProvider from './src/providers/AmountProvider';
+import FilesManagementProvider from './src/providers/FileManagementProvider';
 import FunctionsProvider from './src/providers/FunctionsProvider';
 
 export default function App() {
@@ -14,8 +15,10 @@ export default function App() {
         <NavigationContainer>
           <AmountProvider>
             <PaperProvider>
-              <Main />
-              <StatusBar style="auto" />
+              <FilesManagementProvider>
+                <Main />
+                <StatusBar style="auto" />
+              </FilesManagementProvider>
             </PaperProvider>
           </AmountProvider>
         </NavigationContainer>

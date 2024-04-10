@@ -5,6 +5,7 @@ import { Button, Icon, TextInput, IconButton } from 'react-native-paper';
 import MovementsTable from './MovementsTable';
 import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
+import { useFilesManagementProvider } from '../../providers/FileManagementProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
 import { useMovementsContext } from '../../providers/MovementsProvider';
 
@@ -13,7 +14,8 @@ const color = getColors();
 function SaveFilePage() {
   const { totalAmount, initialBalance } = useAmountContext();
   const { movements } = useMovementsContext();
-  const { saveCSV, createSCV, formatAmount } = useFunctionProvider();
+  const { formatAmount } = useFunctionProvider();
+  const { saveCSV, createSCV } = useFilesManagementProvider();
 
   const [newFileName, setNewFileName] = useState('');
   const [fileName, setFileName] = useState('');
