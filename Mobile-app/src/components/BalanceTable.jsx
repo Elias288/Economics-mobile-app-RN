@@ -7,6 +7,7 @@ import CustomModal, { customModalStyles } from '../components/CustomModal';
 import '../types/movementType';
 import { useFunctionProvider } from '../providers/FunctionsProvider';
 import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvider';
+import { useNotificationProvider } from '../providers/NotificationProvider';
 
 /**
  * Balance Table
@@ -17,6 +18,7 @@ import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvide
 export const BalanceTable = ({ movements }) => {
   const { movementsDispatch } = useMovementsContext();
   const { formatAmount } = useFunctionProvider();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const [showModal, setShowModal] = useState(false);
   const [selectedMovement, setSelectedMovement] = useState(
@@ -42,6 +44,9 @@ export const BalanceTable = ({ movements }) => {
     movementsDispatch({ type: 'remove_movement', movementIdToDelete: selectedMovement.Id });
     setShowConfirmDialog(false);
     setShowModal(false);
+
+    setSnackBarContent('Movement correctly eliminated');
+    showSnackbar();
   };
 
   return (

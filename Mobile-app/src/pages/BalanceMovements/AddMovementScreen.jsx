@@ -9,11 +9,13 @@ import { generalStyles, getColors } from '../../generalStyles';
 import '../../types/movementType';
 import { useCategoriesContext } from '../../providers/CategoriesProvider';
 import { useMovementsContext } from '../../providers/MovementsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
   const { categories } = useCategoriesContext();
   const { movementsDispatch } = useMovementsContext();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const descriptionInput = useRef(null);
   const [newMovement, setNewMovement] = useState({
@@ -40,6 +42,8 @@ function AddMovementScreen({ route, navigation }) {
     newMovement.Id = randomUUID();
     movementsDispatch({ type: 'add_movement', newMovement });
 
+    setSnackBarContent('Correctly added movement');
+    showSnackbar();
     navigation.goBack();
   };
 

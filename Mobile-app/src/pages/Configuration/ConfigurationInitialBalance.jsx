@@ -5,10 +5,12 @@ import { Button, Card, TextInput } from 'react-native-paper';
 import { generalStyles } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
-function ConfigurationInitialBalance() {
+function ConfigurationInitialBalance({ navigation }) {
   const { initialBalance, chargeInitialAmount } = useAmountContext();
   const { formatAmount } = useFunctionProvider();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const balanceInput = useRef(null);
   const [initialBalanceValue, setInitialBalanceValue] = useState(
@@ -20,6 +22,10 @@ function ConfigurationInitialBalance() {
 
     chargeInitialAmount(Number.parseFloat(initialBalanceValue));
     balanceInput.current.blur();
+
+    setSnackBarContent('Initial amount has been updated');
+    showSnackbar();
+    navigation.goBack();
   };
 
   return (

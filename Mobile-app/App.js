@@ -7,6 +7,7 @@ import Main from './src/Main';
 import AmountProvider from './src/providers/AmountProvider';
 import FilesManagementProvider from './src/providers/FileManagementProvider';
 import FunctionsProvider from './src/providers/FunctionsProvider';
+import NotificationProvider from './src/providers/NotificationProvider';
 
 export default function App() {
   return (
@@ -16,8 +17,10 @@ export default function App() {
           <AmountProvider>
             <PaperProvider>
               <FilesManagementProvider>
-                <Main />
-                <StatusBar style="auto" />
+                <NotificationProvider>
+                  <Main />
+                  <StatusBar style="auto" />
+                </NotificationProvider>
               </FilesManagementProvider>
             </PaperProvider>
           </AmountProvider>

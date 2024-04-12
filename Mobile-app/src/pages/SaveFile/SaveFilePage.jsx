@@ -8,6 +8,7 @@ import { useAmountContext } from '../../providers/AmountProvider';
 import { useFilesManagementProvider } from '../../providers/FileManagementProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
 import { useMovementsContext } from '../../providers/MovementsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 const color = getColors();
 
@@ -16,6 +17,7 @@ function SaveFilePage({ navigation }) {
   const { movements } = useMovementsContext();
   const { formatAmount } = useFunctionProvider();
   const { saveCSV, createSCV } = useFilesManagementProvider();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const [newFileName, setNewFileName] = useState('');
   const [fileName, setFileName] = useState('');
@@ -38,6 +40,9 @@ function SaveFilePage({ navigation }) {
     const csvData = createSCV(movements, totalAmount, initialBalance);
 
     saveCSV(csvData, fileName + '.csv', type);
+
+    setSnackBarContent('Saved file: ' + fileName + '.csv');
+    showSnackbar();
 
     navigation.navigate('home');
   };

@@ -7,11 +7,13 @@ import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
 import { useCategoriesContext } from '../../providers/CategoriesProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
   const { categories, deleteCategory, categoryDispatch } = useCategoriesContext();
   const { capitalizeFirstLetter } = useFunctionProvider();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   // Add categories states
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
@@ -45,6 +47,9 @@ function ConfigurationCategoriesPage({ route }) {
       categoryType,
     });
 
+    setSnackBarContent('Category successfully added');
+    showSnackbar();
+
     setNewCategory('');
     setShowAddCategoryModal(false);
   };
@@ -67,6 +72,9 @@ function ConfigurationCategoriesPage({ route }) {
 
       setCategoryToDelete(undefined);
       setShowDeleteModal(false);
+
+      setSnackBarContent('Category correctly deleted');
+      showSnackbar();
     }
   };
 
