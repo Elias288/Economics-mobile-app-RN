@@ -10,12 +10,14 @@ import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
 import { useFilesManagementProvider } from '../../providers/FileManagementProvider';
 import { MOVEMENTTYPE } from '../../providers/MovementsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 const color = getColors();
 
 function HomeScreen({ navigation }) {
-  const { isOpenedFile, openCSV, cleanData } = useFilesManagementProvider();
+  const { isOpenedFile, openCSV, cleanData, chargeData } = useFilesManagementProvider();
   const { totalAmount } = useAmountContext();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const [showSpinner, setShowSpinner] = useState(true);
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
@@ -23,8 +25,16 @@ function HomeScreen({ navigation }) {
   const onOpenClose = async () => {
     if (!isOpenedFile) {
       setShowSpinner(true); // muestra spinner
-      cleanData(); // limpia datos cargados
-      await openCSV(); // carga los datos seleccionados por el usuario
+
+      const res = await openCSV(); // carga los datos seleccionados por el usuario
+
+      if (res !== null) {
+        cleanData(); // limpia datos cargados
+        chargeData(res);
+
+        setSnackBarContent('File uploaded successfully');
+        showSnackbar();
+      }
       setShowSpinner(false); // oculta spinner
     } else {
       setShowConfirmAlert(true); // muestra dialogo de confirmación

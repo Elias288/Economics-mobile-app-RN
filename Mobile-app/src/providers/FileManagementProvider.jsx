@@ -19,8 +19,9 @@ import { useMovementsContext } from './MovementsProvider';
  * @property {boolean} isOpenedFile
  * @property {(data: movementObject[], totalAmount: number, initialBalance?: number) => string} createSCV
  * @property {(formattedData: string, fileName: string, place?: string) => Promise<void>} saveCSV
- * @property {() => Promise<void | null>} openCSV
+ * @property {() => Promise<string | null>} openCSV
  * @property {()=> void} cleanData
+ * @property {(data: string)=> void} chargeData
  */
 
 /** @type {import('react').Context<FilesManagementProviderProps>} */
@@ -104,7 +105,7 @@ function FilesManagementProvider({ children }) {
 
   /**
    * Open CSV
-   * @return {Promise<void | null>}
+   * @return {Promise<string | null>}
    */
   const openCSV = async () => {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
@@ -119,7 +120,8 @@ function FilesManagementProvider({ children }) {
           encoding: FileSystem.EncodingType.UTF8,
         });
 
-        return chargeData(stringCSVToJson(dataCSV));
+        // chargeData(stringCSVToJson(dataCSV));
+        return dataCSV;
       } catch (e) {
         console.log(e);
         return null;
@@ -172,10 +174,15 @@ function FilesManagementProvider({ children }) {
     return dataJson;
   };
 
+  /**
+   * Charge Data
+   * @param {string} data
+   */
   const chargeData = (data) => {
-    chargeInitialAmount(Number.parseFloat(data.initialBalance));
+    const csvData = stringCSVToJson(data);
+    chargeInitialAmount(Number.parseFloat(csvData.initialBalance));
 
-    data.movements.forEach((movement) => {
+    csvData.movements.forEach((movement) => {
       movementsDispatch({ type: 'add_movement', newMovement: movement });
     });
 
@@ -190,7 +197,7 @@ function FilesManagementProvider({ children }) {
 
   return (
     <FilesManagementContext.Provider
-      value={{ isOpenedFile, createSCV, saveCSV, openCSV, cleanData }}
+      value={{ isOpenedFile, createSCV, saveCSV, openCSV, cleanData, chargeData }}
     >
       {children}
     </FilesManagementContext.Provider>
