@@ -9,7 +9,7 @@ import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
 import { useFilesManagementProvider } from '../../providers/FileManagementProvider';
-import { MOVEMENTTYPE } from '../../providers/MovementsProvider';
+import { MOVEMENTTYPE, useMovementsContext } from '../../providers/MovementsProvider';
 import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 const color = getColors();
@@ -17,6 +17,7 @@ const color = getColors();
 function HomeScreen({ navigation }) {
   const { isOpenedFile, openCSV, cleanData, chargeData } = useFilesManagementProvider();
   const { totalAmount } = useAmountContext();
+  const { movements } = useMovementsContext();
   const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
   const [showSpinner, setShowSpinner] = useState(true);
@@ -75,7 +76,7 @@ function HomeScreen({ navigation }) {
         </View>
       </ScrollView>
 
-      {totalAmount > 0 && (
+      {totalAmount > 0 && movements.length > 0 && (
         <FloatButton
           icon="content-save"
           bottom={70}
