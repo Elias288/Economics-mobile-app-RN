@@ -14,6 +14,16 @@ import { useMovementsContext } from './MovementsProvider';
  * @property {movementObject[]} movements
  */
 
+/**
+ * @typedef {Object} FilesManagementProviderProps
+ * @property {boolean} isOpenedFile
+ * @property {(data: movementObject[], totalAmount: number, initialBalance?: number) => string} createSCV
+ * @property {(formattedData: string, fileName: string, place?: string) => Promise<void>} saveCSV
+ * @property {() => Promise<void | null>} openCSV
+ * @property {()=> void} cleanData
+ */
+
+/** @type {import('react').Context<FilesManagementProviderProps>} */
 const FilesManagementContext = createContext(undefined);
 
 export const useFilesManagementProvider = () => {
@@ -33,6 +43,8 @@ function FilesManagementProvider({ children }) {
   /**
    * Create CSV file
    * @param {movementObject[]} data
+   * @param {number} totalAmount
+   * @param {number} [totalAmount]
    * @returns {string}
    */
   const createSCV = (data, totalAmount, initialBalance = 0) => {
@@ -56,7 +68,7 @@ function FilesManagementProvider({ children }) {
    * @param {string} formattedData
    * @param {string} fileName
    * @param {string} [place]
-   * @returns {void}
+   * @returns {Promise<void>}
    */
   const saveCSV = async (formattedData, fileName, place = 'local') => {
     if (place === 'local') {
@@ -90,7 +102,10 @@ function FilesManagementProvider({ children }) {
     }
   };
 
-  /** Open CSV   */
+  /**
+   * Open CSV
+   * @return {Promise<void | null>}
+   */
   const openCSV = async () => {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
 

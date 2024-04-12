@@ -6,13 +6,15 @@ Lista de objetivos de la aplicación
   - [x] Mostrar Saldo total (ingresos - gastos)
   - [x] Mostrar Lista de gastos separados por categorías (solo visualización)
   - [x] Mostrar Lista de ingresos separados por categorías (solo visualización)
-  - [ ] Al pulsar fila mostrar un modal que permita ingresar un gasto o ingreso previsto
+  - ~~Al pulsar fila mostrar un modal que permita ingresar un gasto o ingreso previsto~~
 - [x] Sub-menú de navegación
 - Página de configuración
   - [x] Ingreso de saldo inicial
   - [x] Inclusión de campos adicionales
 - [x] Desarrollo Contexto de montos.
 - [x] Página de ingreso de ingresos y gastos
-- [ ] Filtros en listado de movimientos
-- [ ] Almacenamiento local
+- [x] Filtros en listado de movimientos
+- ~~Almacenamiento local~~
+- [x] Almacenamiento en archivos CSV
+- [x] Cargar datos desde CSV
 - [ ] Página de Visualización de datos (gráficas)
