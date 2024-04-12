@@ -2,12 +2,13 @@ import { useState, useRef } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Button, Card, TextInput } from 'react-native-paper';
 
-import formatAmount from '../../functions/formatAmount';
 import { generalStyles } from '../../generalStyles';
-import { useAmountContext } from '../../providers/amountProvider';
+import { useAmountContext } from '../../providers/AmountProvider';
+import { useFunctionProvider } from '../../providers/FunctionsProvider';
 
 function ConfigurationInitialBalance() {
   const { initialBalance, chargeInitialAmount } = useAmountContext();
+  const { formatAmount } = useFunctionProvider();
 
   const balanceInput = useRef(null);
   const [initialBalanceValue, setInitialBalanceValue] = useState(

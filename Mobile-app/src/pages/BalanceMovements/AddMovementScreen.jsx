@@ -1,52 +1,60 @@
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { randomUUID } from 'expo-crypto';
 import { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Button, Card, TextInput } from 'react-native-paper';
 
-import { colors, generalStyles } from '../../generalStyles';
-import { MOVEMENTTYPE } from '../../hooks/useMovements';
-import { useAmountContext } from '../../providers/amountProvider';
+import { generalStyles, getColors } from '../../generalStyles';
 import '../../types/movementType';
+import { useCategoriesContext } from '../../providers/CategoriesProvider';
+import { useMovementsContext } from '../../providers/MovementsProvider';
 
 function AddMovementScreen({ route, navigation }) {
   const { movementType } = route.params;
-  const { incomeCategories, spendCategories, addMovement } = useAmountContext();
+  const { categories } = useCategoriesContext();
+  const { movementsDispatch } = useMovementsContext();
 
   const descriptionInput = useRef(null);
-  const [categories, setCategories] = useState([]);
-  const [newMovement, setNewMovement] = useState(
-    /** @type {movementObject} */ ({
-      date: new Date(),
-      cat: '',
-      desc: '',
-      amount: 0,
-    })
-  );
-
-  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+  const [newMovement, setNewMovement] = useState({
+    Id: '',
+    date: new Date(),
+    cat: '',
+    desc: '',
+    amount: 0,
+    type: movementType,
+  });
+  const [categoryByType, setCategoryByType] = useState([]);
 
   useEffect(() => {
-    if (movementType === MOVEMENTTYPE.SPEND) {
-      setCategories(spendCategories.map((category) => category.cat));
-    } else {
-      setCategories(incomeCategories.map((category) => category.cat));
-    }
-  }, [incomeCategories, movementType, spendCategories]);
+    setCategoryByType(
+      categories.filter((cat) => cat.type === movementType).map((category) => category.cat)
+    );
+  }, [categories, movementType]);
 
   const addNewMovement = () => {
     if (newMovement.amount <= 0) return alert('Invalid Amount');
     if (newMovement.desc.trim() === '') return alert('Invalid Description');
     if (newMovement.cat.trim() === '') return alert('Invalid Category');
 
-    addMovement(newMovement, movementType);
+    newMovement.Id = randomUUID();
+    movementsDispatch({ type: 'add_movement', newMovement });
 
     navigation.goBack();
   };
 
   const setNewDate = (evt, selectedDate) => {
     setNewMovement({ ...newMovement, date: selectedDate });
-    setShowDateTimePicker(false);
+  };
+
+  const showDateTimePicker = () => {
+    DateTimePickerAndroid.open({
+      testID: 'dateTimePicker',
+      value: newMovement.date,
+      mode: 'date',
+      is24Hour: true,
+      onChange: setNewDate,
+    });
   };
 
   return (
@@ -72,26 +80,17 @@ function AddMovementScreen({ route, navigation }) {
           />
 
           <SelectList
-            data={categories}
+            data={categoryByType}
             search={false}
-            boxStyles={{ backgroundColor: colors.white }}
+            boxStyles={{ backgroundColor: getColors().white }}
             setSelected={(select) => {
               setNewMovement({ ...newMovement, cat: select });
             }}
           />
 
-          <Button mode="contained" onPress={() => setShowDateTimePicker(true)}>
+          <Button mode="contained" onPress={showDateTimePicker}>
             {newMovement.date.toLocaleDateString()}
           </Button>
-          {showDateTimePicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={newMovement.date}
-              mode="date"
-              is24Hour
-              onChange={setNewDate}
-            />
-          )}
 
           <Button onPress={addNewMovement} mode="contained">
             Add

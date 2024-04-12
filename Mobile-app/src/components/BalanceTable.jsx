@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Button, DataTable } from 'react-native-paper';
+import { Text, View } from 'react-native';
+import { DataTable, Icon, Portal } from 'react-native-paper';
 
+import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
-import formatAmount from '../functions/formatAmount';
-import minimizeNumber from '../functions/minimizeNumber';
-import { colors } from '../generalStyles';
-import { useAmountContext } from '../providers/amountProvider';
 import '../types/movementType';
+import { useFunctionProvider } from '../providers/FunctionsProvider';
+import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvider';
 
 /**
  * Balance Table
  * @param {Object} params
  * @param {Array<movementObject>} params.movements
- * @param {string} params.movementType
  * @returns {ReactNode}
  */
-export const BalanceTable = ({ movements, movementType }) => {
-  const { deleteMovement } = useAmountContext();
+export const BalanceTable = ({ movements }) => {
+  const { movementsDispatch } = useMovementsContext();
+  const { formatAmount } = useFunctionProvider();
 
   const [showModal, setShowModal] = useState(false);
   const [selectedMovement, setSelectedMovement] = useState(
@@ -25,13 +24,6 @@ export const BalanceTable = ({ movements, movementType }) => {
   );
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-
-  const tableHead = [
-    { title: 'Date', size: 1 },
-    { title: 'Amount', size: 1 },
-    { title: 'Description', size: 2 },
-    { title: 'Category', size: 1 },
-  ];
 
   /**
    * Show movement
@@ -47,7 +39,7 @@ export const BalanceTable = ({ movements, movementType }) => {
   };
 
   const onDelete = () => {
-    deleteMovement(selectedMovement, movementType);
+    movementsDispatch({ type: 'remove_movement', movementIdToDelete: selectedMovement.Id });
     setShowConfirmDialog(false);
     setShowModal(false);
   };
@@ -56,86 +48,66 @@ export const BalanceTable = ({ movements, movementType }) => {
     <>
       <DataTable style={{ marginBottom: 20 }}>
         <DataTable.Header>
-          {tableHead.map((item, index) => (
-            <DataTable.Title key={index} style={{ flex: item.size }}>
-              {item.title}
-            </DataTable.Title>
-          ))}
+          <DataTable.Title>Description</DataTable.Title>
+          <DataTable.Title>Category</DataTable.Title>
+          <DataTable.Title>Amount</DataTable.Title>
         </DataTable.Header>
 
         {movements.map((item, index) => (
-          <DataTable.Row key={index} onPress={() => showMovement(item)}>
-            <DataTable.Cell style={{ flex: tableHead[0].size }}>
-              {item.date.toLocaleString()}
+          <DataTable.Row
+            key={index}
+            onPress={() => showMovement(item)}
+            style={{ marginBottom: 10 }}
+          >
+            {/* Description and date */}
+            <DataTable.Cell>
+              <View style={{ flexDirection: 'column', paddingHorizontal: 3 }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{item.desc}</Text>
+                <Text>{item.date.toLocaleDateString()}</Text>
+              </View>
             </DataTable.Cell>
-            <DataTable.Cell style={{ flex: tableHead[1].size }}>
-              {item.amount ? `$${minimizeNumber(item.amount)}` : ''}
+
+            {/* Category */}
+            <DataTable.Cell>
+              <Text>{item.cat}</Text>
             </DataTable.Cell>
-            <DataTable.Cell style={{ flex: tableHead[2].size }}>{item.desc}</DataTable.Cell>
-            <DataTable.Cell style={{ flex: tableHead[3].size }}>{item.cat}</DataTable.Cell>
+
+            {/* Spends */}
+            <DataTable.Cell>
+              <Icon
+                size={20}
+                source={item.type === MOVEMENTTYPE.INCOME ? 'arrow-up-bold' : 'arrow-down-bold'}
+                color={item.type === MOVEMENTTYPE.INCOME ? 'green' : 'red'}
+              />
+              <Text style={{ fontWeight: 'bold' }}>
+                {item.type === MOVEMENTTYPE.SPEND ? '-' : ' '}${formatAmount(item.amount)}
+              </Text>
+            </DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>
 
-      <CustomModal isVisible={showModal} hideModal={() => setShowModal(false)}>
-        <DataTable>
-          <DataTable.Row>
-            <DataTable.Cell>
-              <Text style={styles.boldText}>Amount</Text>
-            </DataTable.Cell>
-            <DataTable.Cell>${formatAmount(selectedMovement.amount)}</DataTable.Cell>
-          </DataTable.Row>
+      <Portal>
+        {/* View movement */}
+        <ViewMovementModal
+          showModal={showModal}
+          hideModal={() => setShowModal(false)}
+          selectedMovement={selectedMovement}
+          setDeleteMovement={setDeleteMovement}
+        />
 
-          <DataTable.Row>
-            <DataTable.Cell style={styles.boldText}>
-              <Text style={styles.boldText}>Category</Text>
-            </DataTable.Cell>
-            <DataTable.Cell>{selectedMovement.cat}</DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Cell style={styles.boldText}>
-              <Text style={styles.boldText}>Description</Text>
-            </DataTable.Cell>
-            <DataTable.Cell>{selectedMovement.desc}</DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Cell style={styles.boldText}>
-              <Text style={styles.boldText}>Date</Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
-              {selectedMovement.date && selectedMovement.date.toLocaleDateString()}
-            </DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
-
-        <Button
-          mode="contained"
-          style={{ backgroundColor: colors.red, marginTop: 20 }}
-          onPress={setDeleteMovement}
+        {/* Confirm delete movement */}
+        <CustomModal
+          isVisible={showConfirmDialog}
+          hideModal={() => setShowConfirmDialog(false)}
+          onAccept={onDelete}
+          onCancel={() => setShowConfirmDialog(false)}
         >
-          Delete
-        </Button>
-      </CustomModal>
-
-      <CustomModal
-        isVisible={showConfirmDialog}
-        hideModal={() => setShowConfirmDialog(false)}
-        onAccept={onDelete}
-        onCancel={() => setShowConfirmDialog(false)}
-      >
-        <Text style={customModalStyles.modalMessage}>
-          Are you sure you want to eliminate this movement?
-        </Text>
-      </CustomModal>
+          <Text style={customModalStyles.modalMessage}>
+            Are you sure you want to eliminate this movement?
+          </Text>
+        </CustomModal>
+      </Portal>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-});

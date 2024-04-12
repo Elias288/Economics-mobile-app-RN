@@ -3,16 +3,16 @@ import { Icon } from 'react-native-paper';
 
 import BalanceMovementsNav from './pages/BalanceMovements/BalanceMovementsNav';
 import ConfigurationNav from './pages/Configuration/ConfigurationNav';
-import HomeScreen from './pages/Home/HomeScreen';
+import HomeNav from './pages/Home/HomeNav';
 
 const Tab = createBottomTabNavigator();
 
 const screens = [
   {
-    component: HomeScreen,
+    component: HomeNav,
     name: 'Home',
     icon: 'home',
-    type: 'screen',
+    type: 'nav',
   },
   {
     component: BalanceMovementsNav,
@@ -43,7 +43,7 @@ function Main() {
     ));
   };
 
-  return <Tab.Navigator initialRouteName="Home">{chargeTabScreens()}</Tab.Navigator>;
+  return <Tab.Navigator initialRouteName="homeNav">{chargeTabScreens()}</Tab.Navigator>;
 }
 
 export default Main;

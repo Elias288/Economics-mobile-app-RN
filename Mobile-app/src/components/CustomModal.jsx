@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Modal, Portal, Button } from 'react-native-paper';
+import { Modal, Button } from 'react-native-paper';
 
 /**
  * Modal custom
@@ -29,21 +29,19 @@ const CustomModal = (props) => {
   };
 
   return (
-    <Portal>
-      <Modal visible={isVisible} onDismiss={hideModal}>
-        <View style={[containerStyle, customModalStyles.container]}>
-          {children}
+    <Modal visible={isVisible} onDismiss={hideModal}>
+      <View style={[containerStyle, customModalStyles.container]}>
+        {children}
 
-          {onAccept !== undefined && (
-            <View style={customModalStyles.actions}>
-              <Button onPress={acceptHandle}>Accept</Button>
+        {onAccept !== undefined && (
+          <View style={customModalStyles.actions}>
+            <Button onPress={acceptHandle}>Accept</Button>
 
-              {onCancel !== undefined && <Button onPress={cancelHandle}>Cancel</Button>}
-            </View>
-          )}
-        </View>
-      </Modal>
-    </Portal>
+            {onCancel !== undefined && <Button onPress={cancelHandle}>Cancel</Button>}
+          </View>
+        )}
+      </View>
+    </Modal>
   );
 };
 

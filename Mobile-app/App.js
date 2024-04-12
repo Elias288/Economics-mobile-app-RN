@@ -4,19 +4,25 @@ import { SafeAreaView } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
 import Main from './src/Main';
-import AmountProvider from './src/providers/amountProvider';
+import AmountProvider from './src/providers/AmountProvider';
+import FilesManagementProvider from './src/providers/FileManagementProvider';
+import FunctionsProvider from './src/providers/FunctionsProvider';
 
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <PaperProvider>
+      <FunctionsProvider>
         <NavigationContainer>
           <AmountProvider>
-            <Main />
-            <StatusBar style="auto" />
+            <PaperProvider>
+              <FilesManagementProvider>
+                <Main />
+                <StatusBar style="auto" />
+              </FilesManagementProvider>
+            </PaperProvider>
           </AmountProvider>
         </NavigationContainer>
-      </PaperProvider>
+      </FunctionsProvider>
     </SafeAreaView>
   );
 }
