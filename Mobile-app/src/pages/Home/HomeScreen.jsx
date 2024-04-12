@@ -9,28 +9,48 @@ import FloatButton from '../../components/FloatButton';
 import { generalStyles, getColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
 import { useFilesManagementProvider } from '../../providers/FileManagementProvider';
-import { MOVEMENTTYPE } from '../../providers/MovementsProvider';
+import { MOVEMENTTYPE, useMovementsContext } from '../../providers/MovementsProvider';
+import { useNotificationProvider } from '../../providers/NotificationProvider';
 
 const color = getColors();
 
 function HomeScreen({ navigation }) {
-  const { isOpenedFile, openCSV, cleanData } = useFilesManagementProvider();
+  const { isOpenedFile, openCSV, cleanData, chargeData } = useFilesManagementProvider();
   const { totalAmount } = useAmountContext();
+  const { movements } = useMovementsContext();
+  const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
-  const [showSpinner, setShowSpinner] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   const onOpenClose = async () => {
-    setShowSpinner(true);
-
     if (!isOpenedFile) {
-      cleanData();
-      await openCSV();
-    } else {
-      setShowConfirmAlert(true);
-    }
+      setShowSpinner(true); // muestra spinner
 
-    setShowSpinner(false);
+      const res = await openCSV(); // carga los datos seleccionados por el usuario
+
+      if (res !== null) {
+        cleanData(); // limpia datos cargados
+        chargeData(res);
+
+        setSnackBarContent('File uploaded successfully');
+        showSnackbar();
+      }
+      setShowSpinner(false); // oculta spinner
+    } else {
+      setShowConfirmAlert(true); // muestra dialogo de confirmación
+    }
+  };
+
+  const onAccept = () => {
+    setShowSpinner(true); // muestra spinner
+
+    cleanData(); // limpia datos cargados
+    setShowConfirmAlert(false); // oculta dialogo de confirmación
+
+    setTimeout(() => {
+      setShowSpinner(false); // oculta spinner después de 1 segundo
+    }, 1000);
   };
 
   useEffect(() => {
@@ -56,7 +76,7 @@ function HomeScreen({ navigation }) {
         </View>
       </ScrollView>
 
-      {totalAmount > 0 && (
+      {totalAmount > 0 && movements.length > 0 && (
         <FloatButton
           icon="content-save"
           bottom={70}
@@ -66,17 +86,14 @@ function HomeScreen({ navigation }) {
         />
       )}
 
-      <FloatButton icon={isOpenedFile ? 'close-thick' : 'folder-open'} onPress={onOpenClose} />
+      <FloatButton icon={isOpenedFile ? 'note-remove' : 'note-plus'} onPress={onOpenClose} />
 
       <Portal>
         {/* Confirm Clean movement */}
         <CustomModal
           isVisible={showConfirmAlert}
           hideModal={() => setShowConfirmAlert(false)}
-          onAccept={() => {
-            cleanData();
-            setShowConfirmAlert(false);
-          }}
+          onAccept={onAccept}
           onCancel={() => setShowConfirmAlert(false)}
         >
           <Text style={customModalStyles.modalMessage}>

@@ -14,6 +14,17 @@ import { useMovementsContext } from './MovementsProvider';
  * @property {movementObject[]} movements
  */
 
+/**
+ * @typedef {Object} FilesManagementProviderProps
+ * @property {boolean} isOpenedFile
+ * @property {(data: movementObject[], totalAmount: number, initialBalance?: number) => string} createSCV
+ * @property {(formattedData: string, fileName: string, place?: string) => Promise<void>} saveCSV
+ * @property {() => Promise<string | null>} openCSV
+ * @property {()=> void} cleanData
+ * @property {(data: string)=> void} chargeData
+ */
+
+/** @type {import('react').Context<FilesManagementProviderProps>} */
 const FilesManagementContext = createContext(undefined);
 
 export const useFilesManagementProvider = () => {
@@ -33,6 +44,8 @@ function FilesManagementProvider({ children }) {
   /**
    * Create CSV file
    * @param {movementObject[]} data
+   * @param {number} totalAmount
+   * @param {number} [totalAmount]
    * @returns {string}
    */
   const createSCV = (data, totalAmount, initialBalance = 0) => {
@@ -56,7 +69,7 @@ function FilesManagementProvider({ children }) {
    * @param {string} formattedData
    * @param {string} fileName
    * @param {string} [place]
-   * @returns {void}
+   * @returns {Promise<void>}
    */
   const saveCSV = async (formattedData, fileName, place = 'local') => {
     if (place === 'local') {
@@ -90,7 +103,10 @@ function FilesManagementProvider({ children }) {
     }
   };
 
-  /** Open CSV   */
+  /**
+   * Open CSV
+   * @return {Promise<string | null>}
+   */
   const openCSV = async () => {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
 
@@ -104,7 +120,8 @@ function FilesManagementProvider({ children }) {
           encoding: FileSystem.EncodingType.UTF8,
         });
 
-        return chargeData(stringCSVToJson(dataCSV));
+        // chargeData(stringCSVToJson(dataCSV));
+        return dataCSV;
       } catch (e) {
         console.log(e);
         return null;
@@ -157,10 +174,15 @@ function FilesManagementProvider({ children }) {
     return dataJson;
   };
 
+  /**
+   * Charge Data
+   * @param {string} data
+   */
   const chargeData = (data) => {
-    chargeInitialAmount(Number.parseFloat(data.initialBalance));
+    const csvData = stringCSVToJson(data);
+    chargeInitialAmount(Number.parseFloat(csvData.initialBalance));
 
-    data.movements.forEach((movement) => {
+    csvData.movements.forEach((movement) => {
       movementsDispatch({ type: 'add_movement', newMovement: movement });
     });
 
@@ -175,7 +197,7 @@ function FilesManagementProvider({ children }) {
 
   return (
     <FilesManagementContext.Provider
-      value={{ isOpenedFile, createSCV, saveCSV, openCSV, cleanData }}
+      value={{ isOpenedFile, createSCV, saveCSV, openCSV, cleanData, chargeData }}
     >
       {children}
     </FilesManagementContext.Provider>
