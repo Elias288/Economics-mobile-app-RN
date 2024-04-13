@@ -31,9 +31,9 @@ function HomeScreen({ navigation }) {
 
       if (res !== null) {
         cleanData(); // limpia datos cargados
-        chargeData(res);
+        const data = chargeData(res);
 
-        setSnackBarContent('File uploaded successfully');
+        setSnackBarContent(data.msg);
         showSnackbar();
       }
       setShowSpinner(false); // oculta spinner

@@ -21,7 +21,7 @@ import { useMovementsContext } from './MovementsProvider';
  * @property {(formattedData: string, fileName: string, place?: string) => Promise<void>} saveCSV
  * @property {() => Promise<string | null>} openCSV
  * @property {()=> void} cleanData
- * @property {(data: string)=> void} chargeData
+ * @property {(data: string)=> responseType} chargeData
  */
 
 /** @type {import('react').Context<FilesManagementProviderProps>} */
@@ -108,85 +108,117 @@ function FilesManagementProvider({ children }) {
    * @return {Promise<string | null>}
    */
   const openCSV = async () => {
-    const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    try {
+      const document = await DocumentPicker.getDocumentAsync({
+        type: ['text/comma-separated-values', 'text/csv'],
+      });
 
-    if (permissions.granted) {
-      try {
-        const document = await DocumentPicker.getDocumentAsync({
-          type: ['text/comma-separated-values', 'text/csv'],
-        });
+      const dataCSV = await FileSystem.readAsStringAsync(document.assets[0].uri, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
 
-        const dataCSV = await FileSystem.readAsStringAsync(document.assets[0].uri, {
-          encoding: FileSystem.EncodingType.UTF8,
-        });
-
-        // chargeData(stringCSVToJson(dataCSV));
-        return dataCSV;
-      } catch (e) {
-        console.log(e);
-        return null;
-      }
+      return dataCSV;
+    } catch (e) {
+      console.log(e);
+      return null;
     }
-
-    return null;
   };
 
   /**
    * String CSV to JSON
    * @param {string} data
-   * @returns {amountObject}
+   * @returns {responseType}
    */
   const stringCSVToJson = (data) => {
-    const lines = data.trim().split('\n');
-    /** @type {amountObject} */
-    const dataJson = {};
+    try {
+      const lines = data.trim().split('\n');
+      /** @type {amountObject} */
+      const dataJson = {};
 
-    // HEADERS DATA
-    const headerValue = lines[1]
-      .trim()
-      .split(',')
-      .map((value) => parseInt(value, 10));
-    dataJson.totalAmount = headerValue[0];
-    dataJson.initialBalance = headerValue[1];
+      // Valida el largo del archivo
+      if (lines.length < 3) throw new Error('Error when trying to open file\nInvalid file length');
 
-    // MOVEMENTS
-    const movementsKey = lines[2].trim().split(',');
-    /** @type {movementObject[]} */
-    const movements = [];
+      const headerData = ['totalAmount', 'initialBalance'];
+      const movementsHeaderData = ['Id', 'amount', 'cat', 'date', 'desc', 'type'];
 
-    for (let i = 3; i < lines.length; i++) {
-      const values = lines[i].split(',');
+      const headerKeys = lines[0].trim().split(',');
 
-      const movement = {};
-      for (let j = 0; j < values.length; j++) {
-        if (movementsKey[j] === 'amount') {
-          movement[movementsKey[j]] = parseInt(values[j], 10); // parse to int the value
-        } else if (movementsKey[j] === 'date') {
-          movement[movementsKey[j]] = new Date(values[j].replace(/"/g, '').replace(/\r/g, ''));
-        } else {
-          movement[movementsKey[j]] = values[j].replace(/"/g, '').replace(/\r/g, ''); // else charge value
+      // Valida las cabeceras
+      if (!headerKeys.every((item) => headerData.includes(item)))
+        throw new Error('Error when trying to open file\nInvalid headers');
+
+      const movementsKey = lines[2].trim().split(',');
+      // Valida las cabeceras de los movimientos
+      if (!movementsKey.every((item) => movementsHeaderData.includes(item)))
+        throw new Error('Error when trying to open file\nInvalid movements headers');
+
+      // HEADERS DATA
+      const headerValue = lines[1]
+        .trim()
+        .split(',')
+        .map((value) => {
+          const val = parseInt(value, 10);
+          if (isNaN(val)) throw new Error('Error trying to open file\nInvalid data.');
+          return val;
+        });
+
+      dataJson.totalAmount = headerValue[0];
+      dataJson.initialBalance = headerValue[1];
+
+      // MOVEMENTS
+      /** @type {movementObject[]} */
+      const movements = [];
+
+      for (let i = 3; i < lines.length; i++) {
+        const values = lines[i].split(',');
+
+        const movement = {};
+        for (let j = 0; j < values.length; j++) {
+          const data = values[j].replace(/"/g, '').replace(/\r/g, '');
+
+          if (movementsKey[j] === 'amount') {
+            const amount = parseInt(data, 10);
+            if (isNaN(amount)) throw new Error('Error trying to open file\nInvalid amount data');
+            movement[movementsKey[j]] = amount; // parse to int the value
+          } else if (movementsKey[j] === 'date') {
+            const date = new Date(data);
+            if (!(date instanceof Date))
+              throw new Error('Error trying to open file\nInvalid date data');
+
+            movement[movementsKey[j]] = date;
+          } else {
+            movement[movementsKey[j]] = data; // else charge value
+          }
         }
+        movements.push(movement);
       }
-      movements.push(movement);
-    }
-    dataJson.movements = movements;
+      dataJson.movements = movements;
 
-    return dataJson;
+      return { statusCode: 0, data: dataJson, msg: 'File uploaded successfully' };
+    } catch (error) {
+      return { statusCode: -1, msg: error.message };
+    }
   };
 
   /**
    * Charge Data
    * @param {string} data
+   * @returns {responseType}
    */
   const chargeData = (data) => {
     const csvData = stringCSVToJson(data);
-    chargeInitialAmount(Number.parseFloat(csvData.initialBalance));
 
-    csvData.movements.forEach((movement) => {
-      movementsDispatch({ type: 'add_movement', newMovement: movement });
-    });
+    // Si no hay error carga los datos
+    if (csvData.statusCode === 0) {
+      chargeInitialAmount(Number.parseFloat(csvData.data.initialBalance));
+      csvData.data.movements.forEach((movement) => {
+        movementsDispatch({ type: 'add_movement', newMovement: movement });
+      });
 
-    setIsOpenedFile(true);
+      setIsOpenedFile(true);
+    }
+
+    return { ...csvData };
   };
 
   const cleanData = () => {
