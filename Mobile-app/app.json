@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "Economics-mobile-app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.elias.bianchi.Mobileapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +35,11 @@
           "iCloudContainerEnvironment": "Production"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7ec684e2-23c8-4332-82c5-ae7c0135fd7a"
+      }
+    }
   }
 }
