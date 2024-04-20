@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { DataTable } from 'react-native-paper';
 
 import '../types/TableContentType.js';
+import { getComponentsColors } from '../generalStyles.js';
 import { useFunctionProvider } from '../providers/FunctionsProvider.jsx';
+
+const { table_text } = getComponentsColors();
 
 /**
  * Categorías por defecto
@@ -59,6 +62,7 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
             key={index}
             style={{ flex: item.size }}
             sortDirection={item.title === 'Category' ? 'descending' : ''}
+            textStyle={{ color: table_text }}
           >
             {item.title}
           </DataTable.Title>
@@ -67,14 +71,16 @@ const AmountsTable = ({ tableContent = defaultCategories }) => {
 
       {content.map((item, index) => (
         <DataTable.Row key={index}>
-          <DataTable.Cell style={{ flex: tableHead[0].size }}>{item.cat}</DataTable.Cell>
-          <DataTable.Cell style={{ flex: tableHead[1].size }}>
+          <DataTable.Cell style={{ flex: tableHead[0].size }} textStyle={{ color: table_text }}>
+            {item.cat}
+          </DataTable.Cell>
+          <DataTable.Cell style={{ flex: tableHead[1].size }} textStyle={{ color: table_text }}>
             ${minimizeNumber(item.fore)}
           </DataTable.Cell>
-          <DataTable.Cell style={{ flex: tableHead[2].size }}>
+          <DataTable.Cell style={{ flex: tableHead[2].size }} textStyle={{ color: table_text }}>
             ${minimizeNumber(item.act)}
           </DataTable.Cell>
-          <DataTable.Cell style={{ flex: tableHead[3].size }}>
+          <DataTable.Cell style={{ flex: tableHead[3].size }} textStyle={{ color: table_text }}>
             ${minimizeNumber(item.diff)}
           </DataTable.Cell>
         </DataTable.Row>

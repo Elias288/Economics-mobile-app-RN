@@ -2,35 +2,48 @@ import { useState, useRef } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Button, Card, TextInput } from 'react-native-paper';
 
-import { generalStyles } from '../../generalStyles';
+import { generalStyles, getComponentsColors } from '../../generalStyles';
 import { useAmountContext } from '../../providers/AmountProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
-import { useNotificationProvider } from '../../providers/NotificationProvider';
+import { NOTIFICATION_TYPE, useNotificationProvider } from '../../providers/NotificationProvider';
+
+const {
+  button_accept_background,
+  input_background,
+  light_text_color,
+  border_color,
+  dark_text_color,
+} = getComponentsColors();
 
 function ConfigurationInitialBalance({ navigation }) {
   const { initialBalance, chargeInitialAmount } = useAmountContext();
   const { formatAmount } = useFunctionProvider();
   const { setSnackBarContent, showSnackbar } = useNotificationProvider();
 
-  const balanceInput = useRef(null);
+  const add_button = useRef(null);
   const [initialBalanceValue, setInitialBalanceValue] = useState(
     /** @type {string | undefined} */ (initialBalance ? initialBalance.toString() : undefined)
   );
 
   const chargeBalance = () => {
-    if (!initialBalanceValue) return alert('Ingrese un monto valido');
+    const initialNumber =
+      initialBalanceValue || !isNaN(Number.parseFloat(initialBalanceValue))
+        ? Number.parseFloat(initialBalanceValue)
+        : 0;
 
-    chargeInitialAmount(Number.parseFloat(initialBalanceValue));
-    balanceInput.current.blur();
+    chargeInitialAmount(initialNumber);
 
-    setSnackBarContent('Initial amount has been updated');
+    setSnackBarContent({
+      text: 'Initial amount has been updated',
+      type: NOTIFICATION_TYPE.OK,
+    });
     showSnackbar();
     navigation.goBack();
   };
 
   return (
     <View style={generalStyles.container}>
-      <Card style={generalStyles.card}>
+      <Card style={{ ...generalStyles.card, paddingVertical: 20 }}>
         <View style={styles.initialBalanceContainer}>
           <Text style={generalStyles.textTitle}>Initial Balance: </Text>
           <Text style={styles.initialBalance}>
@@ -41,14 +54,20 @@ function ConfigurationInitialBalance({ navigation }) {
         <View style={styles.form}>
           <TextInput
             style={styles.formInputText}
-            ref={balanceInput}
             autoFocus
             label="$0.00"
             value={initialBalanceValue}
             keyboardType="numeric"
             onChangeText={(text) => setInitialBalanceValue(text)}
+            onSubmitEditing={chargeBalance}
           />
-          <Button style={styles.formButton} onPress={() => chargeBalance()}>
+
+          <Button
+            style={styles.formButton}
+            ref={add_button}
+            onPress={() => chargeBalance()}
+            textColor={light_text_color}
+          >
             Add
           </Button>
         </View>
@@ -61,13 +80,14 @@ const styles = StyleSheet.create({
   initialBalanceContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 30,
+    paddingVertical: 20,
     marginBottom: 10,
-    borderBottomColor: '#bbbbbb',
+    borderBottomColor: border_color,
     borderBottomWidth: 1,
   },
   initialBalance: {
     fontSize: 40,
+    color: dark_text_color,
   },
   form: {
     flexDirection: 'row',
@@ -76,8 +96,11 @@ const styles = StyleSheet.create({
   },
   formInputText: {
     flex: 1,
+    backgroundColor: input_background,
   },
   formButton: {
+    backgroundColor: button_accept_background,
+    borderRadius: 15,
     justifyContent: 'center',
   },
 });

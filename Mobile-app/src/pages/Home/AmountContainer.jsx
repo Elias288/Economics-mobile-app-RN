@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
 
-import { generalStyles } from '../../generalStyles.js';
+import { generalStyles, getComponentsColors } from '../../generalStyles.js';
 import { useAmountContext } from '../../providers/AmountProvider.jsx';
 import { useFunctionProvider } from '../../providers/FunctionsProvider.jsx';
 
+const { total_amount } = getComponentsColors();
 /**
  * Componente donde se mostrará el saldo inicial y el saldo disponible agregando y quitando los ingresos y los gastos.
  * @returns {ReactNode}
@@ -44,12 +45,16 @@ const styles = StyleSheet.create({
   },
   totalAmountTitle: {
     fontSize: 18,
+    color: total_amount,
   },
   totalAmount: {
     fontSize: 40,
+    fontWeight: 'bold',
+    color: total_amount,
   },
   initialBalanceText: {
     textAlign: 'right',
+    color: total_amount,
   },
   initialBalance: { fontWeight: 'bold', fontSize: 15 },
 });

@@ -4,6 +4,7 @@ import { shareAsync } from 'expo-sharing';
 import { createContext, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 
+import '../types/responseType.js';
 import { useAmountContext } from './AmountProvider';
 import { useMovementsContext } from './MovementsProvider';
 

@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { DataTable, Icon, Portal } from 'react-native-paper';
 
 import { ViewMovementModal } from './ViewMovementModal';
 import CustomModal, { customModalStyles } from '../components/CustomModal';
 import '../types/movementType';
+import { getComponentsColors } from '../generalStyles';
 import { useFunctionProvider } from '../providers/FunctionsProvider';
 import { useMovementsContext, MOVEMENTTYPE } from '../providers/MovementsProvider';
-import { useNotificationProvider } from '../providers/NotificationProvider';
+import { NOTIFICATION_TYPE, useNotificationProvider } from '../providers/NotificationProvider';
+
+const { table_text } = getComponentsColors();
 
 /**
  * Balance Table
@@ -45,7 +48,7 @@ export const BalanceTable = ({ movements }) => {
     setShowConfirmDialog(false);
     setShowModal(false);
 
-    setSnackBarContent('Movement correctly eliminated');
+    setSnackBarContent({ text: 'Movement correctly eliminated', type: NOTIFICATION_TYPE.OK });
     showSnackbar();
   };
 
@@ -53,9 +56,9 @@ export const BalanceTable = ({ movements }) => {
     <>
       <DataTable style={{ marginBottom: 20 }}>
         <DataTable.Header>
-          <DataTable.Title>Description</DataTable.Title>
-          <DataTable.Title>Category</DataTable.Title>
-          <DataTable.Title>Amount</DataTable.Title>
+          <DataTable.Title textStyle={{ color: table_text }}>Description</DataTable.Title>
+          <DataTable.Title textStyle={{ color: table_text }}>Category</DataTable.Title>
+          <DataTable.Title textStyle={{ color: table_text }}>Amount</DataTable.Title>
         </DataTable.Header>
 
         {movements.map((item, index) => (
@@ -67,14 +70,14 @@ export const BalanceTable = ({ movements }) => {
             {/* Description and date */}
             <DataTable.Cell>
               <View style={{ flexDirection: 'column', paddingHorizontal: 3 }}>
-                <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{item.desc}</Text>
-                <Text>{item.date.toLocaleDateString()}</Text>
+                <Text style={styles.descriptionTitle}>{item.desc}</Text>
+                <Text style={{ color: table_text }}>{item.date.toLocaleDateString()}</Text>
               </View>
             </DataTable.Cell>
 
             {/* Category */}
             <DataTable.Cell>
-              <Text>{item.cat}</Text>
+              <Text style={{ color: table_text }}>{item.cat}</Text>
             </DataTable.Cell>
 
             {/* Spends */}
@@ -84,7 +87,7 @@ export const BalanceTable = ({ movements }) => {
                 source={item.type === MOVEMENTTYPE.INCOME ? 'arrow-up-bold' : 'arrow-down-bold'}
                 color={item.type === MOVEMENTTYPE.INCOME ? 'green' : 'red'}
               />
-              <Text style={{ fontWeight: 'bold' }}>
+              <Text style={{ fontWeight: 'bold', color: table_text }}>
                 {item.type === MOVEMENTTYPE.SPEND ? '-' : ' '}${formatAmount(item.amount)}
               </Text>
             </DataTable.Cell>
@@ -116,3 +119,11 @@ export const BalanceTable = ({ movements }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  descriptionTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: table_text,
+  },
+});

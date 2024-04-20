@@ -4,10 +4,12 @@ import { Card, Chip, TextInput, Portal } from 'react-native-paper';
 
 import CustomModal, { customModalStyles } from '../../components/CustomModal';
 import FloatButton from '../../components/FloatButton';
-import { generalStyles, getColors } from '../../generalStyles';
+import { generalStyles, getColors, getComponentsColors } from '../../generalStyles';
 import { useCategoriesContext } from '../../providers/CategoriesProvider';
 import { useFunctionProvider } from '../../providers/FunctionsProvider';
-import { useNotificationProvider } from '../../providers/NotificationProvider';
+import { NOTIFICATION_TYPE, useNotificationProvider } from '../../providers/NotificationProvider';
+
+const { category_chip_background, category_chip_text_color } = getComponentsColors();
 
 function ConfigurationCategoriesPage({ route }) {
   const { categoryType } = route.params;
@@ -47,7 +49,10 @@ function ConfigurationCategoriesPage({ route }) {
       categoryType,
     });
 
-    setSnackBarContent('Category successfully added');
+    setSnackBarContent({
+      text: 'Category successfully added',
+      type: NOTIFICATION_TYPE.OK,
+    });
     showSnackbar();
 
     setNewCategory('');
@@ -73,7 +78,7 @@ function ConfigurationCategoriesPage({ route }) {
       setCategoryToDelete(undefined);
       setShowDeleteModal(false);
 
-      setSnackBarContent('Category correctly deleted');
+      setSnackBarContent({ text: 'Category correctly deleted', type: NOTIFICATION_TYPE.OK });
       showSnackbar();
     }
   };
@@ -95,7 +100,12 @@ function ConfigurationCategoriesPage({ route }) {
               {categories.map((item, index) => {
                 return (
                   item.type === categoryType && (
-                    <Chip key={index} onClose={() => viewRemoveModal(item)}>
+                    <Chip
+                      key={index}
+                      onClose={() => viewRemoveModal(item)}
+                      style={styles.chipStyle}
+                      textStyle={{ color: category_chip_text_color }}
+                    >
                       {item.cat}
                     </Chip>
                   )
@@ -166,6 +176,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
     marginVertical: 20,
+  },
+  chipStyle: {
+    backgroundColor: category_chip_background,
+    color: category_chip_text_color,
   },
 });
 

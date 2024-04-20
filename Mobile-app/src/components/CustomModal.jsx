@@ -1,6 +1,10 @@
 import { StyleSheet, View } from 'react-native';
 import { Modal, Button } from 'react-native-paper';
 
+import { getComponentsColors } from '../generalStyles';
+
+const { button_accept_background, button_cancel_background } = getComponentsColors();
+
 /**
  * Modal custom
  * @param {Object} props
@@ -35,9 +39,15 @@ const CustomModal = (props) => {
 
         {onAccept !== undefined && (
           <View style={customModalStyles.actions}>
-            <Button onPress={acceptHandle}>Accept</Button>
+            <Button onPress={acceptHandle} textColor={button_accept_background}>
+              Accept
+            </Button>
 
-            {onCancel !== undefined && <Button onPress={cancelHandle}>Cancel</Button>}
+            {onCancel !== undefined && (
+              <Button onPress={cancelHandle} textColor={button_cancel_background}>
+                Cancel
+              </Button>
+            )}
           </View>
         )}
       </View>

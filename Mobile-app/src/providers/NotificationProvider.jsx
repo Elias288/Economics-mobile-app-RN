@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import { Snackbar } from 'react-native-paper';
 
+import { getComponentsColors } from '../generalStyles';
+
 /**
  * @typedef {Object} NotificationProviderProps
  * @property {() => void} showSnackbar
@@ -10,6 +12,10 @@ import { Snackbar } from 'react-native-paper';
 
 const NotificationContext = createContext(undefined);
 
+export const NOTIFICATION_TYPE = {
+  OK: 'ok',
+  ERROR: 'error',
+};
 export const useNotificationProvider = () => {
   const context = useContext(NotificationContext);
   if (!context) throw new Error('useFunctionProvider debe estar dentro de un NotificationProvider');
@@ -17,9 +23,13 @@ export const useNotificationProvider = () => {
   return context;
 };
 
+const { snackbar_ok_color, snackbar_error_color } = getComponentsColors();
 function NotificationProvider({ children }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [snackBarContent, setSnackBarContent] = useState('example');
+  const [snackBarContent, setSnackBarContent] = useState({
+    text: 'example',
+    type: NOTIFICATION_TYPE.OK,
+  });
   const [snackBarAction, setSnackBarAction] = useState({
     label: 'Undo',
     onPress: () => onDismiss,
@@ -30,7 +40,10 @@ function NotificationProvider({ children }) {
 
   const onDismiss = () => {
     setIsVisible(false);
-    setSnackBarContent('example');
+    setSnackBarContent({
+      text: 'example',
+      type: NOTIFICATION_TYPE.OK,
+    });
   };
 
   const defineSnackBarAction = (label, action) => {
@@ -50,9 +63,15 @@ function NotificationProvider({ children }) {
         visible={isVisible}
         onDismiss={onDismiss}
         action={snackBarAction}
-        style={{ bottom: 50 }}
+        style={{
+          bottom: 50,
+          backgroundColor:
+            snackBarContent.type === NOTIFICATION_TYPE.OK
+              ? snackbar_ok_color
+              : snackbar_error_color,
+        }}
       >
-        {snackBarContent}
+        {snackBarContent.text}
       </Snackbar>
     </NotificationContext.Provider>
   );

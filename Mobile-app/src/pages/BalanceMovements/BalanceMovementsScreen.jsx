@@ -1,16 +1,23 @@
 import { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BalanceTable } from '../../components/BalanceTable';
 import FloatButton from '../../components/FloatButton';
 import MovementsFilters from '../../components/MovementsFilters';
-import { generalStyles, getColors } from '../../generalStyles';
+import { generalStyles, getComponentsColors } from '../../generalStyles';
 import { useMovementsContext, MOVEMENTTYPE } from '../../providers/MovementsProvider';
+
+const {
+  floatingButton_income_icon,
+  floatingButton_income_background,
+  floatingButton_spend_icon,
+  floatingButton_spend_background,
+  subtitle_color,
+} = getComponentsColors();
 
 function BalanceMovementsScreen({ navigation }) {
   const { movements } = useMovementsContext();
   const [showAddButtons, setShowAddButtons] = useState(false);
-  const color = getColors();
 
   const goToPage = (movementType) => {
     navigation.navigate('addMovement', {
@@ -24,16 +31,7 @@ function BalanceMovementsScreen({ navigation }) {
       <ScrollView>
         <View style={generalStyles.container}>
           {movements.length === 0 ? (
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 30,
-                fontWeight: 'bold',
-                color: color.lightGray,
-              }}
-            >
-              Without movements
-            </Text>
+            <Text style={styles.subtitle}>Without movements</Text>
           ) : (
             <MovementsFilters originalMovements={movements}>
               <BalanceTable />
@@ -51,6 +49,8 @@ function BalanceMovementsScreen({ navigation }) {
             size={30}
             icon="arrow-up-bold"
             onPress={() => goToPage(MOVEMENTTYPE.INCOME)}
+            iconColor={floatingButton_income_icon}
+            style={{ backgroundColor: floatingButton_income_background }}
           />
           <FloatButton
             bottom={70}
@@ -58,9 +58,12 @@ function BalanceMovementsScreen({ navigation }) {
             size={30}
             icon="arrow-down-bold"
             onPress={() => goToPage(MOVEMENTTYPE.SPEND)}
+            iconColor={floatingButton_spend_icon}
+            style={{ backgroundColor: floatingButton_spend_background }}
           />
         </>
       )}
+
       <FloatButton
         onPress={() => {
           setShowAddButtons(!showAddButtons);
@@ -69,5 +72,14 @@ function BalanceMovementsScreen({ navigation }) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  subtitle: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: subtitle_color,
+  },
+});
 
 export default BalanceMovementsScreen;
